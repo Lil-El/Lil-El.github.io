@@ -25,21 +25,41 @@ importers:
         specifier: ^6.3.1
         version: 6.3.4
 
-  packages/codepen: {}
-
-  packages/markdown: {}
-
-  playground/play-codepen:
+  app:
     dependencies:
-      '@mino_97/codepen':
-        specifier: workspace:*
-        version: link:../../packages/codepen
+      '@vitejs/plugin-vue':
+        specifier: ^5.2.2
+        version: 5.2.3(vite@6.3.4)(vue@3.5.13)
+      vite:
+        specifier: ^6.3.1
+        version: 6.3.4
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.13
 
-  playground/play-markdown:
+  packages/codepen:
     dependencies:
-      '@mino_97/markdown':
-        specifier: workspace:*
-        version: link:../../packages/markdown
+      '@vitejs/plugin-vue':
+        specifier: ^5.2.2
+        version: 5.2.3(vite@6.3.4)(vue@3.5.13)
+      vite:
+        specifier: ^6.3.1
+        version: 6.3.4
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.13
+
+  packages/markdown:
+    dependencies:
+      '@vitejs/plugin-vue':
+        specifier: ^5.2.2
+        version: 5.2.3(vite@6.3.4)(vue@3.5.13)
+      vite:
+        specifier: ^6.3.1
+        version: 6.3.4
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.13
 
 packages:
 

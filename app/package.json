@@ -1,10 +1,15 @@
 {
-  "name": "@lil-el/markdown",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "@lil-el/app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {},
+  "devDependencies": {
   },
   "peerDependencies": {
     "vue": "^3.5.13",
@@ -13,16 +18,12 @@
   },
   "author": "Mino",
   "homepage": "https://lil-el.github.io",
-  "description": "resolve markdown file and custom style.",
+  "description": "mino blog.",
   "keywords": [],
   "repository": {
     "type": "git",
     "url": "https://github.com/Lil-El/Lil-El.github.io"
   },
   "license": "ISC",
-  "packageManager": "pnpm@10.10.0",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  }
+  "packageManager": "pnpm@10.10.0"
 }

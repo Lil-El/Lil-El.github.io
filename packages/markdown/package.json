@@ -1,0 +1,18 @@
+{
+  "name": "@mino_97/markdown",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mino",
+  "homepage": "https://lil-el.github.io",
+  "description": "resolve markdown file and custom style.",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lil-El/Lil-El.github.io"
+  },
+  "license": "ISC",
+  "packageManager": "pnpm@10.10.0"
+}

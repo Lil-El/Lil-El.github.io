@@ -6,22 +6,25 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "vue": "^3.5.13"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.2",
+    "gh-pages": "^6.3.0",
     "vite": "^6.3.1"
   },
+  "author": "Mino",
+  "homepage": "https://lil-el.github.io",
   "description": "mino blog",
   "keywords": [],
   "repository": {
     "type": "git",
     "url": ""
   },
-  "author": "Mino",
   "license": "ISC",
   "packageManager": "pnpm@10.10.0"
 }

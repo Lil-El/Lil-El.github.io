@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "app": "cd app & pnpm run dev --filter @lil-el/app",
-    "codepen": "pnpm run dev --filter @lil-el/codepen",
-    "markdown": "pnpm run dev --filter @lil-el/markdown",
+    "codepen": "cd packages/codepen & pnpm run dev --filter @lil-el/codepen",
+    "markdown": "cd packages/markdown & pnpm run dev --filter @lil-el/markdown",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {

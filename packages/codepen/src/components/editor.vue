@@ -60,7 +60,7 @@ onMounted(() => {
 
   // 自定义指令
   editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
-    console.log('"Ctrl + S" pressed!');
+    console.log("代码缓存.", editor.getValue());
   });
 
   // TODO: iframe 预览

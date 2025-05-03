@@ -1,18 +1,34 @@
 <template>
   <div class="editor">
-    <div class="editor-header" :title="language">
-      <img :src="`/src/assets/${language.toLowerCase()}.svg`" width="16" alt="file" draggable="false" />
-      <span>{{ language }}</span>
+    <div class="editor-header">
+      <div class="header-left" :title="language">
+        <img :src="`/src/assets/${language.toLowerCase()}.svg`" width="16" draggable="false" />
+        <span>{{ language }}</span>
+      </div>
+      <div class="header-right">
+        <img
+          v-show="cache"
+          src="/src/assets/refresh.svg"
+          width="15"
+          draggable="false"
+          title="重置"
+          @click="clearAndRun"
+        />
+        <img src="/src/assets/setting.svg" width="16" draggable="false" @click="showModal = true" />
+      </div>
     </div>
     <div class="editor-body">
       <div ref="editorRef" class="editor-panel"></div>
     </div>
   </div>
+
+  <m-modal title="设置" v-model:show="showModal">123123</m-modal>
 </template>
 
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
 import * as monaco from "monaco-editor";
+import MModal from "./modal.vue";
 
 const props = defineProps({
   data: {
@@ -25,6 +41,8 @@ const emit = defineEmits(["saveAndRun", "run"]);
 
 let data = props.data;
 
+const cache = ref(!!localStorage.getItem(props.data.id));
+
 if (localStorage.getItem(props.data.id)) {
   data = JSON.parse(localStorage.getItem(props.data.id));
 } else {
@@ -32,7 +50,7 @@ if (localStorage.getItem(props.data.id)) {
     id: props.data.id,
     language: props.data.language,
     code: props.data.code,
-  }
+  };
 }
 
 const { id, language, code } = data;
@@ -42,6 +60,8 @@ let editor = null;
 const focusTime = ref(0);
 
 const editorRef = ref(null);
+
+const showModal = ref(false);
 
 onMounted(() => {
   // #endregion
@@ -87,6 +107,10 @@ onMounted(() => {
     focusTime.value = Date.now();
   });
 
+  editor.onDidBlurEditorWidget(() => {
+    cache.value = !!localStorage.getItem(props.data.id);
+  });
+
   // 保存且运行：快捷键（会覆盖所有 editor）
   editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
     emit("saveAndRun");
@@ -98,6 +122,17 @@ onMounted(() => {
   });
 });
 
+function clear() {
+  localStorage.removeItem(id);
+  cache.value = false;
+  editor.setValue(props.data.code);
+}
+
+function clearAndRun() {
+  clear();
+  emit("run");
+}
+
 onUnmounted(() => {
   editor.dispose();
 });
@@ -108,7 +143,8 @@ defineExpose({
   language: language.toLowerCase(),
   getCode: () => {
     return editor.getValue();
-  }
+  },
+  clear,
 });
 </script>
 
@@ -125,11 +161,23 @@ defineExpose({
     width: 100%;
     height: 30px;
     line-height: 30px;
-    padding-left: 13px;
+    padding: 0 13px;
     border-bottom: 1px solid #666666;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 14px;
+
+    .header-left,
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .header-right {
+      cursor: pointer;
+      gap: 8px;
+    }
   }
 
   .editor-body {

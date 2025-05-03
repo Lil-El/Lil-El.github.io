@@ -39,12 +39,12 @@
         </div>
       </div>
       <div class="header-right">
-        <m-select title="主题" type="cell" icon="theme" popup="bottom" v-model="theme" @change="setTheme">
+        <m-select type="cell" icon="theme" popup="bottom" v-model="theme" @change="setTheme">
           <m-select-option v-for="t in getAllThemes()" :key="t.value" :value="t.value">
             <div class="color-cell" :style="{ backgroundColor: t.color }"></div>
           </m-select-option>
         </m-select>
-        <m-select title="布局" type="cell" icon="layout" popup="bottom" v-model="layout">
+        <m-select type="cell" icon="layout" popup="bottom" v-model="layout">
           <m-select-option :value="true">
             <svg
               width="28"
@@ -116,8 +116,12 @@
             </svg>
           </m-select-option>
         </m-select>
-        <div class="run-button" @click="run">
-          <img src="/src/assets/run.svg" alt="" />
+        <div class="code-button" @click="clear">
+          <img src="/src/assets/refresh.svg" width="18" draggable="false" />
+          <span>重置</span>
+        </div>
+        <div class="code-button" @click="run">
+          <img src="/src/assets/run.svg" draggable="false" />
           <span>运行</span>
         </div>
       </div>
@@ -126,7 +130,7 @@
       <div class="code-pen-sidebar">
         <div class="sidebar-top"></div>
         <div class="sidebar-btm">
-          <m-select title="快捷键" type="list" icon="info" popup="right">
+          <m-select type="list" icon="info" popup="right">
             <m-select-option>Ctrl + S: 保存并运行</m-select-option>
             <m-select-option>Ctrl + R: 运行</m-select-option>
           </m-select>
@@ -236,6 +240,16 @@ function save(id, language, code) {
     })
   );
 }
+
+function clear() {
+  const editors = editorRef.value;
+
+  editors.forEach((editor) => {
+    editor.clear();
+  });
+
+  run();
+}
 </script>
 
 <style scoped>
@@ -284,7 +298,7 @@ function save(id, language, code) {
       }
     }
 
-    .run-button {
+    .code-button {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -296,11 +310,6 @@ function save(id, language, code) {
       border-radius: 4px;
       background-color: hsla(0, 0%, 100%, 0.08);
       cursor: pointer;
-
-      img {
-        width: 16px;
-        height: 16px;
-      }
 
       &:hover {
         background-color: hsla(0, 0%, 100%, 0.12);

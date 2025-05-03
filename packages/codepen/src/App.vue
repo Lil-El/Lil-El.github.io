@@ -22,8 +22,8 @@ const editors = reactive([
         alert('Hello world!');
       }
 
-      const hello = document.getElementById('hello');
-      hello.addEventListener('click', hello);
+      const ele = document.getElementById('hello');
+      ele.addEventListener('click', hello);
     `,
   },
 ]);

@@ -1,6 +1,9 @@
 <template>
   <div class="editor">
-    <div class="editor-header">{{ language }}</div>
+    <div class="editor-header" :title="language">
+      <img :src="`/src/assets/${language.toLowerCase()}.svg`" width="16" alt="file" draggable="false" />
+      <span>{{ language }}</span>
+    </div>
     <div class="editor-body">
       <div ref="editorRef" class="editor-panel"></div>
     </div>
@@ -78,7 +81,6 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   background-color: #272822;
-  border: 1px solid #666666;
   box-sizing: border-box;
   color: white;
   font-size: 14px;
@@ -87,9 +89,12 @@ onUnmounted(() => {
     width: 100%;
     height: 30px;
     line-height: 30px;
-    padding-left: 8px;
+    padding-left: 13px;
     border-bottom: 1px solid #666666;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    user-select: none;
   }
 
   .editor-body {

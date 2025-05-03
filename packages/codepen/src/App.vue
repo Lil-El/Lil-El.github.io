@@ -10,17 +10,15 @@ import CodePen from "./components/code-pen.vue";
 
 const editors = reactive([
   {
+    id: 1,
     language: "JavaScript",
     code: "function hello() {\n  alert('Hello world!');\n}",
   },
   {
+    id: 2,
     language: "HTML",
-    code: "<div>Hello world!</div>",
-  },
-  {
-    language: "Markdown",
-    code: "# Hello world!\n\nThis is a markdown editor.",
-  },
+    code: "<div id='hello'>Hello world!</div>",
+  }
 ]);
 </script>
 

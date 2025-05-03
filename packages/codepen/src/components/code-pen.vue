@@ -56,8 +56,8 @@
         <splitpanes class="default-theme" :horizontal="layout" :vertical="!layout">
           <pane min-size="3">
             <splitpanes class="default-theme" :horizontal="!layout" :vertical="layout">
-              <pane v-for="(e, i) in editors" :key="i" min-size="3">
-                <editor :language="e.language" :code="e.code" />
+              <pane v-for="(e, i) in editors" :key="e.id" min-size="3">
+                <editor ref="editorRef" :data="e" @change="run" />
               </pane>
             </splitpanes>
           </pane>
@@ -71,7 +71,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import editor from "./editor.vue";
 import { Splitpanes, Pane } from "splitpanes";
 import "splitpanes/dist/splitpanes.css";
@@ -84,9 +84,27 @@ defineProps({
   editors: Array,
 });
 
+const editorRef = ref(null);
+
 const layout = ref(true);
 
 const { theme, setTheme, getAllThemes } = useTheme();
+
+onMounted(()=>{
+  run();
+})
+
+function run(id, language, code) {
+  // editorRef.value.forEach((editor) => {
+  //   const code = editor.getCode();
+  //   const language = editor.language;
+  //   console.log(`Running ${language} code:`, code);
+  // });
+
+  // TODO: iframe 预览
+  // const preview = document.getElementById("preview");
+  // preview.setAttribute("srcdoc", code);
+}
 </script>
 
 <style scoped>

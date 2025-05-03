@@ -15,9 +15,29 @@ import { onMounted, onUnmounted, ref } from "vue";
 import * as monaco from "monaco-editor";
 
 const props = defineProps({
-  language: String,
-  code: String,
+  data: {
+    type: Object,
+    default: () => ({}),
+  },
 });
+
+let data = props.data;
+
+if (localStorage.getItem(props.data.id)) {
+  data = JSON.parse(localStorage.getItem(props.data.id));
+} else {
+  data = {
+    id: props.data.id,
+    language: props.data.language,
+    code: props.data.code,
+  }
+}
+
+const { id, language, code } = data;
+
+const emit = defineEmits(["change"]);
+
+let editor = null;
 
 const editorRef = ref(null);
 
@@ -50,29 +70,47 @@ onMounted(() => {
   // });
   // #endregion
 
-  const editor = monaco.editor.create(editorRef.value, {
-    language: props.language.toLowerCase(),
+  editor = monaco.editor.create(editorRef.value, {
+    language: language.toLowerCase(),
     theme: "vs-dark",
     automaticLayout: true,
     readOnly: false,
     minimap: {
       enabled: true,
     },
-    value: props.code,
+    value: code,
   });
 
-  // 自定义指令
+  editor.onDidFocusEditorWidget(() => {
+    console.log("focus editor widget", id);
+  });
+
+  // 自定义指令（多个指令会被覆盖）
   editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
-    console.log("代码缓存.", editor.getValue());
-  });
+    // TODO: 保存的不对，可能是因为（多个指令会被覆盖）
+    save(id, language, editor.getValue());
 
-  // TODO: iframe 预览
-  // const preview = document.getElementById("preview");
-  // preview.setAttribute("srcdoc", code);
+    emit("change", id, language, editor.getValue());
+  });
 });
 
+function save(id, language, code) {
+  localStorage.setItem(id, JSON.stringify({
+    id,
+    language,
+    code,
+  }));
+}
+
 onUnmounted(() => {
-  editorRef.value?.dispose();
+  editor.dispose();
+});
+
+defineExpose({
+  language: language,
+  getCode: () => {
+    return editor.getValue();
+  }
 });
 </script>
 

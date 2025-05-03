@@ -4,5 +4,10 @@ import monacoEditorPlugin from "vite-plugin-monaco-editor";
 
 // https://vite.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      "@": "/src",
+    },
+  },
   plugins: [vue(), monacoEditorPlugin({})],
 });

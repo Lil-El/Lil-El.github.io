@@ -3,6 +3,11 @@
     <header class="code-pen-header">
       <div class="header-left"></div>
       <div class="header-right">
+        <m-select icon="setting" v-model="theme" @change="setTheme">
+          <m-select-option v-for="t in getAllThemes()" :key="t.value" :value="t.value">
+            <div class="color-cell" :style="{ backgroundColor: t.color }"></div>
+          </m-select-option>
+        </m-select>
         <m-select icon="layout" v-model="layout">
           <m-select-option :value="true">
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +53,7 @@
     <main class="code-pen-body">
       <div class="code-pen-sidebar"></div>
       <div class="code-pen-main">
-        <splitpanes ref="SplitPanesRef" class="default-theme" :horizontal="layout" :vertical="!layout" @resize="onResize">
+        <splitpanes class="default-theme" :horizontal="layout" :vertical="!layout">
           <pane min-size="3">
             <splitpanes class="default-theme" :horizontal="!layout" :vertical="layout">
               <pane v-for="(e, i) in editors" :key="i" min-size="3">
@@ -73,18 +78,15 @@ import "splitpanes/dist/splitpanes.css";
 
 import MSelect from "./select.vue";
 import MSelectOption from "./select-option.vue";
+import useTheme from "@/hooks/useTheme";
 
 defineProps({
   editors: Array,
 });
 
-const layout = ref(true)
+const layout = ref(true);
 
-const SplitPanesRef = ref(null);
-
-function onResized(data) {
-  console.log(SplitPanesRef.value);
-}
+const { theme, setTheme, getAllThemes } = useTheme();
 </script>
 
 <style scoped>
@@ -153,6 +155,38 @@ function onResized(data) {
 
     .splitpanes.default-theme .splitpanes__pane {
       background-color: transparent;
+    }
+  }
+}
+
+.color-cell {
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
+  color: #333333;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 28px;
+}
+
+:deep() {
+  .select-option:hover {
+    .arco-icon .normal {
+      fill: var(--color) !important;
+    }
+  }
+
+  .select-option.active {
+    .arco-icon {
+      fill: var(--color);
+
+      .normal {
+        fill: transparent !important;
+      }
+    }
+
+    .color-cell::after {
+      content: "✔";
     }
   }
 }

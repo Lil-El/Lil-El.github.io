@@ -26,20 +26,4 @@ const update = inject("onUpdate");
   cursor: pointer;
   color: #ffffff;
 }
-
-.select-option:hover :deep() {
-  .arco-icon .normal {
-    fill: #2986FF !important;
-  }
-}
-
-.select-option.active :deep() {
-  .arco-icon {
-    fill: #2986FF;
-
-    .normal {
-      fill: transparent !important;
-    }
-  }
-}
 </style>

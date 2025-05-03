@@ -13,10 +13,10 @@ import { watch, ref, nextTick, onMounted, provide } from "vue";
 
 const props = defineProps({
   icon: String,
-  modelValue: String,
+  modelValue: [String, Number, Boolean],
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "change"]);
 
 const active = ref(false);
 
@@ -26,7 +26,10 @@ const optionsRef = ref(null);
 const left = ref(0);
 
 provide("getCurrent", () => props.modelValue);
-provide("onUpdate", emit.bind(null, "update:modelValue"));
+provide("onUpdate", (value) => {
+  emit("update:modelValue", value);
+  emit("change", value);
+});
 
 watch(active, () => {
   if (active.value) {

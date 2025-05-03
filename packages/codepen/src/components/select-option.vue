@@ -21,8 +21,6 @@ const update = inject("onUpdate");
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 36px;
   cursor: pointer;
   color: #ffffff;
 }

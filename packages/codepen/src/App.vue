@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <code-pen :editors="editors" />
+    <code-pen title="Demo 代码演示" author="Mino" date="2025-05-03" :editors="editors" />
   </div>
 </template>
 
@@ -17,8 +17,15 @@ const editors = reactive([
   {
     id: 1,
     language: "JavaScript",
-    code: "function hello() {\n  alert('Hello world!');\n}",
-  }
+    code: `
+      function hello() {
+        alert('Hello world!');
+      }
+
+      const hello = document.getElementById('hello');
+      hello.addEventListener('click', hello);
+    `,
+  },
 ]);
 </script>
 

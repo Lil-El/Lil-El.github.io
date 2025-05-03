@@ -130,7 +130,6 @@ defineExpose({
     display: flex;
     align-items: center;
     gap: 14px;
-    user-select: none;
   }
 
   .editor-body {

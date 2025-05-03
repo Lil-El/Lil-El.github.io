@@ -1,14 +1,50 @@
 <template>
   <div class="code-pen">
     <header class="code-pen-header">
-      <div class="header-left"></div>
+      <div class="header-left">
+        <svg
+          t="1746282283426"
+          class="icon"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="26586"
+          data-spm-anchor-id="a313x.search_index.0.i1.18633a81Xs7Bal"
+          width="56"
+        >
+          <path
+            d="M736.938667 370.56a42.666667 42.666667 0 1 1 62.122666-58.453333l170.666667 181.333333a42.666667 42.666667 0 0 1 0 58.453333l-170.666667 181.333334a42.666667 42.666667 0 0 1-62.122666-58.453334l143.146666-152.106666-143.146666-152.106667z m-449.877334 0L143.914667 522.666667l143.146666 152.106666a42.666667 42.666667 0 0 1-62.122666 58.453334l-170.666667-181.333334a42.666667 42.666667 0 0 1 0-58.453333l170.666667-181.333333a42.666667 42.666667 0 0 1 62.122666 58.453333z"
+            fill="var(--color)"
+            p-id="26587"
+            data-spm-anchor-id="a313x.search_index.0.i3.18633a81Xs7Bal"
+            class="selected"
+          ></path>
+          <path
+            d="M559.130732 171.254372m41.212835 11.042946l0 0q41.212835 11.042946 30.16989 52.255781l-154.601243 576.979694q-11.042946 41.212835-52.255781 30.169889l0 0q-41.212835-11.042946-30.16989-52.255781l154.601243-576.979694q11.042946-41.212835 52.255781-30.169889Z"
+            fill="var(--color)"
+            opacity=".3"
+            p-id="26588"
+            data-spm-anchor-id="a313x.search_index.0.i2.18633a81Xs7Bal"
+            class="selected"
+          ></path>
+        </svg>
+        <div class="code-info">
+          <div class="title">{{ title }}</div>
+          <div class="info">
+            <span
+              >By <span style="color: var(--color)">{{ author }}</span></span
+            >
+            <span>{{ date }}</span>
+          </div>
+        </div>
+      </div>
       <div class="header-right">
-        <m-select icon="setting" v-model="theme" @change="setTheme">
+        <m-select title="主题" type="cell" icon="theme" popup="bottom" v-model="theme" @change="setTheme">
           <m-select-option v-for="t in getAllThemes()" :key="t.value" :value="t.value">
             <div class="color-cell" :style="{ backgroundColor: t.color }"></div>
           </m-select-option>
         </m-select>
-        <m-select icon="layout" v-model="layout">
+        <m-select title="布局" type="cell" icon="layout" popup="bottom" v-model="layout">
           <m-select-option :value="true">
             <svg
               width="28"
@@ -80,10 +116,22 @@
             </svg>
           </m-select-option>
         </m-select>
+        <div class="run-button" @click="run">
+          <img src="/src/assets/run.svg" alt="" />
+          <span>运行</span>
+        </div>
       </div>
     </header>
     <main class="code-pen-body">
-      <div class="code-pen-sidebar"></div>
+      <div class="code-pen-sidebar">
+        <div class="sidebar-top"></div>
+        <div class="sidebar-btm">
+          <m-select title="快捷键" type="list" icon="info" popup="right">
+            <m-select-option>Ctrl + S: 保存并运行</m-select-option>
+            <m-select-option>Ctrl + R: 运行</m-select-option>
+          </m-select>
+        </div>
+      </div>
       <div class="code-pen-main">
         <splitpanes class="default-theme" :horizontal="layout" :vertical="!layout">
           <pane min-size="3">
@@ -114,7 +162,10 @@ import MSelect from "./select.vue";
 import MSelectOption from "./select-option.vue";
 import useTheme from "@/hooks/useTheme";
 
-defineProps({
+const props = defineProps({
+  title: String,
+  author: String,
+  date: String,
   editors: Array,
 });
 
@@ -125,6 +176,8 @@ const layout = ref(true);
 const { theme, setTheme, getAllThemes } = useTheme();
 
 onMounted(() => {
+  document.title = `${props.title} - codepen`;
+
   run();
 });
 
@@ -190,6 +243,7 @@ function save(id, language, code) {
   width: 100%;
   height: 100%;
   background-color: #1e1f1c;
+  user-select: none;
 
   .code-pen-header {
     width: 100%;
@@ -201,11 +255,56 @@ function save(id, language, code) {
     align-items: center;
     padding: 0 20px;
 
+    .header-left,
     .header-right {
       display: flex;
-      justify-content: right;
       align-items: center;
       gap: 14px;
+    }
+
+    .header-right {
+      justify-content: right;
+    }
+
+    .code-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .title {
+        font-size: 16px;
+        color: #ffffff;
+      }
+
+      .info {
+        font-size: 12px;
+        color: #999999;
+        display: flex;
+        gap: 8px;
+      }
+    }
+
+    .run-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      width: 68px;
+      height: 36px;
+      color: #ffffffe6;
+      font-size: 16px;
+      border-radius: 4px;
+      background-color: hsla(0, 0%, 100%, 0.08);
+      cursor: pointer;
+
+      img {
+        width: 16px;
+        height: 16px;
+      }
+
+      &:hover {
+        background-color: hsla(0, 0%, 100%, 0.12);
+      }
     }
   }
 
@@ -220,6 +319,25 @@ function save(id, language, code) {
       height: 100%;
       background-color: #272822;
       border-right: 1px solid #666666;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 8px 0;
+
+      .sidebar-top,
+      .sidebar-btm {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        justify-content: start;
+      }
+
+      .sidebar-btm {
+        justify-content: end;
+      }
     }
 
     .code-pen-main {
@@ -260,7 +378,6 @@ function save(id, language, code) {
   width: 30px;
   height: 30px;
   font-size: 14px;
-  color: #333333;
   border-radius: 4px;
   text-align: center;
   line-height: 28px;
@@ -270,6 +387,10 @@ function save(id, language, code) {
   .select-option:hover {
     .arco-icon .normal {
       fill: var(--color) !important;
+    }
+
+    .color-cell::after {
+      content: "✔";
     }
   }
 

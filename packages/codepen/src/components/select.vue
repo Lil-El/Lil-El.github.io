@@ -2,7 +2,13 @@
   <div class="select" ref="selectRef" @click="toggleOptions">
     <img :src="`/src/assets/${icon}.svg`" alt="" />
 
-    <div v-show="active" class="select__options" ref="optionsRef" :style="{ left: left + 'px' }">
+    <div
+      v-show="active"
+      class="select__options"
+      :class="{ cell: type === 'cell', list: type === 'list' }"
+      ref="optionsRef"
+      :style="{ left: left + 'px', top: top + 'px' }"
+    >
       <slot></slot>
     </div>
   </div>
@@ -12,7 +18,9 @@
 import { watch, ref, nextTick, onMounted, provide } from "vue";
 
 const props = defineProps({
+  type: String, // cell | list
   icon: String,
+  popup: String, // bottom | right
   modelValue: [String, Number, Boolean],
 });
 
@@ -24,6 +32,7 @@ const selectRef = ref(null);
 const optionsRef = ref(null);
 
 const left = ref(0);
+const top = ref(0);
 
 provide("getCurrent", () => props.modelValue);
 provide("onUpdate", (value) => {
@@ -33,23 +42,13 @@ provide("onUpdate", (value) => {
 
 watch(active, () => {
   if (active.value) {
-    nextTick(() => {
-      const width = document.body.clientWidth;
-
-      const sBound = selectRef.value.getBoundingClientRect();
-      const oBound = optionsRef.value.getBoundingClientRect();
-
-      const oLeft = sBound.left + sBound.width / 2 - oBound.width / 2;
-      if (oLeft + oBound.width > width) {
-        left.value = width - oBound.width - 4;
-      } else {
-        left.value = oLeft;
-      }
-    });
+    setPosition();
   }
 });
 
 onMounted(() => {
+  window.addEventListener("resize", setPosition);
+
   document.body.addEventListener("click", (e) => {
     if (!selectRef.value?.contains(e.target) && !optionsRef.value?.contains(e.target)) {
       active.value = false;
@@ -63,7 +62,41 @@ function toggleOptions(evt) {
   }
 
   active.value = !active.value;
-};
+}
+
+function setPosition() {
+  nextTick(() => {
+    const width = document.body.clientWidth;
+    const height = document.body.clientHeight;
+
+    const sBound = selectRef.value?.getBoundingClientRect();
+    const oBound = optionsRef.value?.getBoundingClientRect();
+
+    if (props.popup === "bottom") {
+      const oLeft = sBound.left + sBound.width / 2 - oBound.width / 2;
+      const oTop = sBound.bottom + 4;
+
+      if (oLeft + oBound.width > width) {
+        left.value = width - oBound.width - 4;
+        top.value = oTop;
+      } else {
+        left.value = oLeft;
+        top.value = oTop;
+      }
+    } else if (props.popup === "right") {
+      const oLeft = sBound.right + 4;
+      const oTop = sBound.top + sBound.height / 2 - oBound.height / 2;
+
+      if (oTop + oBound.height > height) {
+        left.value = oLeft;
+        top.value = height - oBound.height - 4;
+      } else {
+        left.value = oLeft;
+        top.value = oTop;
+      }
+    }
+  });
+}
 </script>
 
 <style scoped>
@@ -79,12 +112,36 @@ function toggleOptions(evt) {
     position: absolute;
     top: 54px;
     height: 40px;
-    padding: 4px;
-    display: flex;
-    align-items: center;
+    padding: 6px;
     border-radius: 4px;
     background-color: #555555;
     z-index: 10;
+    font-size: 14px;
+
+    &.cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    &.list {
+      width: max-content;
+      height: max-content;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
+
+  .select__options.list :deep(.select-option) {
+    background-color: rgba(60, 60, 60, 0.6);
+    border-radius: 4px;
+    padding: 2px 4px;
+    justify-content: start;
+
+    &:hover {
+      background-color: rgb(60, 60, 60);
+    }
   }
 }
 

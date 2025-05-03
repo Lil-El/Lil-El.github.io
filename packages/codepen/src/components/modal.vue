@@ -43,7 +43,7 @@ const emit = defineEmits(["update:show"]);
   width: 500px;
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 10px 10px 10px -4px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   display: flex;
   flex-direction: column;

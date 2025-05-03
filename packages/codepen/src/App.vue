@@ -10,12 +10,17 @@ import CodePen from "./components/code-pen.vue";
 
 const editors = reactive([
   {
-    id: 2,
+    id: 1,
     language: "HTML",
     code: "<div id='hello'>Hello world!</div>",
   },
   {
-    id: 1,
+    id: 2,
+    language: "CSS",
+    code: "#hello { color: red; }",
+  },
+  {
+    id: 3,
     language: "JavaScript",
     code: `
       function hello() {

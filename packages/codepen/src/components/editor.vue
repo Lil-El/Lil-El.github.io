@@ -123,6 +123,8 @@ onMounted(() => {
 });
 
 function clear() {
+  if (!cache.value) return void 0;
+
   localStorage.removeItem(id);
   cache.value = false;
   editor.setValue(props.data.code);

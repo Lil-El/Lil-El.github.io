@@ -131,6 +131,7 @@
         <div class="sidebar-top"></div>
         <div class="sidebar-btm">
           <m-select type="list" icon="info" popup="right">
+            <m-select-option><img src="/src/assets/refresh.svg" width="16">&nbsp;重置并运行</m-select-option>
             <m-select-option>Ctrl + S: 保存并运行</m-select-option>
             <m-select-option>Ctrl + R: 运行</m-select-option>
           </m-select>

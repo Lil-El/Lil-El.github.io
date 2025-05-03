@@ -51,14 +51,14 @@ watch(active, () => {
 
 onMounted(() => {
   document.body.addEventListener("click", (e) => {
-    if (!selectRef.value.contains(e.target) && !optionsRef.value.contains(e.target)) {
+    if (!selectRef.value?.contains(e.target) && !optionsRef.value?.contains(e.target)) {
       active.value = false;
     }
   });
 });
 
 function toggleOptions(evt) {
-  if (optionsRef.value.contains(evt.target)) {
+  if (optionsRef.value?.contains(evt.target)) {
     return void 0;
   }
 

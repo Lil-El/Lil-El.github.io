@@ -21,6 +21,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["saveAndRun", "run"]);
+
 let data = props.data;
 
 if (localStorage.getItem(props.data.id)) {
@@ -35,9 +37,9 @@ if (localStorage.getItem(props.data.id)) {
 
 const { id, language, code } = data;
 
-const emit = defineEmits(["change"]);
-
 let editor = null;
+
+const focusTime = ref(0);
 
 const editorRef = ref(null);
 
@@ -82,32 +84,28 @@ onMounted(() => {
   });
 
   editor.onDidFocusEditorWidget(() => {
-    console.log("focus editor widget", id);
+    focusTime.value = Date.now();
   });
 
-  // 自定义指令（多个指令会被覆盖）
+  // 保存且运行：快捷键（会覆盖所有 editor）
   editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
-    // TODO: 保存的不对，可能是因为（多个指令会被覆盖）
-    save(id, language, editor.getValue());
+    emit("saveAndRun");
+  });
 
-    emit("change", id, language, editor.getValue());
+  // 运行：快捷键（会覆盖所有 editor）
+  editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyR, () => {
+    emit("run");
   });
 });
-
-function save(id, language, code) {
-  localStorage.setItem(id, JSON.stringify({
-    id,
-    language,
-    code,
-  }));
-}
 
 onUnmounted(() => {
   editor.dispose();
 });
 
 defineExpose({
-  language: language,
+  focusTime,
+  id,
+  language: language.toLowerCase(),
   getCode: () => {
     return editor.getValue();
   }

@@ -9,12 +9,15 @@
     "preview": "vite preview"
   },
   "dependencies": {},
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "peerDependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "@vitejs/plugin-vue": "^5.2.2",
+    "element-plus": "^2.9.9",
+    "lodash": "^4.17.21",
+    "unplugin-auto-import": "^19.1.2",
     "vue": "^3.5.13",
-    "vite": "^6.3.1",
-    "@vitejs/plugin-vue": "^5.2.2"
+    "vite": "^6.3.1"
   },
   "author": "Mino",
   "homepage": "https://lil-el.github.io",

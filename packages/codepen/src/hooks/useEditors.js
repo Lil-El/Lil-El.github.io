@@ -15,15 +15,8 @@ function generateHTML(htmlStr, cssStr, jsStr) {
   `;
 }
 
-function _save(id, language, code) {
-  localStorage.setItem(
-    id,
-    JSON.stringify({
-      id,
-      language,
-      code,
-    })
-  );
+function _save(id, data) {
+  localStorage.setItem(id, JSON.stringify(data));
 }
 
 export default function useEditors(previewID) {
@@ -39,7 +32,7 @@ export default function useEditors(previewID) {
     const focusTime = Math.max(...editors.map((editor) => editor.focusTime));
     const focusEditor = editors.find((editor) => editor.focusTime === focusTime);
 
-    _save(focusEditor.id, focusEditor.language, focusEditor.getCode());
+    _save(focusEditor.getData().id, focusEditor.getData());
 
     editors.forEach((e) => e.updateCache());
   }
@@ -48,9 +41,9 @@ export default function useEditors(previewID) {
     const editors = editorRef.value;
     if (!editors) return void 0;
 
-    const htmlEditor = editors.find((e) => e.language === "html");
-    const cssEditor = editors.find((e) => e.language === "css");
-    const jsEditor = editors.find((e) => e.language === "javascript");
+    const htmlEditor = editors.find((e) => e.getData().language === "html");
+    const cssEditor = editors.find((e) => e.getData().language === "css");
+    const jsEditor = editors.find((e) => e.getData().language === "javascript");
 
     const htmlCode = htmlEditor ? htmlEditor.getCode() : "";
     const cssCode = cssEditor ? cssEditor.getCode() : "";

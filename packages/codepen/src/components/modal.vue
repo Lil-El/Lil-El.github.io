@@ -6,7 +6,15 @@
           <img src="/src/assets/setting.svg" width="26" /> <span>{{ title }}</span>
         </div>
         <div class="header-right">
-          <img src="/src/assets/close.svg" width="16" height="16" @click.self="emit('update:show', false)" />
+          <img
+            src="/src/assets/close.svg"
+            width="16"
+            height="16"
+            @click.self="
+              emit('update:show', false);
+              emit('close');
+            "
+          />
         </div>
       </div>
       <div class="modal-body">
@@ -22,7 +30,7 @@ defineProps({
   show: Boolean,
 });
 
-const emit = defineEmits(["update:show"]);
+const emit = defineEmits(["update:show", "close"]);
 </script>
 
 <style scoped>

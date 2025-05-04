@@ -18,7 +18,8 @@ export default function useTheme() {
 
   const setTheme = (v) => {
     const theme = themes.find((c) => c.value === v);
-    document.documentElement.style.setProperty("--color", theme.color);
+    document.documentElement.style.setProperty("--theme-color", theme.color);
+    document.documentElement.style.setProperty("--el-color-primary", theme.color);
 
     localStorage.setItem("theme", v);
   };

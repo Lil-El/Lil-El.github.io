@@ -141,6 +141,7 @@ function setPosition() {
     }
 
     &.active {
+      color: var(--theme-color);
       background-color: #1e1f1c;
     }
   }

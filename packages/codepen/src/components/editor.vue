@@ -1,20 +1,13 @@
 <template>
   <div class="editor">
     <div class="editor-header">
-      <div class="header-left" :title="language">
-        <img :src="`/src/assets/${language.toLowerCase()}.svg`" width="16" draggable="false" />
-        <span>{{ language }}</span>
+      <div class="header-left" :title="name">
+        <img :src="`/src/assets/${icon}.svg`" width="16" draggable="false" />
+        <span>{{ name }}</span>
       </div>
       <div class="header-right">
-        <img
-          v-show="cache"
-          src="/src/assets/refresh.svg"
-          width="15"
-          draggable="false"
-          title="重置"
-          @click="resetAndRun"
-        />
-        <img src="/src/assets/setting.svg" width="16" draggable="false" @click="showModal = true" />
+        <img v-show="cache" src="/src/assets/refresh.svg" width="15" draggable="false" title="重置" @click="reset" />
+        <img v-show="setting" src="/src/assets/setting.svg" width="16" draggable="false" @click="handleOpen" />
       </div>
     </div>
     <div class="editor-body">
@@ -22,23 +15,32 @@
     </div>
   </div>
 
-  <m-modal title="设置" v-model:show="showModal">123123</m-modal>
+  <m-modal v-if="setting" title="设置" v-model:show="showModal" @close="handleClose">
+    <component :is="SettingComponents[setting.component]" v-model:data="tempSetting"></component>
+  </m-modal>
 </template>
 
 <script setup>
+import { isEqual, clone } from "lodash";
 import * as monaco from "monaco-editor";
 import MModal from "./modal.vue";
+import SettingCss from "./setting/setting-css.vue";
+import SettingJavascript from "./setting/setting-javascript.vue";
+import SettingVue from "./setting/setting-vue.vue";
+
+const SettingComponents = {
+  css: SettingCss,
+  javascript: SettingJavascript,
+  vue: SettingVue,
+};
 
 const props = defineProps({
-  data: {
-    type: Object,
-    default: () => ({}),
-  },
+  data: Object,
 });
 
 const emit = defineEmits(["saveAndRun", "run"]);
 
-let data = props.data;
+let data = null;
 
 const cache = ref(!!localStorage.getItem(props.data.id));
 
@@ -47,12 +49,24 @@ if (localStorage.getItem(props.data.id)) {
 } else {
   data = {
     id: props.data.id,
+    name: props.data.name,
+    icon: props.data.icon,
     language: props.data.language,
     code: props.data.code,
   };
+  if (props.data.setting) {
+    data.setting = clone(props.data.setting);
+  }
 }
 
-const { id, language, code } = data;
+const id = ref(data.id);
+const name = ref(data.name);
+const icon = ref(data.icon);
+const language = ref(data.language);
+const code = ref(data.code);
+const setting = ref(data.setting);
+
+const tempSetting = ref(null);
 
 let editor = null;
 
@@ -93,18 +107,18 @@ onMounted(() => {
 
   // 创建编辑器实例
   editor = monaco.editor.create(editorRef.value, {
-    language: language.toLowerCase(),
+    language: language.value,
     theme: "vs-dark",
     automaticLayout: true,
     readOnly: false,
     minimap: {
       enabled: true,
     },
-    value: code,
+    value: code.value,
   });
 
   // 自动格式化代码
-  editor.getAction('editor.action.formatDocument').run();
+  editor.getAction("editor.action.formatDocument").run();
 
   // focus 事件
   editor.onDidFocusEditorWidget(() => {
@@ -113,7 +127,7 @@ onMounted(() => {
 
   // blur 事件
   editor.onDidBlurEditorWidget(() => {
-    cache.value = !!localStorage.getItem(props.data.id);
+    cache.value = !!localStorage.getItem(id.value);
   });
 
   // 保存且运行：快捷键（会覆盖所有 editor）
@@ -127,17 +141,28 @@ onMounted(() => {
   });
 });
 
+function handleOpen() {
+  focusTime.value = Date.now();
+  showModal.value = true;
+  tempSetting.value = setting.value.value;
+}
+
+function handleClose() {
+  if (isEqual(tempSetting.value, setting.value.value)) {
+    return void 0;
+  } else {
+    setting.value.value = tempSetting.value;
+    emit("saveAndRun");
+  }
+}
+
 function reset() {
   if (!cache.value) return void 0;
 
-  localStorage.removeItem(id);
+  localStorage.removeItem(id.value);
   cache.value = false;
   editor.setValue(props.data.code);
-}
-
-function resetAndRun() {
-  reset();
-  emit("run");
+  if (props.data.setting) setting.value = clone(props.data.setting);
 }
 
 onUnmounted(() => {
@@ -146,14 +171,22 @@ onUnmounted(() => {
 
 defineExpose({
   focusTime,
-  id,
-  language: language.toLowerCase(),
+  getData: () => {
+    return {
+      id: id.value,
+      name: name.value,
+      icon: icon.value,
+      language: language.value,
+      code: editor.getValue(),
+      setting: setting.value,
+    };
+  },
   getCode: () => {
     return editor.getValue();
   },
   reset,
   updateCache: () => {
-    cache.value = !!localStorage.getItem(id);
+    cache.value = !!localStorage.getItem(id.value);
   },
 });
 </script>
@@ -162,7 +195,7 @@ defineExpose({
 .editor {
   width: 100%;
   height: 100%;
-  background-color: #272822;
+  background-color: #555555;
   box-sizing: border-box;
   color: white;
   font-size: 14px;

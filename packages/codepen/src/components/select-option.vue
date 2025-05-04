@@ -1,5 +1,5 @@
 <template>
-  <div class="select-option" :class="{ active: value && getCurrent() === value }" @click="update(value)">
+  <div class="select-option" :class="{ active: value !== undefined && getCurrent() === value }" @click="update(value)">
     <slot></slot>
   </div>
 </template>
@@ -21,9 +21,5 @@ const update = inject("onUpdate");
   align-items: center;
   cursor: pointer;
   color: #ffffff;
-
-  &.active {
-    color: var(--color);
-  }
 }
 </style>

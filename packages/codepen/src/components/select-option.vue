@@ -6,7 +6,10 @@
 
 <script setup>
 const props = defineProps({
-  value: [String, Number, Boolean],
+  value: {
+    type: [String, Number, Boolean],
+    default: undefined,
+  },
 });
 
 const getCurrent = inject("getCurrent");

@@ -1,6 +1,6 @@
 <template>
   <div class="select" ref="selectRef" @click="toggleOptions">
-    <img :src="`../assets/${icon}.svg`" alt="" />
+    <img :src="getSVG(icon)" alt="" />
 
     <div
       v-show="active"
@@ -15,6 +15,8 @@
 </template>
 
 <script setup>
+import { getSVG } from "@/utils";
+
 const props = defineProps({
   type: String, // cell | list
   icon: String,

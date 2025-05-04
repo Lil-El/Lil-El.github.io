@@ -123,11 +123,11 @@
             run();
           "
         >
-          <img src="../assets/refresh.svg" width="18" draggable="false" />
+          <img :src="getSVG('refresh')" width="18" draggable="false" />
           <span>重置</span>
         </div>
         <div class="code-button" @click="run(true)">
-          <img src="../assets/run.svg" draggable="false" />
+          <img :src="getSVG('run')" draggable="false" />
           <span>运行</span>
         </div>
       </div>
@@ -137,18 +137,18 @@
         <div class="sidebar-top">
           <m-select type="list" icon="copy" popup="right" title="空白模板" v-model="code">
             <m-select-option v-for="t in getAllTemplates()" :key="t.title" :value="t.title">
-              <img :src="`../assets/${t.icon}.svg`" width="16" />&nbsp;{{ t.title }}
+              <img :src="getSVG(t.icon)" width="16" />&nbsp;{{ t.title }}
             </m-select-option>
           </m-select>
           <m-select type="list" icon="folder" popup="right" title="Demo" v-model="code">
             <m-select-option v-for="d in getAllDemos()" :key="d.title" :value="d.title">
-              <img :src="`../assets/${d.icon}.svg`" width="16" />&nbsp;{{ d.title }}
+              <img :src="getSVG(d.icon)" width="16" />&nbsp;{{ d.title }}
             </m-select-option>
           </m-select>
         </div>
         <div class="sidebar-btm">
           <m-select type="list" icon="info" popup="right" title="说明">
-            <m-select-option><img src="../assets/refresh.svg" width="16" />&nbsp;重置并运行</m-select-option>
+            <m-select-option><img :src="getSVG('refresh')" width="16" />&nbsp;重置并运行</m-select-option>
             <m-select-option>Shift + Alt + F: 格式化</m-select-option>
             <m-select-option>Ctrl + S: 保存并运行</m-select-option>
             <m-select-option>Ctrl + R: 运行</m-select-option>
@@ -190,6 +190,8 @@ import "splitpanes/dist/splitpanes.css";
 import editor from "./editor.vue";
 import MSelect from "./select.vue";
 import MSelectOption from "./select-option.vue";
+
+import { getSVG } from "@/utils";
 
 import useTheme from "@/hooks/useTheme";
 import useCode from "@/hooks/useCode";

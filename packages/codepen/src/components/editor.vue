@@ -2,12 +2,12 @@
   <div class="editor">
     <div class="editor-header">
       <div class="header-left" :title="name">
-        <img :src="`../assets/${icon}.svg`" width="16" draggable="false" />
+        <img :src="getSVG(icon)" width="16" draggable="false" />
         <span>{{ name }}</span>
       </div>
       <div class="header-right">
-        <img v-show="cache" src="../assets/refresh.svg" width="15" draggable="false" title="重置" @click="reset" />
-        <img v-show="setting" src="../assets/setting.svg" width="16" draggable="false" @click="handleOpen" />
+        <img v-show="cache" :src="getSVG('refresh')" width="15" draggable="false" title="重置" @click="reset" />
+        <img v-show="setting" :src="getSVG('setting')" width="16" draggable="false" @click="handleOpen" />
       </div>
     </div>
     <div class="editor-body">
@@ -21,6 +21,8 @@
 </template>
 
 <script setup>
+import { getSVG } from "@/utils";
+
 import { isEqual, clone } from "lodash";
 import * as monaco from "monaco-editor";
 import MModal from "./modal.vue";

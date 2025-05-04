@@ -3,11 +3,11 @@
     <div class="modal-container">
       <div class="modal-header">
         <div class="header-left">
-          <img src="../assets/setting.svg" width="26" /> <span>{{ title }}</span>
+          <img :src="getSVG('setting')" width="26" /> <span>{{ title }}</span>
         </div>
         <div class="header-right">
           <img
-            src="../assets/close.svg"
+            :src="getSVG('close')"
             width="16"
             height="16"
             @click.self="
@@ -25,6 +25,8 @@
 </template>
 
 <script setup>
+import { getSVG } from "@/utils";
+
 defineProps({
   title: String,
   show: Boolean,

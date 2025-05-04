@@ -1,5 +1,3 @@
-import { onMounted, ref } from "vue";
-
 const themes = [
   { value: 1, color: "#2196F3" },
   { value: 2, color: "#3CA978" },

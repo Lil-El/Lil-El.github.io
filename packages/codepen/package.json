@@ -15,6 +15,7 @@
   },
   "peerDependencies": {
     "@vitejs/plugin-vue": "^5.2.2",
+    "unplugin-auto-import": "^19.1.2",
     "vite": "^6.3.1",
     "vue": "^3.5.13"
   },

@@ -12,7 +12,7 @@
           width="15"
           draggable="false"
           title="重置"
-          @click="clearAndRun"
+          @click="resetAndRun"
         />
         <img src="/src/assets/setting.svg" width="16" draggable="false" @click="showModal = true" />
       </div>
@@ -26,7 +26,6 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from "vue";
 import * as monaco from "monaco-editor";
 import MModal from "./modal.vue";
 
@@ -92,6 +91,7 @@ onMounted(() => {
   // });
   // #endregion
 
+  // 创建编辑器实例
   editor = monaco.editor.create(editorRef.value, {
     language: language.toLowerCase(),
     theme: "vs-dark",
@@ -103,10 +103,15 @@ onMounted(() => {
     value: code,
   });
 
+  // 自动格式化代码
+  editor.getAction('editor.action.formatDocument').run();
+
+  // focus 事件
   editor.onDidFocusEditorWidget(() => {
     focusTime.value = Date.now();
   });
 
+  // blur 事件
   editor.onDidBlurEditorWidget(() => {
     cache.value = !!localStorage.getItem(props.data.id);
   });
@@ -122,7 +127,7 @@ onMounted(() => {
   });
 });
 
-function clear() {
+function reset() {
   if (!cache.value) return void 0;
 
   localStorage.removeItem(id);
@@ -130,8 +135,8 @@ function clear() {
   editor.setValue(props.data.code);
 }
 
-function clearAndRun() {
-  clear();
+function resetAndRun() {
+  reset();
   emit("run");
 }
 
@@ -146,7 +151,10 @@ defineExpose({
   getCode: () => {
     return editor.getValue();
   },
-  clear,
+  reset,
+  updateCache: () => {
+    cache.value = !!localStorage.getItem(id);
+  },
 });
 </script>
 

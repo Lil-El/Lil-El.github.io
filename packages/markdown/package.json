@@ -7,9 +7,10 @@
     "build": "vite build"
   },
   "peerDependencies": {
+    "@vitejs/plugin-vue": "^5.2.2",
+    "unplugin-auto-import": "^19.1.2",
     "vue": "^3.5.13",
-    "vite": "^6.3.1",
-    "@vitejs/plugin-vue": "^5.2.2"
+    "vite": "^6.3.1"
   },
   "author": "Mino",
   "homepage": "https://lil-el.github.io",

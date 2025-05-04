@@ -116,11 +116,17 @@
             </svg>
           </m-select-option>
         </m-select>
-        <div class="code-button" @click="clear">
+        <div
+          class="code-button"
+          @click="
+            reset();
+            run();
+          "
+        >
           <img src="/src/assets/refresh.svg" width="18" draggable="false" />
           <span>重置</span>
         </div>
-        <div class="code-button" @click="run">
+        <div class="code-button" @click="run(true)">
           <img src="/src/assets/run.svg" draggable="false" />
           <span>运行</span>
         </div>
@@ -128,21 +134,41 @@
     </header>
     <main class="code-pen-body">
       <div class="code-pen-sidebar">
-        <div class="sidebar-top"></div>
+        <div class="sidebar-top">
+          <m-select type="list" icon="copy" popup="right" title="空白模板" v-model="code">
+            <m-select-option v-for="t in getAllTemplates()" :key="t.name" :value="t.name">
+              <img :src="`/src/assets/${t.icon}.svg`" width="16" />&nbsp;{{ t.name }}
+            </m-select-option>
+          </m-select>
+          <m-select type="list" icon="folder" popup="right" title="Demo" v-model="code">
+            <m-select-option v-for="d in getAllDemos()" :key="d.name" :value="d.name">
+              <img :src="`/src/assets/${d.icon}.svg`" width="16" />&nbsp;{{ d.name }}
+            </m-select-option>
+          </m-select>
+        </div>
         <div class="sidebar-btm">
-          <m-select type="list" icon="info" popup="right">
-            <m-select-option><img src="/src/assets/refresh.svg" width="16">&nbsp;重置并运行</m-select-option>
+          <m-select type="list" icon="info" popup="right" title="说明">
+            <m-select-option><img src="/src/assets/refresh.svg" width="16" />&nbsp;重置并运行</m-select-option>
+            <m-select-option>Shift + Alt + F: 格式化</m-select-option>
             <m-select-option>Ctrl + S: 保存并运行</m-select-option>
             <m-select-option>Ctrl + R: 运行</m-select-option>
           </m-select>
         </div>
       </div>
       <div class="code-pen-main">
-        <splitpanes class="default-theme" :horizontal="layout" :vertical="!layout">
+        <splitpanes :key="layout" class="default-theme" :horizontal="layout" :vertical="!layout">
           <pane min-size="3">
-            <splitpanes class="default-theme" :horizontal="!layout" :vertical="layout">
-              <pane v-for="(e, i) in editors" :key="e.id" min-size="3">
-                <editor ref="editorRef" :data="e" @saveAndRun="saveAndRun" @run="run" />
+            <splitpanes :key="configs[0]?.id" class="default-theme" :horizontal="!layout" :vertical="layout">
+              <pane v-for="e in configs" :key="e.id" min-size="3">
+                <editor
+                  ref="editorRef"
+                  :data="e"
+                  @saveAndRun="
+                    save();
+                    run();
+                  "
+                  @run="run(true)"
+                />
               </pane>
             </splitpanes>
           </pane>
@@ -158,98 +184,43 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import editor from "./editor.vue";
 import { Splitpanes, Pane } from "splitpanes";
 import "splitpanes/dist/splitpanes.css";
 
+import editor from "./editor.vue";
 import MSelect from "./select.vue";
 import MSelectOption from "./select-option.vue";
+
 import useTheme from "@/hooks/useTheme";
+import useCode from "@/hooks/useCode";
+import useEditors from "@/hooks/useEditors";
+import useTitle from "@/hooks/useTitle";
 
 const props = defineProps({
   title: String,
   author: String,
   date: String,
   editors: Array,
+  pure: Boolean,
 });
 
-const editorRef = ref(null);
+const configs = toRef(props.editors || []);
 
 const layout = ref(true);
 
+const { title, author, date, setData } = useTitle(props);
+
 const { theme, setTheme, getAllThemes } = useTheme();
 
-onMounted(() => {
-  document.title = `${props.title} - codepen`;
+const { code, getAllDemos, getAllTemplates } = useCode(onChange);
 
-  run();
-});
+const { editorRef, reset, save, run } = useEditors("preview");
 
-function saveAndRun() {
-  const editors = editorRef.value;
+function onChange(data) {
+  const { editors } = data;
 
-  const focusTime = Math.max(...editors.map((editor) => editor.focusTime));
-  const focusEditor = editors.find((editor) => editor.focusTime === focusTime);
-
-  save(focusEditor.id, focusEditor.language, focusEditor.getCode());
-
-  run();
-}
-
-function run() {
-  const editors = editorRef.value;
-
-  const htmlEditor = editors.find((e) => e.language === "html");
-  const cssEditor = editors.find((e) => e.language === "css");
-  const jsEditor = editors.find((e) => e.language === "javascript");
-
-  const htmlCode = htmlEditor ? htmlEditor.getCode() : "";
-  const cssCode = cssEditor ? cssEditor.getCode() : "";
-  const jsCode = jsEditor ? jsEditor.getCode() : "";
-
-  const fullHTML = generateHTML(htmlCode, cssCode, jsCode);
-
-  const previewFrame = document.getElementById("preview");
-  previewFrame.srcdoc = fullHTML;
-}
-
-function generateHTML(htmlStr, cssStr, jsStr) {
-  return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <title>Code Preview</title>
-      <style>${cssStr}</style>
-    </head>
-    <body>
-      ${htmlStr}
-      <script>${jsStr}<\/script>
-    </body>
-    </html>
-  `;
-}
-
-function save(id, language, code) {
-  localStorage.setItem(
-    id,
-    JSON.stringify({
-      id,
-      language,
-      code,
-    })
-  );
-}
-
-function clear() {
-  const editors = editorRef.value;
-
-  editors.forEach((editor) => {
-    editor.clear();
-  });
-
-  run();
+  setData({ ...data, title: data.name });
+  configs.value = editors;
 }
 </script>
 
@@ -332,7 +303,7 @@ function clear() {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 8px 0;
+      padding: 20px 0;
 
       .sidebar-top,
       .sidebar-btm {
@@ -341,6 +312,7 @@ function clear() {
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 20px;
         cursor: pointer;
         justify-content: start;
       }
@@ -363,6 +335,7 @@ function clear() {
         border: 1px solid #666666;
         border-radius: 4px;
         background-color: #ffffff;
+        position: relative;
       }
     }
   }

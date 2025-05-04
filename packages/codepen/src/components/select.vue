@@ -15,8 +15,6 @@
 </template>
 
 <script setup>
-import { watch, ref, nextTick, onMounted, provide } from "vue";
-
 const props = defineProps({
   type: String, // cell | list
   icon: String,
@@ -134,13 +132,16 @@ function setPosition() {
   }
 
   .select__options.list :deep(.select-option) {
-    background-color: rgba(60, 60, 60, 0.6);
     border-radius: 4px;
     padding: 2px 4px;
     justify-content: start;
 
     &:hover {
       background-color: rgb(60, 60, 60);
+    }
+
+    &.active {
+      background-color: #1e1f1c;
     }
   }
 }

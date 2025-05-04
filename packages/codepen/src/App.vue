@@ -1,11 +1,10 @@
 <template>
   <div class="container">
-    <code-pen title="Demo 代码演示" author="Mino" date="2025-05-03" :editors="editors" />
+    <code-pen />
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
 import CodePen from "./components/code-pen.vue";
 
 const editors = reactive([

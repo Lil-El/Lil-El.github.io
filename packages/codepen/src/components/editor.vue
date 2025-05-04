@@ -2,12 +2,12 @@
   <div class="editor">
     <div class="editor-header">
       <div class="header-left" :title="name">
-        <img :src="`/src/assets/${icon}.svg`" width="16" draggable="false" />
+        <img :src="`../assets/${icon}.svg`" width="16" draggable="false" />
         <span>{{ name }}</span>
       </div>
       <div class="header-right">
-        <img v-show="cache" src="/src/assets/refresh.svg" width="15" draggable="false" title="重置" @click="reset" />
-        <img v-show="setting" src="/src/assets/setting.svg" width="16" draggable="false" @click="handleOpen" />
+        <img v-show="cache" src="../assets/refresh.svg" width="15" draggable="false" title="重置" @click="reset" />
+        <img v-show="setting" src="../assets/setting.svg" width="16" draggable="false" @click="handleOpen" />
       </div>
     </div>
     <div class="editor-body">

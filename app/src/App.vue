@@ -11,6 +11,7 @@
 </template>
 
 <script setup>
+// TODO: 博客页面展示 lil-el 目录结构，对应的package对应一个route，该页面展示对应的package的组件
 import HelloWorld from "./components/HelloWorld.vue";
 </script>
 

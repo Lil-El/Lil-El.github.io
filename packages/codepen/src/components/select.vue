@@ -1,6 +1,6 @@
 <template>
   <div class="select" ref="selectRef" @click="toggleOptions">
-    <img :src="`/src/assets/${icon}.svg`" alt="" />
+    <img :src="`../assets/${icon}.svg`" alt="" />
 
     <div
       v-show="active"

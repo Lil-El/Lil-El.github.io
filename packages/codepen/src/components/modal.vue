@@ -3,11 +3,11 @@
     <div class="modal-container">
       <div class="modal-header">
         <div class="header-left">
-          <img src="/src/assets/setting.svg" width="26" /> <span>{{ title }}</span>
+          <img src="../assets/setting.svg" width="26" /> <span>{{ title }}</span>
         </div>
         <div class="header-right">
           <img
-            src="/src/assets/close.svg"
+            src="../assets/close.svg"
             width="16"
             height="16"
             @click.self="

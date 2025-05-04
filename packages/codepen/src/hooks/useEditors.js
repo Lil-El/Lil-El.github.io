@@ -1,3 +1,8 @@
+// TODO: 根据设置生成对应的代码html str；
+// TODO: pure 模式；
+// TODO: md/json 解析展示；
+// TODO: 上面：组件，下面：代码； 组件；
+
 function generateHTML(htmlStr, cssStr, jsStr) {
   return `
     <!DOCTYPE html>

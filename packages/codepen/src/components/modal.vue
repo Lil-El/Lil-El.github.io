@@ -1,27 +1,29 @@
 <template>
-  <div class="modal-mask" v-if="show">
-    <div class="modal-container">
-      <div class="modal-header">
-        <div class="header-left">
-          <img :src="getSVG('setting')" width="26" /> <span>{{ title }}</span>
+  <Teleport to="body">
+    <div class="modal-mask" v-if="show">
+      <div class="modal-container">
+        <div class="modal-header">
+          <div class="header-left">
+            <img :src="getSVG('setting')" width="26" /> <span>{{ title }}</span>
+          </div>
+          <div class="header-right">
+            <img
+              :src="getSVG('close')"
+              width="16"
+              height="16"
+              @click.self="
+                emit('update:show', false);
+                emit('close');
+              "
+            />
+          </div>
         </div>
-        <div class="header-right">
-          <img
-            :src="getSVG('close')"
-            width="16"
-            height="16"
-            @click.self="
-              emit('update:show', false);
-              emit('close');
-            "
-          />
+        <div class="modal-body">
+          <slot />
         </div>
-      </div>
-      <div class="modal-body">
-        <slot />
       </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <script setup>

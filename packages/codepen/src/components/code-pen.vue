@@ -148,7 +148,7 @@
         </div>
         <div class="sidebar-btm">
           <m-select type="list" icon="info" popup="right" title="说明">
-            <m-select-option><img :src="getSVG('refresh')" width="16" />&nbsp;重置并运行</m-select-option>
+            <m-select-option><img :src="getSVG('refresh')" width="16" />&nbsp;重置</m-select-option>
             <m-select-option>Shift + Alt + F: 格式化</m-select-option>
             <m-select-option>Ctrl + S: 保存并运行</m-select-option>
             <m-select-option>Ctrl + R: 运行</m-select-option>

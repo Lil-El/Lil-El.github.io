@@ -1,11 +1,10 @@
-// TODO: pure 模式；
 // TODO: jquery 代码演示；
 // TODO: md/json 解析展示；
 // TODO: 上面：组件，下面：代码； 组件；
+// TODO: vue3 和 饿了么UI使用
 // https://code.juejin.cn/pen/7500890847232294950
 import * as sfc from "vue/compiler-sfc";
 const { parse } = sfc;
-console.log(sfc);
 
 function generateHTML(htmlStr = "", cssStr = "", jsStr = "", config = {}) {
   const cssLinks = config.css?.links?.filter((i) => i.length) || [];

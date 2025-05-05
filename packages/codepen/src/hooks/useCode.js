@@ -370,8 +370,8 @@ window.addEventListener("resize", resize);`,
   },
 ];
 
-export default function useCode(callback) {
-  const code = ref(templates[0].title);
+export default function useCode(init, callback = () => {}) {
+  const code = ref(init ? templates[0].title : null);
 
   watch(
     code,

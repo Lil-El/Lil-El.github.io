@@ -5,22 +5,31 @@
 </template>
 
 <script setup>
-import CodePen from "./components/code-pen.vue";
+import CodePen from "@/components/code/code-pen.vue";
 
 const editors = reactive([
   {
     id: 1,
-    language: "HTML",
+    name: "HTML",
+    icon: "html",
+    suffix: "html",
+    language: "html",
     code: "<div id='hello'>Hello world!</div>",
   },
   {
     id: 2,
-    language: "CSS",
+    name: "CSS",
+    icon: "css",
+    suffix: "css",
+    language: "css",
     code: "#hello { color: red; }",
   },
   {
     id: 3,
-    language: "JavaScript",
+    name: "JS",
+    icon: "javascript",
+    suffix: "javascript",
+    language: "javascript",
     code: `
       function hello() {
         alert('Hello world!');

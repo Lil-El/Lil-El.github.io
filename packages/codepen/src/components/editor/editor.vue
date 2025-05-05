@@ -1,9 +1,11 @@
 <template>
-  <div class="editor">
+  <div class="editor" v-bind="attrs">
     <div class="editor-header">
       <div class="header-left" :title="state.name">
-        <img :src="getSVG(state.icon)" width="16" draggable="false" />
-        <span>{{ state.name }}</span>
+        <slot name="header" v-bind="state">
+          <img :src="getSVG(state.icon)" width="16" draggable="false" />
+          <span>{{ state.name }}</span>
+        </slot>
       </div>
       <div class="header-right">
         <img v-show="cache" :src="getSVG('refresh')" width="15" draggable="false" title="重置" @click="reset" />
@@ -25,10 +27,12 @@ import { getSVG } from "@/utils";
 
 import { isEqual, cloneDeep } from "lodash";
 import * as monaco from "monaco-editor";
-import MModal from "./modal.vue";
-import SettingCss from "./setting/setting-css.vue";
-import SettingJavascript from "./setting/setting-javascript.vue";
-import SettingVue from "./setting/setting-vue.vue";
+import MModal from "../modal/modal.vue";
+import SettingCss from "../setting/setting-css.vue";
+import SettingJavascript from "../setting/setting-javascript.vue";
+import SettingVue from "../setting/setting-vue.vue";
+
+const attrs = useAttrs();
 
 const SettingComponents = {
   css: SettingCss,
@@ -101,7 +105,9 @@ onMounted(() => {
   editor = monaco.editor.create(editorRef.value, {
     language: state.language,
     theme: "vs-dark",
-    automaticLayout: true,
+    automaticLayout: true, // 自动布局
+    wordWrap: "on", // 自动换行
+    scrollBeyondLastLine: false, // 滚动超过最后一行时，是否继续滚动
     readOnly: false,
     minimap: {
       enabled: true,
@@ -171,7 +177,7 @@ defineExpose({
   },
   reset,
   updateCache: () => {
-    cache.value = !!localStorage.getItem(id.value);
+    cache.value = !!localStorage.getItem(state.id);
   },
 });
 </script>

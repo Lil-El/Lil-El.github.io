@@ -57,9 +57,10 @@ onMounted(() => {
 });
 
 function toggleOptions(evt) {
-  if (optionsRef.value?.contains(evt.target)) {
-    return void 0;
-  }
+  // 点击不关闭弹出
+  // if (optionsRef.value?.contains(evt.target)) {
+  //   return void 0;
+  // }
 
   active.value = !active.value;
 }

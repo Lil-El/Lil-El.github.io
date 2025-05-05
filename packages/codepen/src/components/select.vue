@@ -65,6 +65,8 @@ function toggleOptions(evt) {
 }
 
 function setPosition() {
+  if (!active.value) return void 0;
+
   nextTick(() => {
     const width = document.body.clientWidth;
     const height = document.body.clientHeight;
@@ -97,6 +99,10 @@ function setPosition() {
     }
   });
 }
+
+onUnmounted(() => {
+  window.removeEventListener("resize", setPosition);
+});
 </script>
 
 <style scoped>

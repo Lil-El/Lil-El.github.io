@@ -2,7 +2,7 @@
   <div class="setting">
     <div class="setting-item">
       <p class="setting-label">Vue 3</p>
-      <el-switch v-model="vue3" />
+      <el-switch v-model="vue3" disabled />
     </div>
     <div class="setting-item">
       <p class="setting-label">element-ui</p>
@@ -18,14 +18,13 @@ const props = defineProps({
 
 const emit = defineEmits(["update:data"]);
 
-const ui = ref(props.data.ui);
+const vue3 = ref(true);
 
-const vue3 = ref(props.data.vue3);
+const ui = ref(props.data.ui);
 
 watchEffect(() => {
   emit("update:data", {
     ui: ui.value,
-    vue3: vue3.value,
   });
 });
 </script>

@@ -1,13 +1,13 @@
 <template>
   <div class="editor">
     <div class="editor-header">
-      <div class="header-left" :title="name">
-        <img :src="getSVG(icon)" width="16" draggable="false" />
-        <span>{{ name }}</span>
+      <div class="header-left" :title="state.name">
+        <img :src="getSVG(state.icon)" width="16" draggable="false" />
+        <span>{{ state.name }}</span>
       </div>
       <div class="header-right">
         <img v-show="cache" :src="getSVG('refresh')" width="15" draggable="false" title="重置" @click="reset" />
-        <img v-show="setting" :src="getSVG('setting')" width="16" draggable="false" @click="handleOpen" />
+        <img v-show="state.setting" :src="getSVG('setting')" width="16" draggable="false" @click="handleOpen" />
       </div>
     </div>
     <div class="editor-body">
@@ -15,15 +15,15 @@
     </div>
   </div>
 
-  <m-modal v-if="setting" title="设置" v-model:show="showModal" @close="handleClose">
-    <component :is="SettingComponents[setting.component]" v-model:data="tempSetting"></component>
+  <m-modal v-if="state.setting" title="设置" v-model:show="showModal" @close="handleClose">
+    <component :is="SettingComponents[state.setting.component]" v-model:data="tempSetting"></component>
   </m-modal>
 </template>
 
 <script setup>
 import { getSVG } from "@/utils";
 
-import { isEqual, clone } from "lodash";
+import { isEqual, cloneDeep } from "lodash";
 import * as monaco from "monaco-editor";
 import MModal from "./modal.vue";
 import SettingCss from "./setting/setting-css.vue";
@@ -44,35 +44,25 @@ const emit = defineEmits(["saveAndRun", "run"]);
 
 let data = null;
 
-const cache = ref(!!localStorage.getItem(props.data.id));
+const cache = ref(false);
 
 if (localStorage.getItem(props.data.id)) {
+  cache.value = true;
   data = JSON.parse(localStorage.getItem(props.data.id));
 } else {
-  data = {
-    id: props.data.id,
-    name: props.data.name,
-    icon: props.data.icon,
-    language: props.data.language,
-    code: props.data.code,
-  };
-  if (props.data.setting) {
-    data.setting = clone(props.data.setting);
-  }
+  data = cloneDeep(props.data);
 }
 
-const id = ref(data.id);
-const name = ref(data.name);
-const icon = ref(data.icon);
-const language = ref(data.language);
-const code = ref(data.code);
-const setting = ref(data.setting);
+// id, name, icon, suffix, language, code, setting
+const state = reactive({
+  ...data,
+});
 
 const tempSetting = ref(null);
 
 let editor = null;
 
-const focusTime = ref(0);
+const updateTime = ref(0);
 
 const editorRef = ref(null);
 
@@ -109,14 +99,14 @@ onMounted(() => {
 
   // 创建编辑器实例
   editor = monaco.editor.create(editorRef.value, {
-    language: language.value,
+    language: state.language,
     theme: "vs-dark",
     automaticLayout: true,
     readOnly: false,
     minimap: {
       enabled: true,
     },
-    value: code.value,
+    value: state.code,
   });
 
   // 自动格式化代码
@@ -124,12 +114,12 @@ onMounted(() => {
 
   // focus 事件
   editor.onDidFocusEditorWidget(() => {
-    focusTime.value = Date.now();
+    updateTime.value = Date.now();
   });
 
   // blur 事件
   editor.onDidBlurEditorWidget(() => {
-    cache.value = !!localStorage.getItem(id.value);
+    cache.value = !!localStorage.getItem(state.id);
   });
 
   // 保存且运行：快捷键（会覆盖所有 editor）
@@ -144,16 +134,16 @@ onMounted(() => {
 });
 
 function handleOpen() {
-  focusTime.value = Date.now();
   showModal.value = true;
-  tempSetting.value = setting.value.value;
+  updateTime.value = Date.now();
+  tempSetting.value = cloneDeep(state.setting.value);
 }
 
 function handleClose() {
-  if (isEqual(tempSetting.value, setting.value.value)) {
+  if (isEqual(tempSetting.value, state.setting.value)) {
     return void 0;
   } else {
-    setting.value.value = tempSetting.value;
+    state.setting.value = cloneDeep(tempSetting.value);
     emit("saveAndRun");
   }
 }
@@ -161,10 +151,10 @@ function handleClose() {
 function reset() {
   if (!cache.value) return void 0;
 
-  localStorage.removeItem(id.value);
+  localStorage.removeItem(state.id);
   cache.value = false;
   editor.setValue(props.data.code);
-  if (props.data.setting) setting.value = clone(props.data.setting);
+  if (props.data.setting) state.setting = cloneDeep(props.data.setting);
 }
 
 onUnmounted(() => {
@@ -172,19 +162,12 @@ onUnmounted(() => {
 });
 
 defineExpose({
-  focusTime,
+  updateTime,
   getData: () => {
     return {
-      id: id.value,
-      name: name.value,
-      icon: icon.value,
-      language: language.value,
+      ...state,
       code: editor.getValue(),
-      setting: setting.value,
     };
-  },
-  getCode: () => {
-    return editor.getValue();
   },
   reset,
   updateCache: () => {

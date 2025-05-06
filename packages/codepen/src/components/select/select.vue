@@ -50,6 +50,8 @@ onMounted(() => {
   window.addEventListener("resize", setPosition);
 
   document.body.addEventListener("click", (e) => {
+    console.log(e);
+
     if (!selectRef.value?.contains(e.target) && !optionsRef.value?.contains(e.target)) {
       active.value = false;
     }

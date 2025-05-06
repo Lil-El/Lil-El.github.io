@@ -1,5 +1,5 @@
 <template>
-  <div class="code-pen" :class="{ 'is-pure': pure }">
+  <div class="code-pen" :class="{ 'is-pure': pure, 'is-mobile': mobile }">
     <header class="code-pen-header">
       <code-info :title="title" :author="author" :date="date" />
       <code-opt v-model:layout="layout" @run="run" @reset="reset" />
@@ -85,12 +85,12 @@ const props = defineProps({
   editors: Array,
 });
 
-const pure = ref(props.editors?.length);
+const pure = computed(() => !!props.editors?.length);
 
 const configs = toRef(props.editors || []);
 
 // single: 是否合并编辑器；pure 时必须合并；
-const { layout, single, top } = useLayout("code-pen-main", pure.value);
+const { layout, single, top, mobile } = useLayout("code-pen-main", pure.value);
 
 const { title, author, date, setData } = useTitle(props);
 
@@ -172,6 +172,12 @@ function handleCodeChange(data) {
   }
   .code-pen-main {
     width: 100%;
+  }
+}
+
+.is-mobile :deep() {
+  .header-right__layout {
+    display: none;
   }
 }
 </style>

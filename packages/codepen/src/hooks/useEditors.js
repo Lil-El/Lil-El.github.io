@@ -3,6 +3,7 @@
 // TODO: 上面：组件，下面：代码； 组件；
 // TODO: vue3 和 饿了么UI使用
 // https://code.juejin.cn/pen/7500890847232294950
+// select 组件封装到全局 @lil-el/ui 设置浅色、深色样式; select 组件的点击事件优化，避免弹的太多；
 import * as sfc from "vue/compiler-sfc";
 const { parse } = sfc;
 
@@ -206,12 +207,12 @@ export default function useEditors(previewID) {
     let fullHTML;
 
     if (jsCode) {
-      const cssConfig = cssEditor ? cssEditor.getData().setting : {};
-      const jsConfig = jsEditor ? jsEditor.getData().setting : {};
+      const cssConfig = cssEditor ? cssEditor.getData().setting?.value : {};
+      const jsConfig = jsEditor ? jsEditor.getData().setting?.value : {};
 
       fullHTML = generateHTML(htmlCode, cssCode, jsCode, { css: cssConfig, javascript: jsConfig });
     } else if (vueCode) {
-      const vueConfig = vueEditor ? vueEditor.getData().setting : {};
+      const vueConfig = vueEditor ? vueEditor.getData().setting?.value : {};
 
       fullHTML = generateHTMLByVue(vueCode, { vue: vueConfig });
     } else if (txtCode) {

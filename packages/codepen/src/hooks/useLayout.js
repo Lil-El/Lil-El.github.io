@@ -1,10 +1,22 @@
+function getDeviceType() {
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  return isMobile;
+}
+
+/**
+ * test:
+ * - mobile: pure、unPure => rotate
+ * - web: pure、unPure => resize
+ */
 export default function useLayout(mainAreaID, isPure = false) {
   let observer, element;
+
+  const mobile = readonly(getDeviceType());
 
   // false：左右布局；true：上下布局
   const layout = ref(isPure ? false : true);
 
-  let single = isPure ? readonly(true) : ref(false);
+  let single = isPure || mobile ? readonly(true) : ref(false);
 
   const top = ref(0);
 
@@ -15,13 +27,13 @@ export default function useLayout(mainAreaID, isPure = false) {
       for (let entry of entries) {
         const { width } = entry.contentRect;
         if (width < 640) {
-          if (isPure) layout.value = true;
+          if (isPure || mobile) layout.value = true;
           else {
             single.value = true;
             top.value = 0;
           }
         } else {
-          if (isPure) layout.value = false;
+          if (isPure || mobile) layout.value = false;
           else single.value = false;
         }
       }
@@ -42,5 +54,6 @@ export default function useLayout(mainAreaID, isPure = false) {
     layout,
     single,
     top,
+    mobile,
   };
 }

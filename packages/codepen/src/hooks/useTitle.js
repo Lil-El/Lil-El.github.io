@@ -3,13 +3,15 @@ export default function useTitle(data) {
   const author = ref(data.author || "-");
   const date = ref(data.date || "-");
 
-  onMounted(() => {
-    document.title = title.value;
-  });
-
-  watch(title, (newTitle) => {
-    document.title = `${newTitle} - codepen`;
-  });
+  watch(
+    title,
+    (newTitle) => {
+      document.title = `${newTitle} - codepen`;
+    },
+    {
+      immediate: true,
+    }
+  );
 
   function setData(data) {
     title.value = data.title;

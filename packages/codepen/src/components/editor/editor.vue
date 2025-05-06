@@ -18,7 +18,7 @@
   </div>
 
   <m-modal v-if="state.setting" title="设置" v-model:show="showModal" @close="handleClose">
-    <component :is="SettingComponents[state.setting.component]" v-model:data="tempSetting"></component>
+    <component :is="SettingComponents[state.suffix]" v-model:data="tempSetting"></component>
   </m-modal>
 </template>
 
@@ -142,14 +142,14 @@ onMounted(() => {
 function handleOpen() {
   showModal.value = true;
   updateTime.value = Date.now();
-  tempSetting.value = cloneDeep(state.setting.value);
+  tempSetting.value = cloneDeep(state.setting);
 }
 
 function handleClose() {
-  if (isEqual(tempSetting.value, state.setting.value)) {
+  if (isEqual(tempSetting.value, state.setting)) {
     return void 0;
   } else {
-    state.setting.value = cloneDeep(tempSetting.value);
+    state.setting = cloneDeep(tempSetting.value);
     emit("saveAndRun");
   }
 }

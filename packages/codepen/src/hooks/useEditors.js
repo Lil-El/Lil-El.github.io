@@ -1,9 +1,17 @@
-// TODO: jquery 代码演示；
 // TODO: md/json 解析展示；
 // TODO: 上面：组件，下面：代码； 组件；
 // TODO: vue3 和 饿了么UI使用
+// MD、JSON解析移动新的package中，editor仅运行代码
+// 全局使用tailwindcss，网站首页使用termino.js，界面参考floating-ui.com
+// Termino.js
+// https://floating-ui.com/docs/getting-started 代替 select 组件
 // https://code.juejin.cn/pen/7500890847232294950
 // select 组件封装到全局 @lil-el/ui 设置浅色、深色样式; select 组件的点击事件优化，避免弹的太多；
+/*
+https://juejin.cn/post/7344697321798500392
+https://github.com/GeoffSelby/tailwind-highlightjs
+https://github.com/tailwindlabs/tailwindcss-typography
+*/
 import * as sfc from "vue/compiler-sfc";
 const { parse } = sfc;
 
@@ -11,7 +19,6 @@ function generateHTML(htmlStr = "", cssStr = "", jsStr = "", config = {}) {
   const cssLinks = config.css?.links?.filter((i) => i.length) || [];
 
   const jsLinks = config.javascript?.links?.filter((i) => i.length) || [];
-  const esm = config.javascript?.esm || false;
 
   return `
     <!DOCTYPE html>
@@ -25,9 +32,9 @@ function generateHTML(htmlStr = "", cssStr = "", jsStr = "", config = {}) {
     <body>
       ${htmlStr}
 
-      ${jsLinks?.map((link) => `<script src="${link}" ${esm ? "type='module'" : ""}></script>`).join("")}
+      ${jsLinks?.map((link) => `<script src="${link}" type='module'></script>`).join("")}
 
-      <script type="${esm ? "module" : ""}">
+      <script type='module'>
         ${jsStr}
       <\/script>
     </body>
@@ -202,21 +209,18 @@ export default function useEditors(previewID) {
     const cssCode = cssEditor ? cssEditor.getData().code : "";
     const jsCode = jsEditor ? jsEditor.getData().code : "";
     const vueCode = vueEditor ? vueEditor.getData().code : "";
-    const txtCode = txtEditor ? txtEditor.getData().code : "";
 
     let fullHTML;
 
     if (jsCode) {
-      const cssConfig = cssEditor ? cssEditor.getData().setting?.value : {};
-      const jsConfig = jsEditor ? jsEditor.getData().setting?.value : {};
+      const cssConfig = cssEditor ? cssEditor.getData().setting : {};
+      const jsConfig = jsEditor ? jsEditor.getData().setting : {};
 
       fullHTML = generateHTML(htmlCode, cssCode, jsCode, { css: cssConfig, javascript: jsConfig });
     } else if (vueCode) {
-      const vueConfig = vueEditor ? vueEditor.getData().setting?.value : {};
+      const vueConfig = vueEditor ? vueEditor.getData().setting : {};
 
       fullHTML = generateHTMLByVue(vueCode, { vue: vueConfig });
-    } else if (txtCode) {
-      fullHTML = generateHTML(txtCode.replace(/\n/g, "<br/>"));
     }
 
     const previewFrame = document.getElementById(previewID);

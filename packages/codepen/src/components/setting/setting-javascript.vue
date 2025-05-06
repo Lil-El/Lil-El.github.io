@@ -1,13 +1,9 @@
 <template>
   <div class="setting">
     <div class="setting-item">
-      <p class="setting-label">ES Module</p>
-      <el-switch v-model="esm" />
-    </div>
-    <div class="setting-item">
       <p class="setting-label">添加依赖资源</p>
       <el-row v-for="(l, i) in links" :key="i" type="flex" align="middle" style="gap: 10px; margin-bottom: 10px">
-        <el-input v-model="links[i]" placeholder="请填写JavsScript资源地址"></el-input>
+        <el-input v-model="links[i]" placeholder="请填写JavaScript资源地址"></el-input>
         <el-button link :icon="Close" @click="removeLink(i)" />
       </el-row>
       <el-button link style="color: var(--theme-color)" @click="addLink">+ 添加新资源</el-button>
@@ -24,13 +20,10 @@ const props = defineProps({
 
 const emit = defineEmits(["update:data"]);
 
-const esm = ref(props.data.esm);
-
 const links = ref(props.data.links);
 
 watchEffect(() => {
   emit("update:data", {
-    esm: esm.value,
     links: links.value,
   });
 });

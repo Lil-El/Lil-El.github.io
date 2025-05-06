@@ -1,10 +1,6 @@
 <template>
   <div class="setting">
     <div class="setting-item">
-      <p class="setting-label">Vue 3</p>
-      <el-switch v-model="vue3" disabled />
-    </div>
-    <div class="setting-item">
       <p class="setting-label">element-ui</p>
       <el-switch v-model="ui" />
     </div>
@@ -17,8 +13,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update:data"]);
-
-const vue3 = ref(true);
 
 const ui = ref(props.data.ui);
 

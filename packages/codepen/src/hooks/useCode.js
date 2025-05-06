@@ -11,7 +11,20 @@ const templates = [
         icon: "html",
         suffix: "html",
         language: "html",
-        code: `<div id="hello">Hello World!</div>`,
+        code: `<script src="//unpkg.com/vue@2/dist/vue.js"></script>
+<!-- element-ui 在 JavaScript 的设置中引入 -->
+<!-- <script src="//unpkg.com/element-ui@2.15.14/lib/index.js"></script> -->
+<div id="app">
+<template>
+  <div>
+    <p>Vue2</p>
+
+    <el-divider></el-divider>
+
+    <el-button type="success" @click="handler">Click Me.</el-button>
+  </div>
+</template>
+</div>`,
       },
       {
         id: "8b50fb1e-c840-41a4-9f99-38820d642852",
@@ -20,12 +33,9 @@ const templates = [
         suffix: "css",
         language: "css",
         setting: {
-          component: "css",
-          value: {
-            links: [],
-          },
+          links: [],
         },
-        code: `#hello { color: red; }`,
+        code: `@import url("//unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css");`,
       },
       {
         id: "a0f1b8c4-3d2e-4c5b-9f7d-6a0e1f8b2c3d",
@@ -34,19 +44,27 @@ const templates = [
         suffix: "javascript",
         language: "javascript",
         setting: {
-          component: "javascript",
-          value: {
-            esm: false,
-            links: [],
-          },
+          links: ["https://unpkg.com/jquery@3.7.1/dist/jquery.js", "//unpkg.com/element-ui@2.15.14/lib/index.js"],
         },
-        code: `function hello() {
-  alert('Hello world!');
-}
+        code: `const Main = {
+  data() {
+    return {};
+  },
+  mounted(){
+    $("body").css("background", "#cccccc66");
+  },
+  methods: {
+    handler() {
+      this.$message({
+        message: '恭喜你，这是一条成功消息',
+        type: 'success'
+      });
+    }
+  }
+};
 
-const ele = document.getElementById('hello');
-ele.addEventListener('click', hello);
-`,
+const Ctor = Vue.extend(Main);
+new Ctor().$mount("#app");`,
       },
     ],
   },
@@ -57,25 +75,43 @@ ele.addEventListener('click', hello);
     icon: "vue",
     editors: [
       {
+        id: "0c5fb22f-e174-4fb3-be97-c4a0d1236ba5",
+        name: "HTML",
+        icon: "html",
+        suffix: "html",
+        language: "html",
+        code: ``,
+      },
+      {
+        id: "8b345b1e-c840-41a4-9f99-38820d642852",
+        name: "CSS",
+        icon: "css",
+        suffix: "css",
+        language: "css",
+        setting: {
+          links: [],
+        },
+        code: `@import url("//unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css");`,
+      },
+      {
         id: "ea1b6d0f-80d2-4256-b466-756cf5622ad2",
-        name: "Vue",
+        name: "Vue3",
         icon: "vue",
         suffix: "vue",
         language: "html",
         setting: {
-          component: "vue",
-          value: {
-            ui: true,
-          },
+          ui: true,
         },
         code: `<template>
   <div id="hello" @click="hello">{{ msg }}</div>
+  <hr />
+  <p>内置 vue 编译</p>
 </template>
 
 <script setup>
   import { ref } from 'vue';
 
-  const msg = ref('Hello World!');
+  const msg = ref('Hello Vue!');
 
   function hello() {
     alert(msg.value);
@@ -84,104 +120,10 @@ ele.addEventListener('click', hello);
 
 <style scoped>
   #hello {
-    color: red;
+    color: green;
+    font-weight: bold;
   }
 <\/style>`,
-      },
-    ],
-  },
-  {
-    title: "JSON",
-    author: "Mino",
-    date: "2025-05-03",
-    icon: "json",
-    suffix: "json",
-    editors: [
-      {
-        id: "811c3406-ee71-4865-a9b5-688d5e239b89",
-        name: "JSON",
-        icon: "json",
-        language: "json",
-        code: `{
-  "name": "John Doe",
-  "age": 30,
-  "city": "New York",
-  "isStudent": false,
-  "courses": ["HTML", "CSS", "JavaScript"],
-  "address": {
-    "street": "123 Main St",
-    "city": "New York",
-    "state": "NY",
-    "friends": [
-      {
-        "name": "Jane Smith",
-        "age": 28,
-        "city": "Los Angeles"
-      },
-      {
-        "name": "Mike Johnson",
-        "age": 32,
-        "city": "Chicago"
-      }
-    ]
-  }
-}`,
-      },
-    ],
-  },
-  {
-    title: "Markdown",
-    author: "Mino",
-    date: "2025-05-03",
-    icon: "markdown",
-    suffix: "markdown",
-    editors: [
-      {
-        id: "e6a4612e-b39c-442a-a2fb-545c46f246c0",
-        name: "Markdown",
-        icon: "markdown",
-        language: "markdown",
-        code: `# Hello World
-
-This is a **Markdown** document. by [\`Mino\`](https://lil-el.github.io/)
-
-## Features
-
-- code editor
-- Easy to write
-- Easy to learn
-
-## Code
-
-\`\`\`javascript
-function hello() {
-  alert('Hello world!');
-}
-\`\`\`
-
-# End of Document
-
->  Thank you for reading!
-`,
-      },
-    ],
-  },
-  {
-    title: "TXT",
-    author: "Mino",
-    date: "2025-05-03",
-    icon: "txt",
-    suffix: "txt",
-    editors: [
-      {
-        id: "9fb80305-6c0b-4cc8-b56d-180b6212bc6c",
-        name: "TXT",
-        icon: "txt",
-        language: "txt",
-        code: `Hello World!
-This is a simple text file.
-It contains plain text without any formatting.
-`,
       },
     ],
   },
@@ -209,10 +151,7 @@ const demos = [
         suffix: "css",
         language: "css",
         setting: {
-          component: "css",
-          value: {
-            links: [],
-          },
+          links: [],
         },
         code: `* {
   margin: 0;
@@ -236,11 +175,7 @@ canvas {
         suffix: "javascript",
         language: "javascript",
         setting: {
-          component: "javascript",
-          value: {
-            esm: true,
-            links: [],
-          },
+          links: [],
         },
         code: `import * as THREE from "https://esm.sh/three";
 import { OrbitControls } from "https://esm.sh/three/examples/jsm/controls/OrbitControls";

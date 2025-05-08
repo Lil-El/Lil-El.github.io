@@ -9,17 +9,12 @@
       </div>
       <div class="header-right">
         <img v-show="cache" :src="getSVG('refresh')" width="15" draggable="false" title="重置" @click="reset" />
-        <img v-show="state.setting" :src="getSVG('setting')" width="16" draggable="false" @click="handleOpen" />
       </div>
     </div>
     <div class="editor-body">
       <div ref="editorRef" class="editor-panel"></div>
     </div>
   </div>
-
-  <m-modal v-if="state.setting" title="设置" v-model:show="showModal" @close="handleClose">
-    <component :is="SettingComponents[state.suffix]" v-model:data="tempSetting"></component>
-  </m-modal>
 </template>
 
 <script setup>
@@ -27,18 +22,8 @@ import { getSVG } from "@/utils";
 
 import { isEqual, cloneDeep } from "lodash";
 import * as monaco from "monaco-editor";
-import MModal from "../modal/modal.vue";
-import SettingCss from "../setting/setting-css.vue";
-import SettingJavascript from "../setting/setting-javascript.vue";
-import SettingVue from "../setting/setting-vue.vue";
 
 const attrs = useAttrs();
-
-const SettingComponents = {
-  css: SettingCss,
-  javascript: SettingJavascript,
-  vue: SettingVue,
-};
 
 const props = defineProps({
   data: Object,
@@ -57,12 +42,10 @@ if (localStorage.getItem(props.data.id)) {
   data = cloneDeep(props.data);
 }
 
-// id, name, icon, suffix, language, code, setting
+// id, name, icon, suffix, language, code
 const state = reactive({
   ...data,
 });
-
-const tempSetting = ref(null);
 
 let editor = null;
 
@@ -105,6 +88,8 @@ onMounted(() => {
   editor = monaco.editor.create(editorRef.value, {
     language: state.language,
     theme: "vs-dark",
+    fontFamily: "MapleMono",
+    fontLigatures: true,
     automaticLayout: true, // 自动布局
     wordWrap: "on", // 自动换行
     scrollBeyondLastLine: false, // 滚动超过最后一行时，是否继续滚动
@@ -139,28 +124,10 @@ onMounted(() => {
   });
 });
 
-function handleOpen() {
-  showModal.value = true;
-  updateTime.value = Date.now();
-  tempSetting.value = cloneDeep(state.setting);
-}
-
-function handleClose() {
-  if (isEqual(tempSetting.value, state.setting)) {
-    return void 0;
-  } else {
-    state.setting = cloneDeep(tempSetting.value);
-    emit("saveAndRun");
-  }
-}
-
 function reset() {
-  if (!cache.value) return void 0;
-
   localStorage.removeItem(state.id);
   cache.value = false;
   editor.setValue(props.data.code);
-  if (props.data.setting) state.setting = cloneDeep(props.data.setting);
 }
 
 onUnmounted(() => {

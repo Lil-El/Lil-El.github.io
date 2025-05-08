@@ -20,7 +20,7 @@
                       save();
                       run();
                     "
-                    @run="run(true)"
+                    @run="run()"
                   />
                 </pane>
               </template>
@@ -37,7 +37,7 @@
                         save();
                         run();
                       "
-                      @run="run(true)"
+                      @run="run()"
                     >
                       <template #header="{ name }">
                         <span
@@ -101,6 +101,9 @@ function handleCodeChange(data) {
 
   setData(info);
   configs.value = editors;
+  nextTick(() => {
+    run();
+  });
 
   top.value = 0;
 }

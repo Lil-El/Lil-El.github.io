@@ -1,7 +1,9 @@
-// TODO: md/json 解析展示；
-// TODO: 上面：组件，下面：代码； 组件；
+// TODO: md 解析展示；
+// TODO: 组件 代码预览 组件；
 // TODO: vue3 和 饿了么UI使用
-// MD、JSON解析移动新的package中，editor仅运行代码
+// https://code.esm.sh/ 主题颜色设置；
+// serviceWorker App.vue
+// MD解析移动新的package中，editor仅运行代码
 // 全局使用tailwindcss，网站首页使用termino.js，界面参考floating-ui.com
 // Termino.js
 // https://floating-ui.com/docs/getting-started 代替 select 组件
@@ -12,10 +14,86 @@ https://juejin.cn/post/7344697321798500392
 https://github.com/GeoffSelby/tailwind-highlightjs
 https://github.com/tailwindlabs/tailwindcss-typography
 */
-import * as sfc from "vue/compiler-sfc";
-const { parse } = sfc;
+import { parse, compileScript, compileStyle, compileTemplate } from "vue/compiler-sfc";
 
-function generateHTML(htmlStr = "", cssStr = "", jsStr = "", config = {}) {
+function persistence(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function btoaUtf8(str) {
+  const bytes = new TextEncoder().encode(str);
+  let binary = "";
+  bytes.forEach((byte) => (binary += String.fromCharCode(byte)));
+  return btoa(binary);
+}
+
+function parseVue(code, mainJS) {
+  const { descriptor } = parse(code, {
+    filename: "App.vue",
+  });
+
+  const scopedId = descriptor.styles.some((c) => c.scoped) ? Math.random().toString(36).substring(2, 10) : undefined;
+
+  const htmlStr = `<div id="app"></div>
+<script type="importmap">
+  {
+    "imports": {
+      "vue": "https://unpkg.com/vue@3.5.13/dist/vue.esm-browser.js"
+    }
+  }
+</script>`;
+
+  const cssStr = descriptor.styles.map((style) => {
+    const { code } = compileStyle({
+      id: scopedId,
+      source: style.content,
+      scoped: !!style.scoped,
+      sourceMap: false,
+    });
+    return code;
+  });
+
+  const { content: App } = compileScript(descriptor, {
+    id: scopedId,
+    genDefaultAs: false,
+    inlineTemplate: !!descriptor.scriptSetup,
+    transformAssetUrls: true,
+    sourceMap: false,
+  });
+
+  let render = null;
+  if (!descriptor.scriptSetup) {
+    const res = compileTemplate({
+      id: scopedId,
+      filename: descriptor.filename,
+      source: descriptor.template.content,
+      scoped: !!scopedId,
+      slotted: descriptor.slotted,
+    });
+    render = res.code;
+  }
+
+  const jsStr = mainJS.replace(
+    /import\s+App\s+from\s+(["'])(App\.vue)\1\s*(?:;|$)/g,
+    `import App from "data:text/javascript;base64,${btoaUtf8(App)}";
+App.__file = "${descriptor.filename}";
+App.__scopeId = "data-v-${scopedId}";
+${
+  render
+    ? `import { render } from "data:text/javascript;base64,${btoaUtf8(render)}";
+App.render = render;`
+    : ""
+}`
+  );
+
+  return {
+    htmlStr,
+    jsStr,
+    cssStr,
+  };
+}
+
+function generateHTML(htmlStr = "", cssList = [], jsStr = "", config = {}) {
   const cssLinks = config.css?.links?.filter((i) => i.length) || [];
 
   const jsLinks = config.javascript?.links?.filter((i) => i.length) || [];
@@ -27,162 +105,23 @@ function generateHTML(htmlStr = "", cssStr = "", jsStr = "", config = {}) {
       <meta charset="UTF-8" />
       <title>Code Preview</title>
       ${cssLinks?.map((link) => `<link rel="stylesheet" href="${link}" />`).join("")}
-      <style>${cssStr}</style>
+      ${cssList?.map((style) => `<style>${style}</style>`).join("")}
     </head>
     <body>
       ${htmlStr}
 
       ${jsLinks?.map((link) => `<script src="${link}" type='module'></script>`).join("")}
 
-      <script type='module'>
-        ${jsStr}
-      <\/script>
+      <script type='module'>${jsStr}<\/script>
     </body>
     </html>
   `;
 }
 
-function extractVueImports(scriptContent) {
-  const importRegex = /import\s*{([^}]*)}\s*from\s*["']vue["']/g;
-  const matches = [...scriptContent.matchAll(importRegex)];
-
-  if (matches.length === 0) return [];
-
-  // 提取导入的变量
-  const imports = matches[0][1]
-    .split(",")
-    .map((item) => item.trim())
-    .filter((item) => item);
-
-  return imports;
-}
-
-function removeVueImports(scriptContent) {
-  return scriptContent.replace(/import\s*{([^}]*)}\s*from\s*["']vue["']\s*;?\s*/g, "");
-}
-
-function collectBasicBindings(scriptContent) {
-  // 1. 预处理：移除注释和字符串内容，避免误匹配
-  const cleanCode = scriptContent
-    .replace(/\/\/.*$/gm, "") // 移除单行注释
-    .replace(/\/\*[\s\S]*?\*\//g, "") // 移除多行注释
-    .replace(/`[\s\S]*?`/g, "") // 移除模板字符串
-    .replace(/'[\s\S]*?'/g, "") // 移除单引号字符串
-    .replace(/"[\s\S]*?"/g, ""); // 移除双引号字符串
-
-  // 2. 定义匹配规则
-  const patterns = [
-    // 匹配 const/let 变量声明: const x = ... 或 let y = ...
-    /(?:const|let)\s+([a-zA-Z_$][\w$]*)\s*(?=[=;,\n])/g,
-
-    // 匹配函数声明: function myFunc() {...}
-    /function\s+([a-zA-Z_$][\w$]*)\s*\(/g,
-
-    // 匹配解构赋值: const { a, b: c } = ...
-    /const\s*{([^}]+)}\s*=/g,
-    /let\s*{([^}]+)}\s*=/g,
-
-    // 数组解构: const [a, b] = ...
-    /const\s*\[([^\]]+)\]\s*=/g,
-    /let\s*\[([^\]]+)\]\s*=/g,
-  ];
-
-  const bindings = new Set();
-
-  // 3. 执行匹配
-  patterns.forEach((pattern) => {
-    let match;
-    while ((match = pattern.exec(cleanCode)) !== null) {
-      if (match[1].includes(",")) {
-        // 处理解构情况（const { a, b }）
-        match[1].split(",").forEach((item) => {
-          const name = item
-            .trim()
-            .split(":")[0] // 处理别名 { b: c } → 取 b
-            .split("=")[0] // 处理默认值 { a = 1 } → 取 a
-            .trim();
-          if (name) bindings.add(name);
-        });
-      } else {
-        // 普通变量/函数名
-        bindings.add(match[1].trim());
-      }
-    }
-  });
-
-  return Array.from(bindings);
-}
-
-function generateHTMLByVue(vueStr, config = {}) {
-  const { descriptor } = parse(vueStr, { filename: "App.vue" });
-  // const vueConfig = config.vue;
-  console.log(descriptor);
-
-  let scriptContent = descriptor.script?.content || descriptor.scriptSetup?.content;
-
-  if (descriptor.script) {
-    scriptContent = scriptContent.replace(/export default/, "");
-  }
-
-  const imports = extractVueImports(scriptContent);
-
-  scriptContent = removeVueImports(scriptContent);
-
-  const bindings = collectBasicBindings(scriptContent);
-
-  return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <title>Code Preview</title>
-      <style>${descriptor.styles.map((s) => s.content).join("\n")}</style>
-    </head>
-    <body>
-      <div id="app"></div>
-
-
-      <script type="importmap">
-        {
-          "imports": {
-            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
-          }
-        }
-      </script>
-      <script type="module">
-        import { createApp, ${imports.join(",")} } from "vue";
-
-        const app = createApp({
-          template: \`${descriptor.template.content}\`,
-
-          ${
-            descriptor.script
-              ? `...${scriptContent}`
-              : `setup() {
-                  ${scriptContent}
-
-                  return { ${bindings.join(",")} };
-                }`
-          }
-        });
-
-        app.mount('#app');
-
-      </script>
-    </body>
-    </html>`;
-}
-
-function _save(id, data) {
-  localStorage.setItem(id, JSON.stringify(data));
-}
-
 export default function useEditors(previewID) {
   const editorRef = ref(null);
 
-  onMounted(() => {
-    run();
-  });
+  onMounted(run);
 
   function save() {
     const editors = editorRef.value;
@@ -190,7 +129,7 @@ export default function useEditors(previewID) {
     const updateTime = Math.max(...editors.map((editor) => editor.updateTime));
     const focusEditor = editors.find((editor) => editor.updateTime === updateTime);
 
-    _save(focusEditor.getData().id, focusEditor.getData());
+    persistence(focusEditor.getData().id, focusEditor.getData());
 
     editors.forEach((e) => e.updateCache());
   }
@@ -203,7 +142,6 @@ export default function useEditors(previewID) {
     const cssEditor = editors.find((e) => e.getData().suffix === "css");
     const jsEditor = editors.find((e) => e.getData().suffix === "javascript");
     const vueEditor = editors.find((e) => e.getData().suffix === "vue");
-    const txtEditor = editors.find((e) => e.getData().suffix === "txt");
 
     const htmlCode = htmlEditor ? htmlEditor.getData().code : "";
     const cssCode = cssEditor ? cssEditor.getData().code : "";
@@ -212,15 +150,11 @@ export default function useEditors(previewID) {
 
     let fullHTML;
 
-    if (jsCode) {
-      const cssConfig = cssEditor ? cssEditor.getData().setting : {};
-      const jsConfig = jsEditor ? jsEditor.getData().setting : {};
-
-      fullHTML = generateHTML(htmlCode, cssCode, jsCode, { css: cssConfig, javascript: jsConfig });
-    } else if (vueCode) {
-      const vueConfig = vueEditor ? vueEditor.getData().setting : {};
-
-      fullHTML = generateHTMLByVue(vueCode, { vue: vueConfig });
+    if (vueCode) {
+      const { htmlStr, cssStr, jsStr } = parseVue(vueCode, jsCode);
+      fullHTML = generateHTML(htmlStr, cssStr, jsStr);
+    } else if (jsCode) {
+      fullHTML = generateHTML(htmlCode, [cssCode], jsCode);
     }
 
     const previewFrame = document.getElementById(previewID);

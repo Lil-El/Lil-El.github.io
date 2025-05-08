@@ -12,18 +12,19 @@ const templates = [
         suffix: "html",
         language: "html",
         code: `<script src="//unpkg.com/vue@2/dist/vue.js"></script>
-<!-- element-ui 在 JavaScript 的设置中引入 -->
-<!-- <script src="//unpkg.com/element-ui@2.15.14/lib/index.js"></script> -->
+<script src="//unpkg.com/element-ui@2.15.14/lib/index.js"></script>
+<script src="//unpkg.com/jquery@3.7.1/dist/jquery.js"></script>
+
 <div id="app">
-<template>
-  <div>
-    <p>Vue2</p>
+  <template>
+    <div>
+      <p>Vue2</p>
 
-    <el-divider></el-divider>
+      <el-divider></el-divider>
 
-    <el-button type="success" @click="handler">Click Me.</el-button>
-  </div>
-</template>
+      <el-button type="success" @click="handler">Click Me.</el-button>
+    </div>
+  </template>
 </div>`,
       },
       {
@@ -32,9 +33,6 @@ const templates = [
         icon: "css",
         suffix: "css",
         language: "css",
-        setting: {
-          links: [],
-        },
         code: `@import url("//unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css");`,
       },
       {
@@ -43,9 +41,6 @@ const templates = [
         icon: "javascript",
         suffix: "javascript",
         language: "javascript",
-        setting: {
-          links: ["https://unpkg.com/jquery@3.7.1/dist/jquery.js", "//unpkg.com/element-ui@2.15.14/lib/index.js"],
-        },
         code: `const Main = {
   data() {
     return {};
@@ -69,61 +64,68 @@ new Ctor().$mount("#app");`,
     ],
   },
   {
-    title: "Vue",
+    title: "Vue3",
     author: "Mino",
     date: "2025-05-03",
     icon: "vue",
     editors: [
       {
-        id: "0c5fb22f-e174-4fb3-be97-c4a0d1236ba5",
-        name: "HTML",
-        icon: "html",
-        suffix: "html",
-        language: "html",
-        code: ``,
-      },
-      {
-        id: "8b345b1e-c840-41a4-9f99-38820d642852",
-        name: "CSS",
-        icon: "css",
-        suffix: "css",
-        language: "css",
-        setting: {
-          links: [],
-        },
-        code: `@import url("//unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css");`,
+        id: "a01397c4-3d2e-4c5b-9f7d-6a0e1f8b2c3d",
+        name: "main.js",
+        icon: "javascript",
+        suffix: "javascript",
+        language: "javascript",
+        code: `import { createApp } from "vue";
+import App from "App.vue";
+
+import ElementPlus from "https://unpkg.com/element-plus@2.9.9/dist/index.full.mjs";
+const { ElMessage } = ElementPlus;
+
+const app = createApp(App);
+app.config.globalProperties.$message = ElMessage;
+
+app.use(ElementPlus);
+app.mount("#app");`,
       },
       {
         id: "ea1b6d0f-80d2-4256-b466-756cf5622ad2",
-        name: "Vue3",
+        name: "App.vue",
         icon: "vue",
         suffix: "vue",
         language: "html",
-        setting: {
-          ui: true,
-        },
         code: `<template>
-  <div id="hello" @click="hello">{{ msg }}</div>
-  <hr />
-  <p>内置 vue 编译</p>
+  <div id="hello" @click="hello">
+    <el-button type="primary">{{ msg }}</el-button>
+  </div>
 </template>
 
 <script setup>
-  import { ref } from 'vue';
+  import { delay } from "https://unpkg.com/lodash-es@4.17.21/lodash.js";
+  import { ref, getCurrentInstance } from 'vue';
 
-  const msg = ref('Hello Vue!');
+  const { proxy } = getCurrentInstance();
+  const msg = ref('Hello Vue3!');
 
   function hello() {
-    alert(msg.value);
+    delay(()=>{
+      proxy.$message.success("这是一条延时提示.");
+    }, 500);
   }
-<\/script>
+</script>
 
 <style scoped>
   #hello {
     color: green;
     font-weight: bold;
   }
-<\/style>`,
+</style>
+<style>
+  @import url("https://unpkg.com/element-plus@2.9.9/dist/index.css");
+
+  body {
+    background: #9dcdff33;
+  }
+</style>`,
       },
     ],
   },
@@ -150,9 +152,6 @@ const demos = [
         icon: "css",
         suffix: "css",
         language: "css",
-        setting: {
-          links: [],
-        },
         code: `* {
   margin: 0;
   padding: 0;
@@ -174,9 +173,6 @@ canvas {
         icon: "javascript",
         suffix: "javascript",
         language: "javascript",
-        setting: {
-          links: [],
-        },
         code: `import * as THREE from "https://esm.sh/three";
 import { OrbitControls } from "https://esm.sh/three/examples/jsm/controls/OrbitControls";
 

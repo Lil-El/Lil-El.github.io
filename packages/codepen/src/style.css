@@ -4,10 +4,12 @@
   box-sizing: border-box;
 }
 
-:root {
-  /* --font-family: Arial, sans-serif; TODO: 自定 mono maple */
+@font-face {
+  font-family: 'MapleMono';
+  src: url('assets/MapleMono.ttf') format('truetype');
 }
 
+:root {}
 
 body {
   margin: 0;

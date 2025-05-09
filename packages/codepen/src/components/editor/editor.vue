@@ -20,7 +20,7 @@
 <script setup>
 import { getSVG } from "@/utils";
 
-import { isEqual, cloneDeep } from "lodash";
+import { cloneDeep } from "lodash";
 import * as monaco from "monaco-editor";
 
 const attrs = useAttrs();
@@ -29,36 +29,23 @@ const props = defineProps({
   data: Object,
 });
 
-const emit = defineEmits(["saveAndRun", "run"]);
-
-let data = null;
+const emit = defineEmits(["run"]);
 
 const cache = ref(false);
 
-if (localStorage.getItem(props.data.id)) {
-  cache.value = true;
-  data = JSON.parse(localStorage.getItem(props.data.id));
-} else {
-  data = cloneDeep(props.data);
-}
-
 // id, name, icon, suffix, language, code
 const state = reactive({
-  ...data,
+  ...(localStorage.getItem(props.data.id) ? JSON.parse(localStorage.getItem(props.data.id)) : cloneDeep(props.data)),
 });
 
 let editor = null;
 
-const updateTime = ref(0);
-
 const editorRef = ref(null);
 
-const showModal = ref(false);
-
 onMounted(() => {
-  // #endregion
-  // 自定义代码补全
+  updateCache();
 
+  // #region 自定义代码补全
   // monaco.languages.registerCompletionItemProvider("javascript", {
   //   provideCompletionItems: function (model, position) {
   //     return {
@@ -84,9 +71,18 @@ onMounted(() => {
   // });
   // #endregion
 
+  // 自定义主题
+  monaco.editor.defineTheme("mino-theme", {
+    base: "vs-dark",
+    inherit: true,
+    rules: [],
+    colors: {},
+  });
+
   // 创建编辑器实例
   editor = monaco.editor.create(editorRef.value, {
     language: state.language,
+    // theme: "mino-theme",
     theme: "vs-dark",
     fontFamily: "MapleMono",
     fontLigatures: true,
@@ -104,18 +100,28 @@ onMounted(() => {
   editor.getAction("editor.action.formatDocument").run();
 
   // focus 事件
-  editor.onDidFocusEditorWidget(() => {
-    updateTime.value = Date.now();
-  });
+  editor.onDidFocusEditorWidget(() => {});
 
   // blur 事件
-  editor.onDidBlurEditorWidget(() => {
-    cache.value = !!localStorage.getItem(state.id);
-  });
+  editor.onDidBlurEditorWidget(() => {});
 
-  // 保存且运行：快捷键（会覆盖所有 editor）
-  editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
-    emit("saveAndRun");
+  // #region
+  // addCommand 会覆盖所有, 只有最后一个editor的command生效
+  // editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
+  //   console.log(state.id); // 每次输出的都是最后一个的id
+  //   emit("saveAndRun");
+  // });
+  // #endregion
+
+  // addAction 不会覆盖, 每个都是独立的
+  editor.addAction({
+    id: `save-${state.id}`,
+    label: `Save-${state.id}`,
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
+    run: () => {
+      save(state.id, getData());
+      emit("run");
+    },
   });
 
   // 运行：快捷键（会覆盖所有 editor）
@@ -126,8 +132,26 @@ onMounted(() => {
 
 function reset() {
   localStorage.removeItem(state.id);
-  cache.value = false;
   editor.setValue(props.data.code);
+  updateCache();
+
+  emit("run");
+}
+
+function save(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+  updateCache();
+}
+
+function getData() {
+  return {
+    ...state,
+    code: editor.getValue(),
+  };
+}
+
+function updateCache() {
+  cache.value = !!localStorage.getItem(state.id);
 }
 
 onUnmounted(() => {
@@ -135,17 +159,9 @@ onUnmounted(() => {
 });
 
 defineExpose({
-  updateTime,
-  getData: () => {
-    return {
-      ...state,
-      code: editor.getValue(),
-    };
-  },
+  getData,
   reset,
-  updateCache: () => {
-    cache.value = !!localStorage.getItem(state.id);
-  },
+  updateCache,
 });
 </script>
 

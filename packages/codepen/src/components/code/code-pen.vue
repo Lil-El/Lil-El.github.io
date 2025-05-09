@@ -13,15 +13,7 @@
             <splitpanes :key="configs[0]?.id" class="default-theme" :horizontal="!layout" :vertical="layout">
               <template v-if="configs.length === 1 || !single">
                 <pane v-for="e in configs" :key="e.id" min-size="3">
-                  <editor
-                    ref="editorRef"
-                    :data="e"
-                    @saveAndRun="
-                      save();
-                      run();
-                    "
-                    @run="run()"
-                  />
+                  <editor ref="editorRef" :data="e" @run="run" />
                 </pane>
               </template>
               <template v-else>
@@ -33,11 +25,7 @@
                       ref="editorRef"
                       :data="e"
                       :style="{ order: top === i ? 0 : 1 }"
-                      @saveAndRun="
-                        save();
-                        run();
-                      "
-                      @run="run()"
+                      @run="run"
                     >
                       <template #header="{ name }">
                         <span
@@ -94,16 +82,14 @@ const { layout, single, top, mobile } = useLayout("code-pen-main", pure.value);
 
 const { title, author, date, setData } = useTitle(props);
 
-const { editorRef, reset, save, run } = useEditors("preview");
+const { editorRef, reset, run } = useEditors("preview");
 
 function handleCodeChange(data) {
   const { editors, ...info } = data;
 
   setData(info);
   configs.value = editors;
-  nextTick(() => {
-    run();
-  });
+  nextTick(run);
 
   top.value = 0;
 }

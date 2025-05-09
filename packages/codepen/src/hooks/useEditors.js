@@ -16,10 +16,6 @@ https://github.com/tailwindlabs/tailwindcss-typography
 */
 import { parse, compileScript, compileStyle, compileTemplate } from "vue/compiler-sfc";
 
-function persistence(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
-}
-
 function btoaUtf8(str) {
   const bytes = new TextEncoder().encode(str);
   let binary = "";
@@ -123,17 +119,6 @@ export default function useEditors(previewID) {
 
   onMounted(run);
 
-  function save() {
-    const editors = editorRef.value;
-
-    const updateTime = Math.max(...editors.map((editor) => editor.updateTime));
-    const focusEditor = editors.find((editor) => editor.updateTime === updateTime);
-
-    persistence(focusEditor.getData().id, focusEditor.getData());
-
-    editors.forEach((e) => e.updateCache());
-  }
-
   function run() {
     const editors = editorRef.value;
     if (!editors) return void 0;
@@ -172,7 +157,6 @@ export default function useEditors(previewID) {
   return {
     editorRef,
     reset,
-    save,
     run,
   };
 }

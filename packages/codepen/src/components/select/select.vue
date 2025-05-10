@@ -1,5 +1,5 @@
 <template>
-  <div class="select" ref="selectRef" @click="toggleOptions">
+  <div class="select" ref="selectRef" @click.stop="toggle">
     <img :src="getSVG(icon)" alt="" />
 
     <div
@@ -49,20 +49,24 @@ watch(active, () => {
 onMounted(() => {
   window.addEventListener("resize", setPosition);
 
-  document.body.addEventListener("click", (e) => {
-    if (!selectRef.value?.contains(e.target) && !optionsRef.value?.contains(e.target)) {
-      active.value = false;
-    }
-  });
+  if (!window._currentSelectComponentFlag) {
+    window._currentSelectComponentFlag = active;
+
+    document.body.addEventListener("click", (e) => {
+      if (window._currentSelectComponentFlag.value) window._currentSelectComponentFlag.value = false;
+    });
+  }
 });
 
-function toggleOptions(evt) {
-  // 点击不关闭弹出
-  // if (optionsRef.value?.contains(evt.target)) {
-  //   return void 0;
-  // }
+function toggle() {
+  if (window._currentSelectComponentFlag !== active && window._currentSelectComponentFlag.value)
+    window._currentSelectComponentFlag.value = false;
 
   active.value = !active.value;
+
+  if (active.value) {
+    window._currentSelectComponentFlag = active;
+  }
 }
 
 function setPosition() {

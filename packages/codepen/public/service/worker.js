@@ -1,5 +1,5 @@
 const CACHE_NAME = "my-cache-v1";
-const urlsToCache = ["/src/core/data/m.json"];
+const urlsToCache = ["/service/data/m.json"];
 
 // 安装阶段：缓存静态资源
 self.addEventListener("install", (event) => {

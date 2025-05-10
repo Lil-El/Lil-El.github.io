@@ -8,7 +8,17 @@
         </slot>
       </div>
       <div class="header-right">
-        <img v-show="cache" :src="getSVG('refresh')" width="15" draggable="false" title="重置" @click="reset" />
+        <img
+          v-show="cache"
+          :src="getSVG('refresh')"
+          width="15"
+          draggable="false"
+          title="重置"
+          @click="
+            reset();
+            emit('run');
+          "
+        />
       </div>
     </div>
     <div class="editor-body">
@@ -134,8 +144,6 @@ function reset() {
   localStorage.removeItem(state.id);
   editor.setValue(props.data.code);
   updateCache();
-
-  emit("run");
 }
 
 function save(key, value) {

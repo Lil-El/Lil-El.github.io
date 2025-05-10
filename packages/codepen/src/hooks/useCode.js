@@ -308,9 +308,7 @@ export default function useCode(init, callback = () => {}) {
     code,
     (title) => {
       const data = [...templates, ...demos].find((d) => d.title === title);
-      if (data) {
-        callback(data);
-      }
+      callback(data);
     },
     {
       immediate: true,

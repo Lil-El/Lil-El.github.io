@@ -84,17 +84,11 @@
         </svg>
       </m-select-option>
     </m-select>
-    <div
-      class="code-button"
-      @click="
-        emit('reset');
-        emit('run');
-      "
-    >
+    <div class="code-button" @click="emit('reset')">
       <img :src="getSVG('refresh')" width="18" draggable="false" />
       <span>重置</span>
     </div>
-    <div class="code-button" @click="emit('run', true)">
+    <div class="code-button" @click="emit('run')">
       <img :src="getSVG('run')" draggable="false" />
       <span>运行</span>
     </div>

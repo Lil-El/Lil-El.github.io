@@ -2,7 +2,14 @@
   <div class="code-pen" :class="{ 'is-pure': pure, 'is-mobile': mobile }">
     <header class="code-pen-header">
       <code-info :title="title" :author="author" :date="date" />
-      <code-opt v-model:layout="layout" @run="run" @reset="reset" />
+      <code-opt
+        v-model:layout="layout"
+        @run="run"
+        @reset="
+          reset();
+          run();
+        "
+      />
     </header>
     <main class="code-pen-body">
       <code-sidebar :init="!editors?.length" @change="handleCodeChange" />
@@ -43,7 +50,7 @@
             </splitpanes>
           </pane>
           <pane>
-            <div class="code-pen-view">
+            <div class="code-pen-view" v-loading="loading" element-loading-text="加载中...">
               <iframe id="preview" style="width: 100%; height: 100%; border: none" />
             </div>
           </pane>
@@ -82,9 +89,11 @@ const { layout, single, top, mobile } = useLayout("code-pen-main", pure.value);
 
 const { title, author, date, setData } = useTitle(props);
 
-const { editorRef, reset, run } = useEditors("preview");
+const { editorRef, reset, run, loading } = useEditors("preview");
 
 function handleCodeChange(data) {
+  if (!data) data = props;
+
   const { editors, ...info } = data;
 
   setData(info);

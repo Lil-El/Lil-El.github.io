@@ -1,0 +1,57 @@
+import { parse, compileScript, compileStyle, compileTemplate } from "vue/compiler-sfc";
+
+export function parseVue3(code) {
+  const { descriptor } = parse(code, {
+    filename: "App.vue",
+  });
+
+  const scopedId = descriptor.styles.some((c) => c.scoped) ? Math.random().toString(36).substring(2, 10) : undefined;
+
+  const styles = descriptor.styles.map((style) => {
+    if (scopedId)
+      return compileStyle({
+        id: scopedId,
+        source: style.content,
+        scoped: !!style.scoped,
+        sourceMap: false,
+        isProd: true,
+      }).code;
+    else return style.content;
+  });
+
+  const { content: App } = compileScript(descriptor, {
+    id: scopedId,
+    genDefaultAs: false,
+    inlineTemplate: !!descriptor.scriptSetup,
+    transformAssetUrls: true,
+    sourceMap: false,
+    isProd: true,
+  });
+
+  let render = null;
+  if (!descriptor.scriptSetup) {
+    render = compileTemplate({
+      id: scopedId,
+      filename: descriptor.filename,
+      source: descriptor.template.content,
+      scoped: !!scopedId,
+      slotted: descriptor.slotted,
+      isProd: true,
+    }).code;
+  }
+
+  return {
+    __filename: descriptor.filename,
+    __scopeId: scopedId,
+    App: `data:text/javascript;base64,${btoaUtf8(App)}`,
+    render: render ? `data:text/javascript;base64,${btoaUtf8(render)}` : null,
+    styles,
+  };
+}
+
+function btoaUtf8(str) {
+  const bytes = new TextEncoder().encode(str);
+  let binary = "";
+  bytes.forEach((byte) => (binary += String.fromCharCode(byte)));
+  return btoa(binary);
+}

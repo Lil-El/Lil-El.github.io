@@ -1,34 +1,25 @@
-// TODO: md 解析展示；
-// TODO: 组件 代码预览 组件；
-// TODO: vue3 和 饿了么UI使用
-// https://code.esm.sh/ 主题颜色设置；
-// serviceWorker App.vue
-// MD解析移动新的package中，editor仅运行代码
-// 全局使用tailwindcss，网站首页使用termino.js，界面参考floating-ui.com
-// Termino.js
-// https://floating-ui.com/docs/getting-started 代替 select 组件
-// https://code.juejin.cn/pen/7500890847232294950
-// select 组件封装到全局 @lil-el/ui 设置浅色、深色样式; select 组件的点击事件优化，避免弹的太多；
 /*
+TODO: md 解析展示；
+组件 代码预览 组件；
+vue3 和 饿了么UI使用
+https://code.esm.sh/ 主题颜色设置；
+serviceWorker App.vue
+MD解析移动新的package中，editor仅运行代码
+全局使用tailwindcss，网站首页使用termino.js，界面参考floating-ui.com
+Termino.js
+https://floating-ui.com/docs/getting-started 代替 select 组件
+https://code.juejin.cn/pen/7500890847232294950
+select 组件封装到全局 @lil-el/ui 设置浅色、深色样式; select 组件的点击事件优化，避免弹的太多；
+Console.log输出
 https://juejin.cn/post/7344697321798500392
 https://github.com/GeoffSelby/tailwind-highlightjs
 https://github.com/tailwindlabs/tailwindcss-typography
 */
-import { parse, compileScript, compileStyle, compileTemplate } from "vue/compiler-sfc";
+import { parseVue3 } from "@/core/parse";
+import { service } from "@/core/service";
 
-function btoaUtf8(str) {
-  const bytes = new TextEncoder().encode(str);
-  let binary = "";
-  bytes.forEach((byte) => (binary += String.fromCharCode(byte)));
-  return btoa(binary);
-}
-
-function parseVue(code, mainJS) {
-  const { descriptor } = parse(code, {
-    filename: "App.vue",
-  });
-
-  const scopedId = descriptor.styles.some((c) => c.scoped) ? Math.random().toString(36).substring(2, 10) : undefined;
+function handleVue3(code, mainJS) {
+  const { __filename, __scopeId, App, render, styles } = parseVue3(code);
 
   const htmlStr = `<div id="app"></div>
 <script type="importmap">
@@ -39,44 +30,15 @@ function parseVue(code, mainJS) {
   }
 </script>`;
 
-  const cssStr = descriptor.styles.map((style) => {
-    const { code } = compileStyle({
-      id: scopedId,
-      source: style.content,
-      scoped: !!style.scoped,
-      sourceMap: false,
-    });
-    return code;
-  });
-
-  const { content: App } = compileScript(descriptor, {
-    id: scopedId,
-    genDefaultAs: false,
-    inlineTemplate: !!descriptor.scriptSetup,
-    transformAssetUrls: true,
-    sourceMap: false,
-  });
-
-  let render = null;
-  if (!descriptor.scriptSetup) {
-    const res = compileTemplate({
-      id: scopedId,
-      filename: descriptor.filename,
-      source: descriptor.template.content,
-      scoped: !!scopedId,
-      slotted: descriptor.slotted,
-    });
-    render = res.code;
-  }
-
   const jsStr = mainJS.replace(
     /import\s+App\s+from\s+(["'])(App\.vue)\1\s*(?:;|$)/g,
-    `import App from "data:text/javascript;base64,${btoaUtf8(App)}";
-App.__file = "${descriptor.filename}";
-App.__scopeId = "data-v-${scopedId}";
+    `import App from "${App}";
+App.__filename = "${__filename}";
+${__scopeId ? `App.__scopeId = "data-v-${__scopeId}";` : ""}
+
 ${
   render
-    ? `import { render } from "data:text/javascript;base64,${btoaUtf8(render)}";
+    ? `import { render } from "${render}";
 App.render = render;`
     : ""
 }`
@@ -85,28 +47,21 @@ App.render = render;`
   return {
     htmlStr,
     jsStr,
-    cssStr,
+    cssStr: styles.map((style) => `<style>${style}</style>`).join("\n"),
   };
 }
 
-function generateHTML(htmlStr = "", cssList = [], jsStr = "", config = {}) {
-  const cssLinks = config.css?.links?.filter((i) => i.length) || [];
-
-  const jsLinks = config.javascript?.links?.filter((i) => i.length) || [];
-
+function generateHTML(htmlStr, cssStr, jsStr) {
   return `
     <!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8" />
       <title>Code Preview</title>
-      ${cssLinks?.map((link) => `<link rel="stylesheet" href="${link}" />`).join("")}
-      ${cssList?.map((style) => `<style>${style}</style>`).join("")}
+      ${cssStr}
     </head>
     <body>
       ${htmlStr}
-
-      ${jsLinks?.map((link) => `<script src="${link}" type='module'></script>`).join("")}
 
       <script type='module'>${jsStr}<\/script>
     </body>
@@ -117,11 +72,22 @@ function generateHTML(htmlStr = "", cssList = [], jsStr = "", config = {}) {
 export default function useEditors(previewID) {
   const editorRef = ref(null);
 
-  onMounted(run);
+  const loading = ref(false);
+
+  onMounted(() => {
+    // service();
+
+    const previewFrame = document.getElementById(previewID);
+    previewFrame.onload = () => {
+      loading.value = false;
+    };
+  });
 
   function run() {
     const editors = editorRef.value;
     if (!editors) return void 0;
+
+    loading.value = true;
 
     const htmlEditor = editors.find((e) => e.getData().suffix === "html");
     const cssEditor = editors.find((e) => e.getData().suffix === "css");
@@ -136,10 +102,10 @@ export default function useEditors(previewID) {
     let fullHTML;
 
     if (vueCode) {
-      const { htmlStr, cssStr, jsStr } = parseVue(vueCode, jsCode);
+      const { htmlStr, cssStr, jsStr } = handleVue3(vueCode, jsCode);
       fullHTML = generateHTML(htmlStr, cssStr, jsStr);
     } else if (jsCode) {
-      fullHTML = generateHTML(htmlCode, [cssCode], jsCode);
+      fullHTML = generateHTML(htmlCode, `<style>${cssCode}</style>`, jsCode);
     }
 
     const previewFrame = document.getElementById(previewID);
@@ -147,9 +113,7 @@ export default function useEditors(previewID) {
   }
 
   function reset() {
-    const editors = editorRef.value;
-
-    editors.forEach((editor) => {
+    editorRef.value.forEach((editor) => {
       editor.reset();
     });
   }
@@ -158,5 +122,6 @@ export default function useEditors(previewID) {
     editorRef,
     reset,
     run,
+    loading,
   };
 }

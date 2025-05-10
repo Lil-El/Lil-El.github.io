@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { getSVG } from "@/utils";
+import { getSVG } from "@lil-el/ui";
 
 defineProps({
   title: String,

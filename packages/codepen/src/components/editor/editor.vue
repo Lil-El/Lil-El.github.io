@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { getSVG } from "@/utils";
+import { getSVG } from "@lil-el/ui";
 
 import { cloneDeep } from "lodash";
 import * as monaco from "monaco-editor";

@@ -24,9 +24,7 @@
 </template>
 
 <script setup>
-import { getSVG } from "@/utils";
-import MSelect from "../select/select.vue";
-import MSelectOption from "../select/select-option.vue";
+import { getSVG, Select as MSelect, SelectOption as MSelectOption } from "@lil-el/ui";
 
 import useCode from "@/hooks/useCode";
 

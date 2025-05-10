@@ -7,9 +7,7 @@ serviceWorker App.vue
 MD解析移动新的package中，editor仅运行代码
 全局使用tailwindcss，网站首页使用termino.js，界面参考floating-ui.com
 Termino.js
-https://floating-ui.com/docs/getting-started 代替 select 组件
 https://code.juejin.cn/pen/7500890847232294950
-select 组件封装到全局 @lil-el/ui 设置浅色、深色样式; select 组件的点击事件优化，避免弹的太多；
 Console.log输出
 https://juejin.cn/post/7344697321798500392
 https://github.com/GeoffSelby/tailwind-highlightjs

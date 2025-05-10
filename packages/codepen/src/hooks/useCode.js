@@ -133,7 +133,7 @@ app.mount("#app");`,
 
 const demos = [
   {
-    title: "Three.js",
+    title: "Three",
     author: "Mino",
     date: "2025-05-04",
     icon: "javascript",
@@ -296,6 +296,83 @@ function resize() {
 }
 
 window.addEventListener("resize", resize);`,
+      },
+    ],
+  },
+  {
+    title: "AcrGIS",
+    author: "Mino",
+    date: "2025-05-10",
+    icon: "javascript",
+    editors: [
+      {
+        id: 'e72a026e-2912-438b-bfd8-f17202c2828a',
+        name: "HTML",
+        icon: "html",
+        suffix: "html",
+        language: "html",
+        code: `<div id="viewDiv"></div>
+<script src="https://js.arcgis.com/4.28/"></script>`
+      },
+      {
+        id: 'f2e5b8aa-758d-481b-8471-d2ee20ee8e61',
+        name: "CSS",
+        icon: "css",
+        suffix: "css",
+        language: "css",
+        code: `@import "https://js.arcgis.com/4.28/esri/themes/dark/main.css";
+
+html, body, #viewDiv {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+`
+      },
+      {
+        id: '07f9c03b-8516-4f08-81c0-5a5fe0ae241a',
+        name: "JavaScript",
+        icon: "javascript",
+        suffix: "javascript",
+        language: "javascript",
+        code: `require([
+  "esri/Map",
+  "esri/views/SceneView",
+  "esri/geometry/Point",
+  "esri/config"
+], function (
+  Map, SceneView, Point, config
+) {
+  config.locale = "zh-cn";
+
+  const map = new Map({
+    basemap: "dark-gray",
+    ground: "world-elevation"
+  });
+
+  const view = new SceneView({
+    container: "viewDiv",
+    map: map,
+  });
+
+  const xianPoint = new Point({
+    longitude: 108.947247,
+    latitude: 34.264367
+  });
+
+  view.when(function () {
+    view.goTo({
+      target: xianPoint,
+      zoom: 13,
+      tilt: 0,
+      heading: 0
+    }, {
+      duration: 3000,
+      easing: "ease-in-out"
+    });
+  });
+});`
       },
     ],
   },

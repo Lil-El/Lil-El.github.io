@@ -7,6 +7,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@lil-el/ui": "workspace:*",
     "monaco-editor": "^0.52.2",
     "splitpanes": "^4.0.3"
   },

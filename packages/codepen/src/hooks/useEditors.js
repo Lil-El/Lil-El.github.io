@@ -3,18 +3,14 @@ TODO: md 解析展示；
 组件 代码预览 组件；
 vue3 和 饿了么UI使用
 https://code.esm.sh/ 主题颜色设置；
-serviceWorker App.vue
 MD解析移动新的package中，editor仅运行代码
 全局使用tailwindcss，网站首页使用termino.js，界面参考floating-ui.com
 Termino.js
-https://code.juejin.cn/pen/7500890847232294950
 Console.log输出
-https://juejin.cn/post/7344697321798500392
 https://github.com/GeoffSelby/tailwind-highlightjs
 https://github.com/tailwindlabs/tailwindcss-typography
 */
 import { parseVue3 } from "@/core/parse";
-import { service } from "@/core/service";
 
 function handleVue3(code, mainJS) {
   const { __filename, __scopeId, App, render, styles } = parseVue3(code);
@@ -73,8 +69,6 @@ export default function useEditors(previewID) {
   const loading = ref(false);
 
   onMounted(() => {
-    // service();
-
     const previewFrame = document.getElementById(previewID);
     previewFrame.onload = () => {
       loading.value = false;

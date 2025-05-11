@@ -10,10 +10,34 @@ Console.log输出
 https://github.com/GeoffSelby/tailwind-highlightjs
 https://github.com/tailwindlabs/tailwindcss-typography
 */
-import { parseVue3 } from "@/core/parse";
+import { parseVue3, atobUtf8 } from "@/core/parse";
+import { register, putCache } from "@/core/service";
 
-function handleVue3(code, mainJS) {
+// 是否使用 ServiceWorker，否则使用 srcdoc 方式
+const enableSW = 'serviceWorker' in navigator;
+const urlsToCache = {
+  preview: "/preview.js?v=0",
+  main: "/main.js?v=0",
+  App: "/App.vue?v=0",
+  render: "/render.js?v=0",
+};
+
+function handleVue3(code, mainJS, sw) {
   const { __filename, __scopeId, App, render, styles } = parseVue3(code);
+
+  const jsStr = mainJS.replace(
+    /import\s+App\s+from\s+(["'])(App\.vue)\1\s*(?:;|$)/g,
+    `import App from "${sw ? urlsToCache.App : `data:text/javascript;base64,${App}`}";
+App.__filename = "${__filename}";
+${__scopeId ? `App.__scopeId = "data-v-${__scopeId}";` : ""}
+
+${
+  render
+    ? `import { render } from "${sw ? urlsToCache.render : `data:text/javascript;base64,${render}`}";
+App.render = render;`
+    : ""
+}`
+  );
 
   const htmlStr = `<div id="app"></div>
 <script type="importmap">
@@ -22,30 +46,23 @@ function handleVue3(code, mainJS) {
       "vue": "https://unpkg.com/vue@3.5.13/dist/vue.esm-browser.js"
     }
   }
-</script>`;
+</script>
+${sw ? `<script type="module" src="${urlsToCache.main}"></script>` : `<script type="module">${jsStr}</script>`}
+`;
 
-  const jsStr = mainJS.replace(
-    /import\s+App\s+from\s+(["'])(App\.vue)\1\s*(?:;|$)/g,
-    `import App from "${App}";
-App.__filename = "${__filename}";
-${__scopeId ? `App.__scopeId = "data-v-${__scopeId}";` : ""}
-
-${
-  render
-    ? `import { render } from "${render}";
-App.render = render;`
-    : ""
-}`
-  );
+  if (sw) {
+    putCache(urlsToCache.main, new Response(jsStr, { headers: { "Content-Type": "text/javascript" } }));
+    putCache(urlsToCache.App, new Response(atobUtf8(App), { headers: { "Content-Type": "text/javascript" } }));
+    if (render) putCache(urlsToCache.render, new Response(atobUtf8(render), { headers: { "Content-Type": "text/javascript" } }));
+  }
 
   return {
     htmlStr,
-    jsStr,
     cssStr: styles.map((style) => `<style>${style}</style>`).join("\n"),
   };
 }
 
-function generateHTML(htmlStr, cssStr, jsStr) {
+function generateHTML(htmlStr, cssStr) {
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -56,8 +73,6 @@ function generateHTML(htmlStr, cssStr, jsStr) {
     </head>
     <body>
       ${htmlStr}
-
-      <script type='module'>${jsStr}<\/script>
     </body>
     </html>
   `;
@@ -69,6 +84,8 @@ export default function useEditors(previewID) {
   const loading = ref(false);
 
   onMounted(() => {
+    if (enableSW) register();
+
     const previewFrame = document.getElementById(previewID);
     previewFrame.onload = () => {
       loading.value = false;
@@ -91,17 +108,24 @@ export default function useEditors(previewID) {
     const jsCode = jsEditor ? jsEditor.getData().code : "";
     const vueCode = vueEditor ? vueEditor.getData().code : "";
 
-    let fullHTML;
+    let srcdoc;
 
     if (vueCode) {
-      const { htmlStr, cssStr, jsStr } = handleVue3(vueCode, jsCode);
-      fullHTML = generateHTML(htmlStr, cssStr, jsStr);
+      const { htmlStr, cssStr } = handleVue3(vueCode, jsCode, enableSW);
+      srcdoc = generateHTML(htmlStr, cssStr);
     } else if (jsCode) {
-      fullHTML = generateHTML(htmlCode, `<style>${cssCode}</style>`, jsCode);
+      srcdoc = generateHTML(`${htmlCode}\n<script type="module">${jsCode}</script>`, `<style>${cssCode}</style>`);
     }
 
     const previewFrame = document.getElementById(previewID);
-    previewFrame.srcdoc = fullHTML;
+
+    if (enableSW) {
+      putCache(urlsToCache.preview, new Response(srcdoc, { headers: { "Content-Type": "text/html" } })).then(() => {
+        previewFrame.src = urlsToCache.preview;
+      });
+    } else {
+      previewFrame.srcdoc = srcdoc;
+    }
   }
 
   function reset() {

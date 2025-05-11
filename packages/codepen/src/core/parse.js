@@ -43,15 +43,22 @@ export function parseVue3(code) {
   return {
     __filename: descriptor.filename,
     __scopeId: scopedId,
-    App: `data:text/javascript;base64,${btoaUtf8(App)}`,
-    render: render ? `data:text/javascript;base64,${btoaUtf8(render)}` : null,
+    App: btoaUtf8(App),
+    render: render ? btoaUtf8(render) : null,
     styles,
   };
 }
 
-function btoaUtf8(str) {
+export function btoaUtf8(str) {
   const bytes = new TextEncoder().encode(str);
   let binary = "";
   bytes.forEach((byte) => (binary += String.fromCharCode(byte)));
   return btoa(binary);
+}
+
+export function atobUtf8(str) {
+  const binary = atob(str).split("");
+  const bytes = new Uint8Array(binary.length);
+  binary.forEach((byte, i) => (bytes[i] = byte.charCodeAt(0)));
+  return new TextDecoder().decode(bytes);
 }

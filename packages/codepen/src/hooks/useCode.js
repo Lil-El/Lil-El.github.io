@@ -129,6 +129,106 @@ app.mount("#app");`,
       },
     ],
   },
+  {
+    title: "React",
+    author: "Mino",
+    date: "2025-05-12",
+    icon: "javascript",
+    editors: [
+      {
+        id: 'f11b9121-5834-45b8-b45b-4b5f633ab1bb',
+        name: "main.js",
+        icon: "javascript",
+        suffix: "javascript",
+        language: "javascript",
+        code: `import React from "react"
+import { createRoot } from "react-dom/client"
+import App from "app.js"
+
+const root = createRoot(document.getElementById("app"))
+root.render(<App />)
+`,
+      },
+      {
+        id: '209626f0-8078-4c46-a090-2be73d081016',
+        name: "app.js",
+        icon: "javascript",
+        suffix: "react",
+        language: "javascript",
+        code: `import React, { useEffect } from 'react';
+import confetti from "https://esm.sh/canvas-confetti@1.6.0"
+
+const App = () => {
+  const style = {
+    textAlign: "center"
+  };
+
+  function onMouseMove(e) {
+    confetti({
+      particleCount: 1,
+      origin: {
+        x: e.pageX / window.innerWidth,
+        y: (e.pageY + 20) / window.innerHeight,
+      }
+    })
+  }
+
+  return (
+    <>
+      <GlobalStyles />
+      <div style={style} onMouseMove={onMouseMove}>
+        <h1>Hello React! ⚛️</h1>
+        <p>Building user interfaces.</p>
+      </div>
+    </>
+  )
+}
+
+export default App
+
+function GlobalStyles() {
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = \`
+      * {
+        padding: 0;
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      div {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 32px;
+        font-family: Inter, sans-serif;
+      }
+
+      p {
+        font-size: 16px;
+        font-style: italic;
+      }
+    \`;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  return null;
+}
+`,
+      },
+    ],
+  },
 ];
 
 const demos = [
@@ -306,16 +406,16 @@ window.addEventListener("resize", resize);`,
     icon: "javascript",
     editors: [
       {
-        id: 'e72a026e-2912-438b-bfd8-f17202c2828a',
+        id: "e72a026e-2912-438b-bfd8-f17202c2828a",
         name: "HTML",
         icon: "html",
         suffix: "html",
         language: "html",
         code: `<div id="viewDiv"></div>
-<script src="https://js.arcgis.com/4.28/"></script>`
+<script src="https://js.arcgis.com/4.28/"></script>`,
       },
       {
-        id: 'f2e5b8aa-758d-481b-8471-d2ee20ee8e61',
+        id: "f2e5b8aa-758d-481b-8471-d2ee20ee8e61",
         name: "CSS",
         icon: "css",
         suffix: "css",
@@ -328,10 +428,10 @@ html, body, #viewDiv {
   height: 100%;
   width: 100%;
 }
-`
+`,
       },
       {
-        id: '07f9c03b-8516-4f08-81c0-5a5fe0ae241a',
+        id: "07f9c03b-8516-4f08-81c0-5a5fe0ae241a",
         name: "JavaScript",
         icon: "javascript",
         suffix: "javascript",
@@ -372,7 +472,7 @@ html, body, #viewDiv {
       easing: "ease-in-out"
     });
   });
-});`
+});`,
       },
     ],
   },

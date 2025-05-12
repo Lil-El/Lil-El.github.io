@@ -2,6 +2,7 @@
 TODO: md 解析展示；
 组件 代码预览 组件；
 vue3 和 饿了么UI使用
+css @layer 使用
 https://code.esm.sh/ 主题颜色设置；
 MD解析移动新的package中，editor仅运行代码
 全局使用tailwindcss，网站首页使用termino.js，界面参考floating-ui.com
@@ -10,30 +11,47 @@ Console.log输出
 https://github.com/GeoffSelby/tailwind-highlightjs
 https://github.com/tailwindlabs/tailwindcss-typography
 */
-import { parseVue3, atobUtf8 } from "@/core/parse";
+import { parseVue3, parseReact, btoaUtf8 } from "@/core/parse";
 import { register, putCache } from "@/core/service";
 
 // 是否使用 ServiceWorker，否则使用 srcdoc 方式
 const enableSW = import.meta.env.MODE === "development" ? false : "serviceWorker" in navigator;
 const urlsToCache = {
-  preview: "/preview.js?v=0",
+  preview: "/preview?v=0",
   main: "/main.js?v=0",
   App: "/App.vue?v=0",
   render: "/render.js?v=0",
+  app: "/app.js?v=0",
 };
+
+function handleJS(htmlCode, cssCode, jsCode, sw) {
+  const htmlStr = `${htmlCode}\n${
+    sw ? `<script type="module" src="${urlsToCache.main}"></script>` : `<script type="module">${jsCode}</script>`
+  }`;
+  const cssStr = `<style>${cssCode}</style>`;
+
+  if (sw) {
+    putCache(urlsToCache.main, new Response(jsCode, { headers: { "Content-Type": "text/javascript" } }));
+  }
+
+  return {
+    htmlStr,
+    cssStr,
+  };
+}
 
 function handleVue3(code, mainJS, sw) {
   const { __filename, __scopeId, App, render, styles } = parseVue3(code);
 
   const jsStr = mainJS.replace(
-    /import\s+App\s+from\s+(["'])(App\.vue)\1\s*(?:;|$)/g,
-    `import App from "${sw ? urlsToCache.App : `data:text/javascript;base64,${App}`}";
+    /import\s+App\s+from\s+(["'])(App\.vue)\1\s*?(?=[\r\n;]|$)/g,
+    `import App from "${sw ? urlsToCache.App : `data:text/javascript;base64,${btoaUtf8(App)}`}";
 App.__filename = "${__filename}";
 ${__scopeId ? `App.__scopeId = "data-v-${__scopeId}";` : ""}
 
 ${
   render
-    ? `import { render } from "${sw ? urlsToCache.render : `data:text/javascript;base64,${render}`}";
+    ? `import { render } from "${sw ? urlsToCache.render : `data:text/javascript;base64,${btoaUtf8(render)}`}";
 App.render = render;`
     : ""
 }`
@@ -52,14 +70,46 @@ ${sw ? `<script type="module" src="${urlsToCache.main}"></script>` : `<script ty
 
   if (sw) {
     putCache(urlsToCache.main, new Response(jsStr, { headers: { "Content-Type": "text/javascript" } }));
-    putCache(urlsToCache.App, new Response(atobUtf8(App), { headers: { "Content-Type": "text/javascript" } }));
-    if (render)
-      putCache(urlsToCache.render, new Response(atobUtf8(render), { headers: { "Content-Type": "text/javascript" } }));
+    putCache(urlsToCache.App, new Response(App, { headers: { "Content-Type": "text/javascript" } }));
+    if (render) putCache(urlsToCache.render, new Response(render, { headers: { "Content-Type": "text/javascript" } }));
   }
 
   return {
     htmlStr,
     cssStr: styles.map((style) => `<style>${style}</style>`).join("\n"),
+  };
+}
+function handleReact(appJS, mainJS, sw) {
+  const app = parseReact(appJS, "app.js");
+
+  const jsStr = mainJS.replace(
+    /import\s+App\s+from\s+(["'])(app\.js)\1\s*?(?=[\r\n;]|$)/g,
+    `import App from "${sw ? urlsToCache.app : `data:text/javascript;base64,${btoaUtf8(app)}`}";`
+  );
+
+  const main = parseReact(jsStr, "main.js");
+
+  const htmlStr = `<div id="app"></div>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom": "https://esm.sh/react-dom@18.2.0",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client"
+      }
+    }
+  </script>
+  ${sw ? `<script type="module" src="${urlsToCache.main}"></script>` : `<script type="module">${main}</script>`}
+  `;
+
+  if (sw) {
+    putCache(urlsToCache.main, new Response(main, { headers: { "Content-Type": "text/javascript" } }));
+    putCache(urlsToCache.app, new Response(app, { headers: { "Content-Type": "text/javascript" } }));
+  }
+
+  return {
+    htmlStr,
+    cssStr: "",
   };
 }
 
@@ -124,19 +174,25 @@ export default function useEditors(previewID) {
     const cssEditor = editors.find((e) => e.getData().suffix === "css");
     const jsEditor = editors.find((e) => e.getData().suffix === "javascript");
     const vueEditor = editors.find((e) => e.getData().suffix === "vue");
+    const reactEditor = editors.find((e) => e.getData().suffix === "react");
 
     const htmlCode = htmlEditor ? htmlEditor.getData().code : "";
     const cssCode = cssEditor ? cssEditor.getData().code : "";
     const jsCode = jsEditor ? jsEditor.getData().code : "";
     const vueCode = vueEditor ? vueEditor.getData().code : "";
+    const reactCode = reactEditor ? reactEditor.getData().code : "";
 
     let srcdoc;
 
     if (vueCode) {
       const { htmlStr, cssStr } = handleVue3(vueCode, jsCode, enableSW);
       srcdoc = generateHTML(htmlStr, cssStr);
+    } else if (reactCode) {
+      const { htmlStr, cssStr } = handleReact(reactCode, jsCode, enableSW);
+      srcdoc = generateHTML(htmlStr, cssStr);
     } else if (jsCode) {
-      srcdoc = generateHTML(`${htmlCode}\n<script type="module">${jsCode}</script>`, `<style>${cssCode}</style>`);
+      const { htmlStr, cssStr } = handleJS(htmlCode, cssCode, jsCode, enableSW);
+      srcdoc = generateHTML(htmlStr, cssStr);
     }
 
     const previewFrame = document.getElementById(previewID);

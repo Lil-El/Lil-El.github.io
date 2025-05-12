@@ -1,6 +1,6 @@
 const CACHE_NAME = "iframe-preview-cache";
 
-const ASSETS_TO_CACHE = ["/preview.js?v=0", "/main.js?v=0", "/App.vue?v=0", "/render.js?v=0"];
+const ASSETS_TO_CACHE = ["/preview?v=0", "/main.js?v=0", "/App.vue?v=0", "/render.js?v=0", "/app.js?v=0"];
 
 // 在 SW 中跳过等待期
 self.addEventListener("message", (e) => {

@@ -7,6 +7,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@babel/standalone": "^7.27.2",
     "@lil-el/ui": "workspace:*",
     "monaco-editor": "^0.52.2",
     "splitpanes": "^4.0.3"

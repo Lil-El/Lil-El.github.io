@@ -1,4 +1,5 @@
 import { parse, compileScript, compileStyle, compileTemplate } from "vue/compiler-sfc";
+import * as babel from "@babel/standalone";
 
 export function parseVue3(code) {
   const { descriptor } = parse(code, {
@@ -43,10 +44,17 @@ export function parseVue3(code) {
   return {
     __filename: descriptor.filename,
     __scopeId: scopedId,
-    App: btoaUtf8(App),
-    render: render ? btoaUtf8(render) : null,
+    App: App,
+    render: render ? render : null,
     styles,
   };
+}
+export function parseReact(code, filename) {
+  const { code: compiled } = babel.transform(code, {
+    presets: ["react"],
+    filename,
+  });
+  return compiled;
 }
 
 export function btoaUtf8(str) {

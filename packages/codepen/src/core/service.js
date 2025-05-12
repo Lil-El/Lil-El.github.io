@@ -3,27 +3,39 @@ const CACHE_NAME = "iframe-preview-cache";
 export function register() {
   const swUrl = "/sw.js";
 
-  // 是否已经注册；多 sw 时使用 getRegistrations 判断；
+  // 是否已经注册；多 sw 时使用 getRegistrations 详细判断；
   if (!navigator.serviceWorker.controller) {
+    // 如果 sw.js 没有变化，重复注册时，registration是同一个引用对象；
     navigator.serviceWorker.register(swUrl, { scope: "/" }).then((registration) => {
-      // 首次安装时自动触发检查更新事件
-      // （24h、手动触发update）监听到变化，触发检查更新事件，那么就会有 waiting 实例
       registration.addEventListener("updatefound", () => {
-        // 首次注册，浏览器会创建 installing 实例。既然是首次注册，那么也不会有 waiting 实例
-        // 如果是重复注册，那么浏览器的控制权还在旧的手中，所以会创建新的 sw 的 waiting 状态实例
+        /**
+         * 初次安装状态变化：installed => activating => activated
+         *    - 安装阶段，实例对象在 registration.installing
+         *    - 安装成功，installing 变为 null，实例转移到 waiting 上； 「state:installed, installing:null, waiting:sw, active:null」
+         *    - 激活(成功)阶段，waiting 变为 null，转移到 active 上；  「state:activated|activating, installing:null, waiting:null, active:sw」
+         *
+         * 非初次安装：
+         *     - 安装阶段，实例对象在 registration.installing
+         *     - 安装成功后，installing 变为 null，实例转移给waiting和active上；因为有旧的实例，所以新的会一直处于 installed 状态
+         *     「state:installed, installing:null, waiting:sw, active:sw」
+         *     - skipWaiting 时进入激活阶段，此时 active 存在；
+         *           - redundant：进入冗余状态
+         *           - activating：重新激活
+         *           - activated： 激活完成
+        */
 
-        // 初次：状态变化：installed => activating => activated
-        // 更新：状态变化：installed => waiting；
+       // 最终 installing 会变为 null，所以要设置 newWorker，可以一直拿到 sw 实例对象；
+       const newWorker = registration.installing;
+       newWorker.addEventListener("statechange", (e) => {
+          console.log("old state:", e.target.state, !!registration.installing, !!registration.waiting, !!registration.active);
 
-        // 当状态变为 installed 后，registration.installing 会变为 null，实例转移到 waiting 上；所以这里必须要设置 newWorker；
-        const newWorker = registration.installing;
-        newWorker.addEventListener("statechange", (e) => {
-          // 初次注册没有 waiting，但是再次检测到更新时，由于有旧的在控制，所以会创建新的 waiting 实例
-          if (newWorker.state === "installed" && registration.waiting) {
-            // 此时新版本已安装完成，进入 waiting 状态
-            const flag = confirm("检测到新版本，是否立即更新？");
-            if (flag) {
-              registration.waiting.postMessage("SKIP_WAITING");
+          if (newWorker.state === "installed") {
+            // 初次安装waiting和active不会同时存在
+            if (registration.waiting && registration.active) {
+              const flag = confirm("检测到新版本，是否立即更新？");
+              if (flag) {
+                registration.waiting.postMessage("SKIP_WAITING");
+              }
             }
           }
         });
@@ -32,8 +44,6 @@ export function register() {
   } else {
     navigator.serviceWorker.getRegistration().then((registration) => {
       if (registration) {
-        // 如果长期页面不刷新，可以提供更新按钮，去手动刷新 registration.update();
-
         // 页面刷新发现新的sw时，会自动触发检查更新事件
         registration.addEventListener("updatefound", () => {
           const newWorker = registration.installing;

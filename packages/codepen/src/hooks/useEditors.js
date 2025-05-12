@@ -14,7 +14,7 @@ import { parseVue3, atobUtf8 } from "@/core/parse";
 import { register, putCache } from "@/core/service";
 
 // 是否使用 ServiceWorker，否则使用 srcdoc 方式
-const enableSW = 'serviceWorker' in navigator;
+const enableSW = import.meta.env.MODE === "development" ? false : "serviceWorker" in navigator;
 const urlsToCache = {
   preview: "/preview.js?v=0",
   main: "/main.js?v=0",
@@ -53,7 +53,8 @@ ${sw ? `<script type="module" src="${urlsToCache.main}"></script>` : `<script ty
   if (sw) {
     putCache(urlsToCache.main, new Response(jsStr, { headers: { "Content-Type": "text/javascript" } }));
     putCache(urlsToCache.App, new Response(atobUtf8(App), { headers: { "Content-Type": "text/javascript" } }));
-    if (render) putCache(urlsToCache.render, new Response(atobUtf8(render), { headers: { "Content-Type": "text/javascript" } }));
+    if (render)
+      putCache(urlsToCache.render, new Response(atobUtf8(render), { headers: { "Content-Type": "text/javascript" } }));
   }
 
   return {
@@ -85,6 +86,27 @@ export default function useEditors(previewID) {
 
   onMounted(() => {
     if (enableSW) register();
+
+    // #region
+    // setTimeout(() => {
+    /**
+     * TEST: 如果 url、sw.js 都没有变化，重复注册不会触发 updatefound、statechange 事件
+     */
+    // navigator.serviceWorker.register(`/sw.js?`);
+
+    /**
+     * TEST: 首次、非首次 重复注册测试（sw.js未变动，只有v变动），触发 updatefound、statechange 事件
+     */
+    // navigator.serviceWorker.register(`/sw.js?v=${Math.random()*10}`);
+
+    /**
+     * TEST: 首次、非首次 重复注册测试（sw.js 内容变化），手动触发 update 检查更新，触发 updatefound、statechange 事件
+     */
+    // navigator.serviceWorker.getRegistration().then((registration) => {
+    //   registration.update();
+    // });
+    // }, 10000);
+    // #endregion
 
     const previewFrame = document.getElementById(previewID);
     previewFrame.onload = () => {

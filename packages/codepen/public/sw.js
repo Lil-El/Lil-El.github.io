@@ -4,8 +4,6 @@ const ASSETS_TO_CACHE = ["/preview.js?v=0", "/main.js?v=0", "/App.vue?v=0", "/re
 
 // 在 SW 中跳过等待期
 self.addEventListener("message", (e) => {
-  console.log(e);
-
   if (e.data === "SKIP_WAITING") self.skipWaiting();
 });
 

@@ -1,25 +1,22 @@
 {
-  "name": "Lil-El.github.io",
+  "name": "@lil-el/app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "app": "cd app & pnpm run dev --filter @lil-el/app",
-    "codepen": "cd packages/codepen & pnpm run dev --filter @lil-el/codepen",
-    "markdown": "cd packages/markdown & pnpm run dev --filter @lil-el/markdown",
-    "deploy": "gh-pages -d dist"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {
     "@element-plus/icons-vue": "^2.3.1",
+    "@vitejs/plugin-vue": "^5.2.2",
     "element-plus": "^2.9.9",
     "lodash": "^4.17.21",
-    "vue": "^3.5.13"
-  },
-  "devDependencies": {
-    "@changesets/cli": "^2.29.2",
-    "@vitejs/plugin-vue": "^5.2.2",
-    "gh-pages": "^6.3.0",
     "unplugin-auto-import": "^19.1.2",
+    "vue": "^3.5.13",
     "vite": "^6.3.1"
   },
   "author": "Mino",

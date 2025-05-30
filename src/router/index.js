@@ -7,15 +7,30 @@ const routes = [
     component: () => import("@/views/Home.vue"),
   },
   {
-    path: "/about",
-    name: "about",
-    component: () => import("@/views/About.vue"),
+    path: "/codepen",
+    name: "codepen",
+    component: () => import("@/views/Codepen.vue"),
+  },
+  {
+    path: "/markdown",
+    name: "markdown",
+    component: () => import("@/views/Markdown.vue"),
+    meta: { title: "Markdown" },
   },
 ];
 
 const router = createRouter({
   routes,
   history: createWebHistory(),
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title + " - "  + __APP_TITLE__;
+  } else {
+    document.title = __APP_TITLE__;
+  }
+  next();
 });
 
 export default router;

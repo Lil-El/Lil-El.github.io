@@ -90,7 +90,11 @@
           <h1
             class="tracking-widest inline-block bg-gradient-to-br from-rose-400 via-purple-500 to-cyan-500 bg-clip-text py-1 text-4xl font-bold text-transparent dark:mt-0 dark:from-rose-400 dark:via-purple-400 dark:to-cyan-400"
           >
-            <span id="welcome-txt" :style="{ '--ti-cursor-color': 'var(--color-purple-200)' }"></span>
+            <span
+              id="welcome-txt"
+              :style="{ '--ti-cursor-color': 'var(--color-purple-200)' }"
+              title="欢迎访问Mino的网站"
+            ></span>
           </h1>
         </div>
         <div class="z-1 relative mt-34 flex flex-row justify-center gap-x-4">
@@ -123,7 +127,7 @@
         <p
           class="z-1 relative mx-auto mt-10 px-4 text-center text-xl leading-relaxed text-purple-200 dark:prose-invert lg:text-2xl"
         >
-          A
+          <span title="代码是充满激情的艺术🎨✨">"Code is Art, Crafted with Passion"​ 🎨✨</span>
         </p>
       </div>
     </header>
@@ -151,7 +155,10 @@
               <p>在线代码编辑器，支持 javascript、vue3、react 等。</p>
             </div>
             <div class="flex justify-end">
-              <a class="flex items-center gap-2 text-xl font-bold text-rose-600 dark:text-rose-300" href="/"
+              <a
+                class="flex items-center gap-2 text-xl font-bold text-rose-600 dark:text-rose-300"
+                target="_blank"
+                href="/codepen"
                 >Coding...
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -177,7 +184,10 @@
               <p>Markdown 解析工具，内置 CodePen 插件。</p>
             </div>
             <div class="flex justify-end">
-              <a class="flex items-center gap-2 text-xl font-bold text-rose-600 dark:text-rose-300" href="/"
+              <a
+                class="flex items-center gap-2 text-xl font-bold text-rose-600 dark:text-rose-300"
+                target="_blank"
+                href="/markdown"
                 >Writing...
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -216,9 +226,8 @@
           <div class="flex items-center gap-x-4">
             <div class="group h-8.5 flex items-center cursor-pointer relative">
               <span class="iconfont icon-weixin" style="font-size: 34px"></span>
-              <div class="hidden group-hover:block absolute -top-full">
-                <!-- TODO: 添加微信二维码图片 -->
-                <img src="/ico.svg" width="500" alt="">
+              <div class="hidden group-hover:block absolute w-[200px] -top-52">
+                <img src="@/assets/weixin.png" alt="" />
               </div>
             </div>
             <div class="h-8.5 flex items-center cursor-pointer">

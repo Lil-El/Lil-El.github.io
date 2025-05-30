@@ -8,6 +8,9 @@ copySw();
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    __APP_TITLE__: JSON.stringify("Mino 部落格"),
+  },
   resolve: {
     alias: {
       "@": "/src",

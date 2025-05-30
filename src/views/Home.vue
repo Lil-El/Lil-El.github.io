@@ -158,7 +158,7 @@
               <a
                 class="flex items-center gap-2 text-xl font-bold text-rose-600 dark:text-rose-300"
                 target="_blank"
-                href="/codepen"
+                href="#/codepen"
                 >Coding...
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +187,7 @@
               <a
                 class="flex items-center gap-2 text-xl font-bold text-rose-600 dark:text-rose-300"
                 target="_blank"
-                href="/markdown"
+                href="#/markdown"
                 >Writing...
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

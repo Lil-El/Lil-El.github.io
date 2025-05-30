@@ -1,6 +1,7 @@
 <template>
   <router-view v-slot="{ Component }">
-    <transition >
+    <!-- TODO： -->
+    <transition>
       <!-- name="fade" mode="out-in" -->
       <keep-alive :include="['Home', 'About']">
         <component :is="Component" />

@@ -145,7 +145,7 @@
           </p>
         </div>
         <div
-          class="container mx-auto mb-12 grid max-w-screen-xl gap-4 py-10 dark:text-black sm:grid-cols-2 px-4 lg:grid-cols-3"
+          class="container mx-auto grid max-w-screen-xl gap-4 py-10 dark:text-black sm:grid-cols-2 px-4 lg:grid-cols-3"
         >
           <div
             class="flex h-[18rem] flex-col justify-between bg-white p-10 shadow dark:bg-gray-700 dark:text-gray-100 sm:h-[19rem] rounded-lg md:h-[18rem] transition hover:shadow-xl"
@@ -207,6 +207,52 @@
           </div>
         </div>
       </section>
+
+      <section>
+        <div class="container mx-auto max-w-screen-xl px-4 md:px-8">
+          <h2
+            class="mt-12 mb-4 inline-block bg-gradient-to-br from-rose-400 via-purple-500 to-cyan-500 bg-clip-text py-1 text-3xl font-bold text-transparent dark:mt-0 dark:from-rose-400 dark:via-purple-400 dark:to-cyan-400 lg:mt-16 lg:text-4xl lg:[line-height:3.5rem] dark:lg:mt-4"
+          >
+            其他站点
+          </h2>
+          <p class="text-left text-xl dark:prose-invert lg:text-2xl lg:leading-relaxed">
+            Powered by <span class="font-bold">Mino</span>.
+          </p>
+        </div>
+        <div
+          class="container mx-auto mb-12 grid max-w-screen-xl gap-4 py-10 dark:text-black sm:grid-cols-2 max-md:mb-0 px-4 lg:grid-cols-3"
+        >
+          <div
+            class="flex h-[18rem] flex-col justify-between bg-white p-10 shadow dark:bg-gray-700 dark:text-gray-100 sm:h-[19rem] rounded-lg md:h-[18rem] transition hover:shadow-xl"
+          >
+            <div>
+              <h3 class="mb-6 text-3xl font-bold">Gis Measure</h3>
+              <p>ArcGIS 三维场景下实现沿地表进行距离、面积、体积的测量。</p>
+            </div>
+            <div class="flex justify-end">
+              <a
+                class="flex items-center gap-2 text-xl font-bold text-rose-600 dark:text-rose-300"
+                target="_blank"
+                href="/gis-measure"
+                >Measuring...
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline></svg
+              ></a>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="bg-[#1f2028] py-10 text-xs text-gray-400 max-md:hidden">
@@ -245,7 +291,15 @@
 <script setup>
 import TypeIt from "typeit";
 /*
+https://blog.csdn.net/qq_36157085/article/details/119383264 调试
+
+旭日图-技术栈
+
 codepen 类型校验：只支持js、vue、react，对内容进行校验和错误提示
+博客首页进行归档
+
+博客列表：使用js去设置标题、副标题、日期、标签、路径；点击获取路径并渲染md
+
 主题配色/mode
 app 读取目录生成左侧目录，点击目录跳转对应md文件，左侧目录做面包屑，添加目录层级进入、退出的切换动画效果
 年度任务：

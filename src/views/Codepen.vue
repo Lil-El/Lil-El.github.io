@@ -1,6 +1,6 @@
 <template>
   <div class="w-screen h-screen">
-    <codepen />
+    <codepen style="--codepen-color: white" />
   </div>
 </template>
 

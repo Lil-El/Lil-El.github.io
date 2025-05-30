@@ -245,7 +245,8 @@
 <script setup>
 import TypeIt from "typeit";
 /*
-主题配色迁移app
+codepen 类型校验：只支持js、vue、react，对内容进行校验和错误提示
+主题配色/mode
 app 读取目录生成左侧目录，点击目录跳转对应md文件，左侧目录做面包屑，添加目录层级进入、退出的切换动画效果
 年度任务：
   - 微前端

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 @font-face {
   font-family: 'MapleMono';
   src: url('assets/MapleMono-Italic.woff2') format('woff2');

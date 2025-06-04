@@ -3,7 +3,7 @@
     <!-- TODO： -->
     <transition>
       <!-- name="fade" mode="out-in" -->
-      <keep-alive :include="['Home', 'About']">
+      <keep-alive :include="['blogs']">
         <component :is="Component" />
       </keep-alive>
     </transition>

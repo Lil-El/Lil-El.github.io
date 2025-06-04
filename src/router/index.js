@@ -7,6 +7,23 @@ const routes = [
     component: () => import("@/views/Home.vue"),
   },
   {
+    path: "/blogs",
+    name: "blogs",
+    component: () => import("@/layouts/layout.vue"),
+    children: [
+      {
+        path: "",
+        name: "started",
+        component: () => import("@/views/blogs/started.vue"),
+      },
+      {
+        path: ":id",
+        name: "blog",
+        component: () => import("@/views/blogs/blog.vue"),
+      },
+    ],
+  },
+  {
     path: "/codepen",
     name: "codepen",
     component: () => import("@/views/Codepen.vue"),

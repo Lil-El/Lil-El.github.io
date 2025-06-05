@@ -1,5 +1,5 @@
 <template>
-  <m-markdown :text="text" />
+  <m-markdown :key="text" :text="text" />
 </template>
 
 <script setup>
@@ -12,16 +12,14 @@ const route = useRoute();
 const text = ref("");
 
 watch(
-  () => route,
-  (newRoute) => {
-    const id = newRoute.params.id;
+  () => route.params.id,
+  (id) => {
     const { component } = articles.find((i) => `${i.id}` === `${id}`);
     component().then((module) => {
       text.value = module.default;
     });
   },
   {
-    deep: true,
     immediate: true,
   }
 );

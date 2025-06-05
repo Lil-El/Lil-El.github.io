@@ -1,8 +1,19 @@
-@import "tailwindcss";
+* {
+  padding: 0;
+  margin: 0;
+}
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+:root {
+  font-size: 16px;
+}
 
 @font-face {
   font-family: 'MapleMono';
   src: url('./assets/MapleMono-Italic.woff2') format('woff2');
+}
+
+[data-theme="dark"] {
+  #app {
+    background-color: #1e1e1e;
+  }
 }

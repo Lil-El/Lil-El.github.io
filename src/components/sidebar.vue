@@ -1,31 +1,33 @@
 <template>
-  <aside class="sidebar-container">
-    <div class="breadcrumbs">
-      <span class="bread-item" @click="handleClick()">ROOT</span>
-      <div v-for="item in breadcrumbs" :key="item.id" class="bread-items">
-        <span class="iconfont icon-right right-arrow" style="font-size: 10px"></span>
-        <span class="bread-item" @click="handleClick(item)">{{ item.title }}</span>
+  <aside class="w-2xs text-sm dark:border-white/10 border-r border-r-gray-950/5">
+    <div class="px-4 h-9 flex items-center gap-1">
+      <span class="text-gray-500 cursor-pointer hover:text-black" @click="handleClick()">ROOT</span>
+      <div v-for="item in breadcrumbs" :key="item.id" class="flex items-center gap-1">
+        <span class="iconfont icon-right text-gray-900" style="font-size: 10px"></span>
+        <span class="text-gray-500 cursor-pointer hover:text-black" @click="handleClick(item)">{{ item.title }}</span>
       </div>
     </div>
-    <div class="sidebar-dir">
+    <div class="h-[calc(100vh-calc(var(--spacing)*14))] overflow-y-auto px-4 pb-4">
       <transition name="translate-fade" mode="out-in">
         <div :key="currentPath">
           <div v-for="item in currentDirectory" :key="item.id" @click="handleClick(item)">
             <router-link
               v-if="item.component"
               :to="`/blogs/${item.id}`"
-              class="dir-item"
-              :class="{ 'dir-item-active': item.id === active.id }"
+              class="h-9 flex justify-between items-center px-4 cursor-pointer rounded-md hover:bg-gray-100"
             >
-              <!-- :class="{ 'bg-gray-200': item.id === active.id, 'hover:bg-gray-100': item.id !== active.id }" -->
-              <span>{{ item.title }}</span>
-              <span v-if="item.children?.length" class="iconfont icon-right right-arrow" style="font-size: 10px"></span>
-            </router-link>
-            <div v-else class="dir-item">
               <span>{{ item.title }}</span>
               <span
                 v-if="item.children?.length"
-                class="iconfont icon-right dir-item-arrow"
+                class="iconfont icon-right text-gray-900"
+                style="font-size: 10px"
+              ></span>
+            </router-link>
+            <div v-else class="h-9 flex justify-between items-center px-4 cursor-pointer rounded-md hover:bg-gray-100">
+              <span>{{ item.title }}</span>
+              <span
+                v-if="item.children?.length"
+                class="iconfont icon-right text-gray-900"
                 style="font-size: 10px"
               ></span>
             </div>
@@ -37,11 +39,6 @@
 </template>
 
 <script setup>
-/*
-  面包屑横向滚动
-  markdown 标题点击错位问题
-  markdown 属性监听
-*/
 import { directory } from "@/blogs";
 import { findPathById } from "@/utils";
 import { onBeforeMount } from "vue";
@@ -72,6 +69,7 @@ onBeforeMount(() => {
 
 function handleClick(node) {
   if (node === active.value) return void 0;
+  active.value = node;
 
   if (!node) {
     breadcrumbs.value = [];
@@ -80,88 +78,11 @@ function handleClick(node) {
 
   if (node.children && node.children.length > 0) {
     breadcrumbs.value.push(node);
-  } else if (node.component) {
-    active.value = node;
   }
 }
 </script>
 
 <style scoped>
-.sidebar-container {
-  width: 288px;
-  padding: 1rem;
-  font-size: 0.875rem;
-  border-right: 1px solid rgba(0, 0, 0, 0.05);
-
-  [data-theme="dark"] & {
-    border-right-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .breadcrumbs {
-    height: 2.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-
-    .bread-items {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .bread-item {
-      cursor: pointer;
-      color: #6b7280;
-
-      &:hover {
-        color: #000;
-      }
-
-      [data-theme="dark"] & {
-        color: #d1d5db;
-        &:hover {
-          color: #fff;
-        }
-      }
-    }
-
-    .right-arrow {
-      color: #111827;
-
-      [data-theme="dark"] & {
-        color: #f9fafb;
-      }
-    }
-  }
-}
-
-.sidebar-dir {
-  overflow-y: auto;
-
-  .dir-item {
-    height: 2.25rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    cursor: pointer;
-    border-radius: 0.375rem;
-
-    &:hover {
-      background-color: #f3f4f6;
-    }
-
-    &-arrow {
-      color: #111827;
-    }
-
-    &.dir-item-active {
-      background-color: #e5e7eb;
-    }
-  }
-}
-
 .translate-fade-enter-active,
 .translate-fade-leave-active {
   transition: all 0.5s ease;

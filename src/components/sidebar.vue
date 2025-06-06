@@ -59,8 +59,9 @@
 /*
   面包屑横向滚动
   markdown 标题点击错位问题
-  markdown 属性监听
-  冲突问题
+  markdown text 属性监听；滚动条设置样式；
+  移动端优化；
+  doc-core 发布测试版本，稳定后发布2.0，废弃1.0
 */
 import { directory } from "@/blogs";
 import { findPathById } from "@/utils";

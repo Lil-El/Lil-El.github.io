@@ -7,17 +7,53 @@ const themeColors = {
 };
 
 export default function useTheme() {
+  const modeArr = ["system", "light", "dark"];
+
   const themeArr = readonly(Object.entries(themeColors).map((i) => ({ name: i[0], color: i[1] })));
 
   const theme = reactive({
-    mode: "light",
+    mode: "system",
+    isDark: false,
     name: themeArr[0].name,
     color: themeArr[0].color,
   });
 
+  provide("theme", theme);
+  provide("toggleMode", toggleMode);
+
+  onMounted(() => {
+    if (theme.mode === "system") {
+      const systemMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      setThemeMode(systemMode);
+    }
+
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", handleSysModeChange);
+  });
+
+  onUnmounted(() => {
+    window.matchMedia("(prefers-color-scheme: dark)").removeEventListener("change", handleSysModeChange);
+  });
+
+  function handleSysModeChange(e) {
+    if (theme.mode === "system") {
+      setThemeMode(e.matches ? "dark" : "light");
+    }
+  }
+
   function toggleMode() {
-    theme.mode = theme.mode === "light" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", theme.mode);
+    theme.mode = modeArr[(modeArr.indexOf(theme.mode) + 1) % modeArr.length];
+    if (theme.mode === "system") {
+      const systemMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      setThemeMode(systemMode);
+    } else {
+      setThemeMode(theme.mode);
+    }
+  }
+
+  function setThemeMode(mode) {
+    document.documentElement.setAttribute("data-theme", mode);
+    if (mode === "dark") theme.isDark = true;
+    else theme.isDark = false;
   }
 
   function changeColor(e) {
@@ -25,6 +61,4 @@ export default function useTheme() {
     theme.color = e.target.value;
     document.documentElement.style.setProperty("--data-theme-color", theme.color);
   }
-
-  return { themeArr, toggleMode, changeColor };
 }

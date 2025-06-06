@@ -101,7 +101,6 @@
           <a
             class="hover:saturate-110 flex items-center gap-2 whitespace-nowrap rounded bg-gradient-to-br from-red-300 via-violet-300 to-cyan-400 px-4 py-3 font-bold text-gray-900 shadow-lg transition hover:shadow-xl hover:brightness-110 sm:text-lg"
             href="#/blogs"
-            target="_blank"
             >Get Started
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -155,13 +154,12 @@
               <h3 class="mb-6 text-3xl font-bold">{{ item.title }}</h3>
               <p class="line-clamp-3">{{ item.description }}</p>
             </div>
-            <div class="text-right text-sm text-gray-600">
+            <div class="text-right text-sm text-gray-600 dark:text-gray-400">
               <span>{{ item.date }}</span>
             </div>
             <div class="flex justify-end">
               <a
                 class="flex items-center gap-2 text-xl font-bold text-rose-600 dark:text-rose-300"
-                target="_blank"
                 :href="`#/blogs/${item.id}`"
                 >See...
                 <svg
@@ -205,10 +203,7 @@
               <p>在线代码编辑器，支持 javascript、vue3、react 等。</p>
             </div>
             <div class="flex justify-end">
-              <a
-                class="flex items-center gap-2 text-xl font-bold text-rose-600 dark:text-rose-300"
-                target="_blank"
-                href="#/codepen"
+              <a class="flex items-center gap-2 text-xl font-bold text-rose-600 dark:text-rose-300" href="#/codepen"
                 >Coding...
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -234,10 +229,7 @@
               <p>Markdown 解析工具，内置 CodePen 插件。</p>
             </div>
             <div class="flex justify-end">
-              <a
-                class="flex items-center gap-2 text-xl font-bold text-rose-600 dark:text-rose-300"
-                target="_blank"
-                href="#/markdown"
+              <a class="flex items-center gap-2 text-xl font-bold text-rose-600 dark:text-rose-300" href="#/markdown"
                 >Writing...
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -317,7 +309,6 @@
         </div>
       </section>
     </main>
-
     <footer class="bg-[#1f2028] py-10 text-xs text-gray-400 max-md:hidden">
       <div class="mx-auto max-w-7xl grid grid-cols-2 gap-x-10">
         <div class="flex flex-col gap-y-6">

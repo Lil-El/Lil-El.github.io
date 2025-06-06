@@ -1,1 +1,0 @@
-import{c as o,d as l,p as n}from"./index-DByiXH7g.js";const i={__name:"index",props:{msg:{type:String,default:"Hello World"}},setup(e){function t(){alert("hello world")}return(r,a)=>(l(),o("div",{onClick:t},n(e.msg),1))}};export{i as default};

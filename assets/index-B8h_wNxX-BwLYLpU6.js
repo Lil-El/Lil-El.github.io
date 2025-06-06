@@ -1,0 +1,1 @@
+import{c as o,e as l,t as n}from"./index-yqNOP02V.js";const i={__name:"index",props:{msg:{type:String,default:"Hello World"}},setup(e){function t(){alert("hello world")}return(r,a)=>(l(),o("div",{onClick:t},n(e.msg),1))}};export{i as default};

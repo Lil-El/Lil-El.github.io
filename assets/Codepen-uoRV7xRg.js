@@ -1,2 +1,0 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/code-pen-2OiQGWRY-zIvKFiIv.js","assets/index-DByiXH7g.js","assets/index-C8DtE4XZ.css"])))=>i.map(i=>d[i]);
-import{e as t,f as o,c as s,g as c,u as n,d as r}from"./index-DByiXH7g.js";const _=t(()=>o(()=>import("./code-pen-2OiQGWRY-zIvKFiIv.js"),__vite__mapDeps([0,1,2])).then(e=>e.c)),a={class:"w-screen h-screen"},l={__name:"Codepen",setup(e){return(d,p)=>(r(),s("div",a,[c(n(_),{style:{"--codepen-color":"white"}})]))}};export{l as default};

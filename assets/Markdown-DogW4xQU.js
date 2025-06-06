@@ -1,2 +1,0 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/index-2JFaqnZB-lHYBZJBP.js","assets/index-DByiXH7g.js","assets/index-C8DtE4XZ.css"])))=>i.map(i=>d[i]);
-import{e,f as o,c as t,g as r,u as a,d as n}from"./index-DByiXH7g.js";const _=e(()=>o(()=>import("./index-2JFaqnZB-lHYBZJBP.js"),__vite__mapDeps([0,1,2]))),i={__name:"Markdown",setup(s){return(c,l)=>(n(),t("div",null,[r(a(_),{tutorial:"",editable:"",style:{"--markdown-color":"yellowgreen"}})]))}};export{i as default};

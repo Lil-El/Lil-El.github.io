@@ -1,0 +1,1 @@
+import{m as e}from"./index-FtYKd7ds.js";import{c as r,h as o,u as t,e as a}from"./index-yqNOP02V.js";const u={__name:"Markdown",setup(l){return(n,c)=>(a(),r("div",null,[o(t(e),{tutorial:"",editable:"",style:{"--markdown-color":"yellowgreen"}})]))}};export{u as default};

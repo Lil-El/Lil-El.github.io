@@ -1,4 +1,4 @@
-const themeColors = {
+export const themeColors = {
   yellowgreen: "#99cd32",
   purple: "#a948ff",
   cyan: "#00d0ff",
@@ -20,6 +20,7 @@ export default function useTheme() {
 
   provide("theme", theme);
   provide("toggleMode", toggleMode);
+  provide("changeColor", changeColor);
 
   onMounted(() => {
     if (theme.mode === "system") {
@@ -56,9 +57,9 @@ export default function useTheme() {
     else theme.isDark = false;
   }
 
-  function changeColor(e) {
-    theme.name = themeArr.find((c) => c.color === e.target.value).name;
-    theme.color = e.target.value;
+  function changeColor(name) {
+    theme.color = themeArr.find((c) => c.name === name).color;
+    theme.name = name;
     document.documentElement.style.setProperty("--data-theme-color", theme.color);
   }
 }

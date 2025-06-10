@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
-    "@lil-el/codepen": "^1.4.0",
-    "@lil-el/markdown": "^1.4.1",
+    "@lil-el/codepen": "^1.5.0",
+    "@lil-el/markdown": "^1.5.0",
     "element-plus": "^2.9.11",
     "typeit": "^8.8.7",
     "vue": "^3.5.16",

@@ -1,5 +1,5 @@
 <template>
-  <m-markdown  :key="text" :text="text" />
+  <m-markdown tutorial :text="text" style="--markdown-color: var(--data-theme-color)" />
 </template>
 
 <script setup>

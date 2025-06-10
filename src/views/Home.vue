@@ -373,6 +373,8 @@ const flag = ref(true);
 const latest = articles.slice(-5);
 
 onMounted(() => {
+  document.documentElement.style.overflow = "auto";
+
   new TypeIt("#welcome-txt", {
     speed: 50,
     startDelay: 900,

@@ -26,4 +26,8 @@ watch(
   },
   { immediate: true }
 );
+
+onMounted(() => {
+  document.documentElement.style.overflow = "hidden";
+});
 </script>

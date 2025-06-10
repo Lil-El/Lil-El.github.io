@@ -7,7 +7,45 @@
         <img src="/ico.svg" width="32" alt="" />
       </router-link>
     </div>
-    <div>
+    <div class="flex items-center gap-4">
+      <div>
+        <div class="relative" @click="showPanel">
+          <svg
+            class="cursor-pointer"
+            t="1749546757267"
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            :fill="theme.isDark ? '#ffffff' : '#000000'"
+          >
+            <path
+              d="M710.58 462.01a54.9 54.9 0 1 0 109.8 0 54.9 54.9 0 1 0-109.8 0z m-91.5-146.4a54.9 54.9 0 1 0 109.8 0 54.9 54.9 0 1 0-109.8 0z m-183.002-45.751a54.9 54.9 0 1 0 109.8 0 54.9 54.9 0 1 0-109.8 0z m-164.702 91.5a54.9 54.9 0 1 0 109.8 0 54.9 54.9 0 1 0-109.8 0z m-64.05 164.702a54.9 54.9 0 1 0 109.8 0 54.9 54.9 0 1 0-109.8 0z m273.587 430.97c-19.215 0-39.346-1.83-61.306-4.576l-5.49-0.915C258.566 927.75 152.425 776.774 147.85 770.37c-150.062-228.752-75.031-460.25 66.795-588.35C355.557 53.916 590.714-0.984 796.591 164.632 929.267 271.69 969.527 419.92 971.357 426.325v1.83c19.215 104.311 3.66 181.172-46.665 230.583-76.86 74.115-204.047 50.325-221.432 46.665-23.79-2.745-41.176 4.575-53.986 20.13-13.725 17.385-16.47 40.26-11.895 53.986 12.81 38.43 14.64 67.71 5.49 89.67-26.535 57.646-80.52 87.841-161.956 87.841z m-58.56-60.391l5.49 0.915c88.755 13.725 142.74-3.66 164.7-53.07 0-0.916 4.576-12.81-7.32-49.411-11.894-32.94-2.744-75.946 21.046-105.226 24.705-31.11 61.306-44.836 104.31-40.26l2.746 0.915c0.915 0 114.376 24.705 172.937-32.026 35.685-34.77 46.665-95.16 31.11-179.341-3.66-11.896-43.006-140.912-156.467-231.498-179.341-146.4-385.218-97.905-509.66 14.64C136.87 326.59 52.69 525.147 193.6 740.174c0.915 0 96.991 137.252 228.752 156.467z"
+              p-id="6680"
+            ></path>
+          </svg>
+
+          <div
+            class="absolute top-8 right-0 flex flex-col gap-1 bg-white dark:bg-gray-700/50 rounded-xs shadow-xs border border-gray-100 dark:border-gray-500 p-4 z-50"
+            v-show="visible"
+          >
+            <div class="cursor-pointer text-sm flex items-center gap-2" @click="handleTheme()">
+              <div class="aspect-square w-4 border border-gray-400"></div>
+              <span class="hover:text-gray-500 dark:text-white dark:hover:text-gray-400">默认</span>
+            </div>
+            <div
+              class="cursor-pointer text-sm flex items-center gap-2"
+              v-for="(color, name) in themes"
+              :key="name"
+              @click="handleTheme(name)"
+            >
+              <div class="aspect-square w-4" :style="{ backgroundColor: color }"></div>
+              <span class="hover:text-gray-500 dark:text-white dark:hover:text-gray-400">{{ name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div>
         <div class="cursor-pointer" v-show="theme.mode === 'system'" title="跟随系统" @click="toggleMode">
           <svg width="20" height="20" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -57,6 +95,21 @@
 </template>
 
 <script setup>
+import { themeColors } from "@/hooks/useTheme.js";
+
 const theme = inject("theme");
 const toggleMode = inject("toggleMode");
+const changeColor = inject("changeColor");
+
+const visible = ref(false);
+
+const themes = readonly(themeColors);
+
+function showPanel() {
+  visible.value = !visible.value;
+}
+
+function handleTheme(name) {
+  changeColor(name);
+}
 </script>

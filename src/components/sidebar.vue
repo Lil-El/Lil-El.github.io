@@ -57,11 +57,10 @@
 
 <script setup>
 /*
-  面包屑横向滚动
-  markdown 标题点击错位问题
-  markdown text 属性监听；滚动条设置样式；
   移动端优化；
-  doc-core 发布测试版本，稳定后发布2.0，废弃1.0
+  codepen 添加类型处理；
+  部署的 _ 处理 vite
+  打包优化
 */
 import { directory } from "@/blogs";
 import { findPathById } from "@/utils";

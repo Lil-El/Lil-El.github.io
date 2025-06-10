@@ -22,4 +22,28 @@ export default defineConfig({
     }),
     tailwindcss(),
   ],
+  build: {
+    rollupOptions: {
+      // 作为库打包时，排除以下依赖；如果是应用打包，则不需要排除这些依赖
+      output: {
+        chunkFileNames(assetInfo) {
+          // 忽略以 _ 开头的文件：gh pages 对这类文件 404
+          if (assetInfo.name.startsWith("_")) {
+            return `js/${assetInfo.name.slice(1)}.js`;
+          }
+
+          return "js/[name]-[hash].js";
+        },
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith(".css")) {
+            return "assets/css/[name][extname]";
+          } else if (assetInfo.name?.endsWith(".ttf") || assetInfo.name?.endsWith(".woff2")) {
+            return "assets/fonts/[name][extname]";
+          }
+          return "assets/[name][extname]";
+        },
+      },
+    },
+    emptyOutDir: true,
+  },
 });

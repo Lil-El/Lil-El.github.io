@@ -1,6 +1,6 @@
 <template>
   <div>
-    <markdown tutorial editable style="--markdown-color: yellowgreen" />
+    <markdown tutorial editable style="--markdown-color: var(--data-theme-color)" />
   </div>
 </template>
 

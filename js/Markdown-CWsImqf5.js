@@ -1,1 +1,0 @@
-import{m as e}from"./index-CobNThko.js";import{c as r,k as a,u as o,e as t}from"../assets/index-BtBI673Z.js";const u={__name:"Markdown",setup(c){return(l,n)=>(t(),r("div",null,[a(o(e),{tutorial:"",editable:"",style:{"--markdown-color":"var(--data-theme-color)"}})]))}};export{u as default};

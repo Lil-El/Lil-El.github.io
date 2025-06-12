@@ -1,1 +1,0 @@
-function t(){if(window.Babel)return Promise.resolve(window.Babel);const{promise:o,resolve:n}=Promise.withResolvers();function r(){const e=document.createElement("script");e.src=__Babel_CDN__,e.onload=()=>n(window.Babel),document.body.appendChild(e)}return r(),o}export{t as default};

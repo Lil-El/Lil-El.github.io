@@ -1,4 +1,10 @@
-const r=`# 介绍\r
+const r=`# vite + qiankun 构建微前端应用实践 [!toc hide]\r
+\r
+[![GitHub](https://img.shields.io/badge/GitHub-qiankun-blue?logo=github)](https://github.com/Lil-El/qiankun)\r
+\r
+---\r
+\r
+# 介绍\r
 \r
 ## Qiankun\r
 \r
@@ -55,7 +61,7 @@ $ pnpm i qiankun\r
 \r
 ### App.vue\r
 \r
-\`\`\`html\r
+\`\`\`html [!title:App.vue]\r
 <template>\r
   <router-view></router-view>\r
 </template>\r
@@ -65,7 +71,7 @@ $ pnpm i qiankun\r
 \r
 要为子应用设置对应的匹配路径\r
 \r
-\`\`\`js\r
+\`\`\`js [!title:router.js]\r
 import { createRouter, createWebHistory } from "vue-router";\r
 \r
 const routes = [\r
@@ -86,7 +92,7 @@ export default router;\r
 \r
 注册子应用\r
 \r
-\`\`\`js\r
+\`\`\`js [!title:main.js]\r
 import { createApp } from "vue";\r
 import App from "./App.vue";\r
 import { registerMicroApps, start, loadMicroApp } from "qiankun";\r
@@ -118,7 +124,7 @@ app.mount("#app");\r
 \r
 ### views/Home.vue\r
 \r
-\`\`\`html\r
+\`\`\`html [!title:Home.vue]\r
 <template>\r
   <div>Home</div>\r
   <router-link to="/sub-app">sub app</router-link>\r
@@ -127,7 +133,7 @@ app.mount("#app");\r
 \r
 ### views/SubApp.vue\r
 \r
-\`\`\`html\r
+\`\`\`html [!title:SubApp.vue]\r
 <template>\r
   <div>this is a sub app:</div>\r
   <br>\r
@@ -153,7 +159,7 @@ $ pnpm i vite-plugin-qiankun -D\r
 \r
 ### App.vue\r
 \r
-\`\`\`html\r
+\`\`\`html [!title:App.vue]\r
 <template>\r
   <router-view></router-view>\r
 </template>\r
@@ -161,7 +167,7 @@ $ pnpm i vite-plugin-qiankun -D\r
 \r
 ### router.js\r
 \r
-\`\`\`js\r
+\`\`\`js [!title:router.js]\r
 import { createRouter, createWebHistory, createMemoryHistory } from "vue-router";\r
 \r
 const router = createRouter({\r
@@ -188,7 +194,7 @@ export default router;\r
 - 使用 \`qiankunWindow\` 判断是否是独立运行\r
 - 在 \`window\` 上挂载子应用的钩子函数\r
 \r
-\`\`\`js\r
+\`\`\`js [!title:main.js]\r
 import { createApp } from "vue";\r
 import App from "./App.vue";\r
 import router from "./router/index.js";\r
@@ -226,7 +232,7 @@ if (!qiankunWindow.__POWERED_BY_QIANKUN__) { // window.proxy\r
 \r
 需要为子应用配置 \`base\`、\`server\`、\`build\`\r
 \r
-\`\`\`js\r
+\`\`\`js [!title:vite.config.js]\r
 import { defineConfig } from "vite";\r
 import vue from "@vitejs/plugin-vue";\r
 import qiankun from "vite-plugin-qiankun";\r
@@ -257,7 +263,7 @@ export default defineConfig({\r
 \r
 ### views/Home.vue\r
 \r
-\`\`\`html\r
+\`\`\`html [!title:Home.vue]\r
 <template>\r
   <div>sub app home</div>\r
   <br>\r
@@ -269,7 +275,7 @@ export default defineConfig({\r
 \r
 打包时候需要修改子应用的 \`base\`，更改为其所在的 \`url\`；\r
 \r
-\`\`\`js\r
+\`\`\`js [!title:vite.config.js]\r
 export default defineConfig({\r
   plugins: [\r
     vue(),\r

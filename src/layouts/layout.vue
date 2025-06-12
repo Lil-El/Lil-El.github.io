@@ -1,10 +1,10 @@
 <template>
   <m-header />
 
-  <main class="flex h-[calc(100vh-calc(var(--spacing)*14))] overflow-hidden">
-    <m-side-bar />
+  <main class="@container relative flex h-[calc(100vh-calc(var(--spacing)*14))] overflow-hidden">
+    <m-side-bar ref="sidebarRef" class="absolute transition-all z-10 w-2xs @max-3xl:w-[calc(100vw-50px)]" />
 
-    <div class="h-full flex-1">
+    <div class="transition-all h-full flex-1 pl-72 @max-3xl:pl-0">
       <router-view :key="routeId" />
     </div>
   </main>
@@ -19,6 +19,8 @@ const route = useRoute();
 
 const routeId = ref(null);
 
+const sidebarRef = ref(null);
+
 watch(
   () => route.params.id,
   () => {
@@ -27,7 +29,23 @@ watch(
   { immediate: true }
 );
 
+let observer = null;
+
 onMounted(() => {
   document.documentElement.style.overflow = "hidden";
+
+  observer = new ResizeObserver(([entry]) => {
+    if (entry.contentRect.width < 48 * 16) {
+      sidebarRef.value.setOpen(false);
+    } else {
+      sidebarRef.value.setOpen(true);
+    }
+  });
+
+  observer.observe(document.body);
+});
+
+onUnmounted(() => {
+  observer.disconnect();
 });
 </script>

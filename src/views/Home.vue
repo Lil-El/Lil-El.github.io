@@ -146,7 +146,7 @@
           class="container mx-auto grid max-w-screen-xl gap-4 py-10 dark:text-black sm:grid-cols-2 px-4 lg:grid-cols-3"
         >
           <div
-            class="flex h-[18rem] flex-col justify-between bg-white p-10 shadow dark:bg-gray-700 dark:text-gray-100 sm:h-[19rem] rounded-lg md:h-[18rem] transition hover:shadow-xl"
+            class="flex h-[18rem] flex-col justify-between bg-white p-10 shadow dark:bg-gray-700 dark:text-gray-100 sm:h-[19rem] rounded-lg md:h-[18rem] transition hover:shadow-xl max-sm:p-5 max-md:p-8"
             v-for="item in latest"
             :key="item.id"
           >
@@ -196,7 +196,7 @@
           class="container mx-auto grid max-w-screen-xl gap-4 py-10 dark:text-black sm:grid-cols-2 px-4 lg:grid-cols-3"
         >
           <div
-            class="flex h-[18rem] flex-col justify-between bg-white p-10 shadow dark:bg-gray-700 dark:text-gray-100 sm:h-[19rem] rounded-lg md:h-[18rem] transition hover:shadow-xl"
+            class="flex h-[18rem] flex-col justify-between bg-white p-10 shadow dark:bg-gray-700 dark:text-gray-100 sm:h-[19rem] rounded-lg md:h-[18rem] transition hover:shadow-xl max-sm:p-5 max-md:p-8"
           >
             <div>
               <h3 class="mb-6 text-3xl font-bold">Code Pen</h3>
@@ -222,7 +222,7 @@
             </div>
           </div>
           <div
-            class="flex h-[18rem] flex-col justify-between bg-white p-10 shadow dark:bg-gray-700 dark:text-gray-100 sm:h-[19rem] rounded-lg md:h-[18rem] transition hover:shadow-xl"
+            class="flex h-[18rem] flex-col justify-between bg-white p-10 shadow dark:bg-gray-700 dark:text-gray-100 sm:h-[19rem] rounded-lg md:h-[18rem] transition hover:shadow-xl max-sm:p-5 max-md:p-8"
           >
             <div>
               <h3 class="mb-6 text-3xl font-bold">Markdown</h3>
@@ -265,7 +265,7 @@
           class="container mx-auto grid max-w-screen-xl gap-4 py-10 dark:text-black sm:grid-cols-2 max-md:mb-0 px-4 lg:grid-cols-3"
         >
           <div
-            class="flex h-[18rem] flex-col justify-between bg-white p-10 shadow dark:bg-gray-700 dark:text-gray-100 sm:h-[19rem] rounded-lg md:h-[18rem] transition hover:shadow-xl"
+            class="flex h-[18rem] flex-col justify-between bg-white p-10 shadow dark:bg-gray-700 dark:text-gray-100 sm:h-[19rem] rounded-lg md:h-[18rem] transition hover:shadow-xl max-sm:p-5 max-md:p-8"
           >
             <div>
               <h3 class="mb-6 text-3xl font-bold">Gis Measure</h3>

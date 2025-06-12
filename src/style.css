@@ -9,6 +9,19 @@
   src: url('./assets/MapleMono-Italic.woff2') format('woff2');
 }
 
+/*
+TODO:
+.my-element {
+  background: white;
+  @variant dark {
+    background: black;
+  }
+} */
+
+/* @utility card {
+  @apply
+} */
+
 #app {
   @apply bg-white dark:bg-black;
 }

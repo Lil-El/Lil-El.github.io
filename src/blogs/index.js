@@ -9,7 +9,16 @@ export const directory = [
   {
     id: "CSS",
     title: "CSS",
-    children: [],
+    children: [
+      {
+        id: 1,
+        title: "tailwindcss",
+        description: "vite + vue 使用 tailwindcss。",
+        author: "Mino",
+        date: "2025-06-12",
+        component: () => import("./202506/2-tailwindcss.md?raw"),
+      },
+    ],
   },
   {
     id: "JavaScript",
@@ -32,14 +41,6 @@ export const directory = [
         author: "Mino",
         date: "2025-06-04",
         component: () => import("./202506/1-微前端应用.md?raw"),
-      },
-      {
-        id: 3,
-        title: "32端应用",
-        description: "基于 qiankun + vite + vue3 构建一个微前端的应用。",
-        author: "Mino",
-        date: "2025-06-04",
-        component: () => import("../../README.md?raw"),
       },
     ],
   },

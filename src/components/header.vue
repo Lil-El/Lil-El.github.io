@@ -27,7 +27,7 @@
           </svg>
 
           <div
-            class="absolute top-8 right-0 flex flex-col gap-1 bg-white dark:bg-gray-700/50 rounded-xs shadow-xs border border-gray-100 dark:border-gray-500 p-4 z-50"
+            class="absolute top-8 -right-10 flex flex-col gap-1 bg-white dark:bg-gray-700/50 rounded-xs shadow-xs border border-gray-100 dark:border-gray-500 p-4 z-50"
             v-show="visible"
           >
             <div class="cursor-pointer text-sm flex items-center gap-2" @click="handleTheme()">

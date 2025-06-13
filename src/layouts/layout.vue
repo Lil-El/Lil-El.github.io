@@ -1,7 +1,7 @@
 <template>
   <m-header />
 
-  <main class="@container relative flex h-[calc(100vh-calc(var(--spacing)*14))] overflow-hidden">
+  <main class="@container flex h-[calc(100vh-var(--spacing)*14)] overflow-hidden">
     <m-side-bar ref="sidebarRef" class="absolute transition-all z-10 w-2xs @max-3xl:w-[calc(100vw-50px)]" />
 
     <div class="transition-all h-full flex-1 pl-72 @max-3xl:pl-0">

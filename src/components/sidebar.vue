@@ -36,7 +36,7 @@
           >
         </div>
       </div>
-      <div class="h-[calc(100vh-calc(var(--spacing)*14))] overflow-y-auto px-4 pb-4">
+      <div class="h-[calc(100vh-var(--spacing)*23)] overflow-y-auto px-4 pb-4">
         <transition name="translate-fade" mode="out-in">
           <div :key="currentPath" class="flex flex-col gap-1 mt-1">
             <div v-for="item in currentDirectory" :key="item.id" @click="handleClick(item)">

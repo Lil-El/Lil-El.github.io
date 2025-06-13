@@ -15,13 +15,18 @@ export default function useTheme() {
 
   const themeArr = readonly(Object.entries(themeColors).map((i) => ({ name: i[0], color: i[1] })));
 
-  const cacheTheme = localStorage.getItem("theme") ? JSON.parse(localStorage.getItem("theme")) : null;
+  let cacheTheme = localStorage.getItem("theme") ? JSON.parse(localStorage.getItem("theme")) : {};
+
+  if (typeof cacheTheme !== "object" || !("mode" in cacheTheme)) {
+    localStorage.removeItem("theme");
+    cacheTheme = null;
+  }
 
   const initTheme = {
     mode: "system",
     isDark: false,
-    name: themeArr[0].name,
-    color: themeArr[0].color,
+    name: '',
+    color: '',
   };
 
   const theme = reactive(cacheTheme || initTheme);

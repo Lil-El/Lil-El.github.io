@@ -1,0 +1,1 @@
+import{m as r}from"./index-DBZ3AVdc.js";import{x as t,u as e,e as o}from"../assets/index-D5ptuJ0F.js";const _={__name:"started",setup(a){return(c,s)=>(o(),t(e(r),{tutorial:"",style:{"--markdown-color":"var(--data-theme-color)"}}))}};export{_ as default};

@@ -1,1 +1,0 @@
-import{m as r}from"./index-BgkP_WMl.js";import{y as t,u as o,g as a}from"../assets/index-nGW9UKqb.js";const _={__name:"started",setup(e){return(c,s)=>(a(),t(o(r),{tutorial:"",style:{"--markdown-color":"var(--data-theme-color)"}}))}};export{_ as default};

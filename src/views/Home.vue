@@ -136,11 +136,11 @@
       <section>
         <div class="container mx-auto max-w-screen-xl px-4 md:px-8">
           <h2
-            class="mt-12 mb-4 inline-block bg-gradient-to-br from-rose-400 via-purple-500 to-cyan-500 bg-clip-text py-1 text-3xl font-bold text-transparent dark:mt-0 dark:from-rose-400 dark:via-purple-400 dark:to-cyan-400 lg:mt-16 lg:text-4xl lg:[line-height:3.5rem] dark:lg:mt-4"
+            class="animate-ele mt-12 mb-4 inline-block bg-gradient-to-br from-rose-400 via-purple-500 to-cyan-500 bg-clip-text py-1 text-3xl font-bold text-transparent dark:mt-0 dark:from-rose-400 dark:via-purple-400 dark:to-cyan-400 lg:mt-16 lg:text-4xl lg:[line-height:3.5rem] dark:lg:mt-4"
           >
             最近发布
           </h2>
-          <p class="text-left text-xl dark:prose-invert lg:text-2xl lg:leading-relaxed">Latest blogs.</p>
+          <p class="animate-ele text-left text-xl dark:prose-invert lg:text-2xl lg:leading-relaxed">Latest blogs.</p>
         </div>
         <div
           class="container mx-auto grid max-w-screen-xl gap-4 py-10 dark:text-black sm:grid-cols-2 px-4 lg:grid-cols-3"
@@ -184,11 +184,11 @@
       <section>
         <div class="container mx-auto max-w-screen-xl px-4 md:px-8">
           <h2
-            class="mt-12 mb-4 inline-block bg-gradient-to-br from-rose-400 via-purple-500 to-cyan-500 bg-clip-text py-1 text-3xl font-bold text-transparent dark:mt-0 dark:from-rose-400 dark:via-purple-400 dark:to-cyan-400 lg:mt-16 lg:text-4xl lg:[line-height:3.5rem] dark:lg:mt-4"
+            class="animate-ele mt-12 mb-4 inline-block bg-gradient-to-br from-rose-400 via-purple-500 to-cyan-500 bg-clip-text py-1 text-3xl font-bold text-transparent dark:mt-0 dark:from-rose-400 dark:via-purple-400 dark:to-cyan-400 lg:mt-16 lg:text-4xl lg:[line-height:3.5rem] dark:lg:mt-4"
           >
             在线工具
           </h2>
-          <p class="text-left text-xl dark:prose-invert lg:text-2xl lg:leading-relaxed">
+          <p class="animate-ele text-left text-xl dark:prose-invert lg:text-2xl lg:leading-relaxed">
             Powered by <span class="font-bold">Mino</span>.
           </p>
         </div>
@@ -253,11 +253,11 @@
       <section>
         <div class="container mx-auto max-w-screen-xl px-4 md:px-8">
           <h2
-            class="mt-12 mb-4 inline-block bg-gradient-to-br from-rose-400 via-purple-500 to-cyan-500 bg-clip-text py-1 text-3xl font-bold text-transparent dark:mt-0 dark:from-rose-400 dark:via-purple-400 dark:to-cyan-400 lg:mt-16 lg:text-4xl lg:[line-height:3.5rem] dark:lg:mt-4"
+            class="animate-ele mt-12 mb-4 inline-block bg-gradient-to-br from-rose-400 via-purple-500 to-cyan-500 bg-clip-text py-1 text-3xl font-bold text-transparent dark:mt-0 dark:from-rose-400 dark:via-purple-400 dark:to-cyan-400 lg:mt-16 lg:text-4xl lg:[line-height:3.5rem] dark:lg:mt-4"
           >
             其他站点
           </h2>
-          <p class="text-left text-xl dark:prose-invert lg:text-2xl lg:leading-relaxed">
+          <p class="animate-ele text-left text-xl dark:prose-invert lg:text-2xl lg:leading-relaxed">
             Powered by <span class="font-bold">Mino</span>.
           </p>
         </div>
@@ -296,16 +296,165 @@
         </div>
       </section>
 
-      <section>
-        <div class="container mx-auto max-w-screen-xl px-4 md:px-8">
-          <h2
-            class="mt-12 mb-4 inline-block bg-gradient-to-br from-rose-400 via-purple-500 to-cyan-500 bg-clip-text py-1 text-3xl font-bold text-transparent dark:mt-0 dark:from-rose-400 dark:via-purple-400 dark:to-cyan-400 lg:mt-16 lg:text-4xl lg:[line-height:3.5rem] dark:lg:mt-4"
-          >
-            技术栈
-          </h2>
+      <section class="three-scroll max-xl:hidden">
+        <div class="flex justify-center sticky top-1/3 z-10">
+          <div class="py-4 px-6 mt-12 mb-40 rounded-3xl backdrop-blur-2xl">
+            <h1 class="text-black text-6xl font-bold dark:text-white">Scroll By Mino</h1>
+          </div>
         </div>
-        <div class="max-w-screen-xl flex justify-center pt-10 px-4 mb-12">
-          <img class="sm:w-7/12 w-auto" src="@/assets/cloud.png" alt="" />
+        <div class="max-w-screen-xl mb-12">
+          <div class="three-modal w-full aspect-[2] sticky top-1/6 overflow-hidden">
+            <div
+              class="three-container w-full grid grid-cols-5 gap-5 px-5 mt-9 overflow-hidden absolute transform-3d -top-200"
+            >
+              <div :style="{ transform: `translateY(${offset[0]}px)` }">
+                <div class="flex flex-col justify-start gap-5">
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*dyhfQpXuUSUAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*UKRTSLplS6gAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*RUu-Q5SRmqsAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*dyhfQpXuUSUAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*UKRTSLplS6gAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div :style="{ transform: `translateY(${offset[1]}px)` }">
+                <div class="flex flex-col justify-start gap-5">
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*-wuHQ4qBXZsAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*Ls8eQZOPYPwAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*NX0oR5MuFlAAAAAAAAAAAAAADsF_AQ/original"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*-wuHQ4qBXZsAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*Ls8eQZOPYPwAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div :style="{ transform: `translateY(${offset[2]}px)` }">
+                <div class="flex flex-col justify-start gap-5">
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*1n-HQ7rh1UQAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*UpYaSaSKZvQAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*K4e4RqsaEEkAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*1n-HQ7rh1UQAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*UpYaSaSKZvQAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div :style="{ transform: `translateY(${offset[3]}px)` }">
+                <div class="flex flex-col justify-start gap-5">
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*l8WNQqvFPeEAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*XAAoQbwtFFsAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*q6_aT4sE-K8AAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*l8WNQqvFPeEAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*XAAoQbwtFFsAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div :style="{ transform: `translateY(${offset[4]}px)` }">
+                <div class="flex flex-col justify-start gap-5">
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*1cWGRK08KosAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*B8r-Rp08VRAAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*GsppT5l7udQAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*1cWGRK08KosAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                  <div class="transition-all duration-300 scale-100 hover:scale-103">
+                    <img
+                      src="https://mdn.alipayobjects.com/huamei_2uqjce/afts/img/A*B8r-Rp08VRAAAAAAAAAAAAAADsF_AQ/fmt.webp"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="w-full h-[400vh]"></div>
         </div>
       </section>
     </main>
@@ -346,33 +495,26 @@
 import TypeIt from "typeit";
 import { articles } from "@/blogs";
 
-/*
-https://blog.csdn.net/qq_36157085/article/details/119383264 调试
-
-codepen 类型校验：只支持js、vue、react，对内容进行校验和错误提示
-codepen 改造支持 iframe，可以url自定义属性 https://codepen.io/iamkun/embed/YzWMaVr?height=469&theme-id=light&default-tab=html,result
-博客首页进行归档
-
-主题配色/mode
-app 读取目录生成左侧目录，点击目录跳转对应md文件，左侧目录做面包屑，添加目录层级进入、退出的切换动画效果
-年度任务：
-  - 微前端
-  - ArcGIS + Three.js
-  - Three.js
-  - D3.js 大数据渲染
-  - 断点上传、下载；
-
-  飞线、波纹扩散
-  https://blog.csdn.net/qq_37155408/article/details/124456096
-  https://blog.csdn.net/qq_37155408/article/details/145520997
-  https://blog.csdn.net/qq_37155408/article/details/105295877
-*/
-
 const flag = ref(true);
 
 const latest = articles.slice(-5);
 
+// 顶部： 600 -800 -800 800 0
+// 底部： -600 800 -800 800 -800
+const offset = ref([600, -800, 800, -800, 0]);
+
+let observer = null;
+let threeObserver = null;
+
 onMounted(() => {
+  typeWord();
+
+  observer = observeTitle();
+
+  threeObserver = observeScroll();
+});
+
+function typeWord() {
   document.documentElement.style.overflow = "auto";
 
   new TypeIt("#welcome-txt", {
@@ -395,10 +537,99 @@ onMounted(() => {
     .type("s", { delay: 100 })
     .move(null, { to: "END" })
     .go();
+}
+
+function observeTitle() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("animate-show");
+        observer.unobserve(entry.target);
+      }
+    });
+  });
+
+  document.querySelectorAll(".animate-ele").forEach((el) => {
+    observer.observe(el);
+  });
+
+  return observer;
+}
+
+function observeScroll() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const screenHeight = window.innerHeight;
+        window.onscroll = function () {
+          const { top, bottom, height } = entry.target.getBoundingClientRect();
+          if (top < screenHeight && bottom > 0) {
+            const ratio = (screenHeight - top) / height;
+            if (ratio <= 1 && ratio >= 0) {
+              offset.value[0] = 600 - ratio * 1200;
+              offset.value[1] = -800 + ratio * 1600;
+              offset.value[2] = 800 - ratio * 1600;
+              offset.value[3] = -800 + ratio * 1600;
+              offset.value[4] = -ratio * 800;
+            }
+          }
+        };
+      } else {
+        window.onscroll = null;
+      }
+    });
+  });
+
+  observer.observe(document.querySelector(".three-scroll"));
+
+  return observer;
+}
+
+onUnmounted(() => {
+  window.onscroll = null;
+  observer?.disconnect();
+  threeObserver?.disconnect();
 });
 </script>
 
 <style scoped>
+.three-modal {
+  &::before {
+    content: "";
+    display: block;
+    inset: -20px;
+    z-index: 1;
+    pointer-events: none;
+    position: absolute;
+    box-shadow: var(--color-gray-50) 0px 0px 50px 80px inset;
+  }
+
+  [data-theme="dark"] &::before {
+    box-shadow: var(--color-gray-900) 0px 0px 50px 80px inset;
+  }
+}
+.three-container {
+  transform: perspective(1000px) rotateX(30deg) rotateZ(45deg) scale(1) translateZ(300px) translateX(-70px);
+}
+
+.animate-ele {
+  opacity: 0;
+  translate: 0 40px;
+}
+.animate-show {
+  animation: show 0.5s ease-in-out forwards;
+}
+@keyframes show {
+  0% {
+    opacity: 0;
+    translate: 0 40px;
+  }
+  100% {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
 .animate-string {
   animation: 0.25s ease-in-out 0s infinite normal none running string;
 }

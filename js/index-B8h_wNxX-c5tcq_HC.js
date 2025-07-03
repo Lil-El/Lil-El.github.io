@@ -1,1 +1,0 @@
-import{c as o,g as l,t as n}from"../assets/index-BW3RIueb.js";const i={__name:"index",props:{msg:{type:String,default:"Hello World"}},setup(t){function e(){alert("hello world")}return(r,a)=>(l(),o("div",{onClick:e},n(t.msg),1))}};export{i as default};

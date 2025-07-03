@@ -18,6 +18,14 @@ export const directory = [
         date: "2025-06-12",
         component: () => import("./202506/2-tailwindcss.md?raw"),
       },
+      {
+        id: 2,
+        title: "涟漪效果",
+        description: "页面日夜切换的涟漪效果实现。",
+        author: "Mino",
+        date: "2025-07-03",
+        component: () => import("./202507/1-日夜模式切换效果.md?raw"),
+      },
     ],
   },
   {
@@ -46,4 +54,10 @@ export const directory = [
   },
 ];
 
-export const articles = flattenTree(directory).filter((item) => item.component);
+export const articles = flattenTree(directory)
+  .filter((item) => item.component)
+  .sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB - dateA; // 按日期降序排序
+  });

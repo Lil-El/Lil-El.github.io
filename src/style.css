@@ -1,4 +1,6 @@
 @import "tailwindcss";
+
+@import "@lil-el/codepen/css";
 @import "@lil-el/markdown/css";
 @config "../tailwind.config.js";
 

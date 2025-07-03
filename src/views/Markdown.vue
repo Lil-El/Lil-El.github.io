@@ -1,9 +1,14 @@
 <template>
   <div class="h-screen">
-    <markdown tutorial editable style="--markdown-color: var(--data-theme-color)" />
+    <markdown editable style="--markdown-color: var(--data-theme-color)" :text="demoMd" :components="components" />
   </div>
 </template>
 
 <script setup>
 import { markdown } from "@lil-el/markdown";
+import demoMd from "@/doc/demo.md?raw";
+
+const components = {
+  codepen: () => import("@lil-el/codepen"),
+};
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <m-markdown :text="text" style="--markdown-color: var(--data-theme-color)" />
+  <m-markdown :text="text" style="--markdown-color: var(--data-theme-color)" :components="components" />
 </template>
 
 <script setup>
@@ -10,6 +10,10 @@ import { articles } from "@/blogs";
 const route = useRoute();
 
 const text = ref("");
+
+const components = {
+  codepen: () => import("@lil-el/codepen"),
+};
 
 watch(
   () => route.params.id,

@@ -30,7 +30,7 @@
             class="absolute top-8 -right-10 flex flex-col gap-1 bg-white dark:bg-gray-700/50 rounded-xs shadow-xs border border-gray-100 dark:border-gray-500 p-4 z-50"
             v-show="visible"
           >
-            <div class="cursor-pointer text-sm flex items-center gap-2" @click="handleTheme()">
+            <div class="cursor-pointer text-sm flex items-center gap-2" @click="changeColor()">
               <div class="aspect-square w-4 border border-gray-400"></div>
               <span class="hover:text-gray-500 dark:text-white dark:hover:text-gray-400">默认</span>
             </div>
@@ -38,7 +38,7 @@
               class="cursor-pointer text-sm flex items-center gap-2"
               v-for="(color, name) in themes"
               :key="name"
-              @click="handleTheme(name)"
+              @click="changeColor(name)"
             >
               <div class="aspect-square w-4" :style="{ backgroundColor: color }"></div>
               <span class="hover:text-gray-500 dark:text-white dark:hover:text-gray-400">{{ name }}</span>
@@ -46,7 +46,7 @@
           </div>
         </div>
       </div>
-      <div>
+      <div ref="modeRef">
         <div class="cursor-pointer" v-show="theme.mode === 'system'" title="跟随系统" @click="toggleMode">
           <svg width="20" height="20" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -96,6 +96,7 @@
 
 <script setup>
 import { themeColors } from "@/hooks/useTheme.js";
+import { onMounted } from "vue";
 
 const theme = inject("theme");
 const toggleMode = inject("toggleMode");
@@ -105,11 +106,22 @@ const visible = ref(false);
 
 const themes = readonly(themeColors);
 
+const modeRef = ref();
+
+// watch(() => theme.isDark, toggle);
+
+onMounted(toggle);
+
+function toggle() {
+  const rect = modeRef.value.getClientRects()[0];
+  const position = {
+    y: rect.top + rect.height / 2,
+    x: rect.left + rect.width / 2,
+  };
+
+  document.body.style.backgroundImage = `radial-gradient(circle at ${position.x}px ${position.y}px, white var(--size), black var(--size))`;
+}
 function showPanel() {
   visible.value = !visible.value;
-}
-
-function handleTheme(name) {
-  changeColor(name);
 }
 </script>

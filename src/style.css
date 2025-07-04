@@ -24,6 +24,19 @@ TODO:
   @apply
 } */
 
-#app {
-  @apply bg-white dark:bg-black;
+@property --size {
+  syntax: "<length>";
+  initial-value: 0;
+  inherits: true;
+}
+
+body {
+
+  --size: 2100px;
+  background-repeat: no-repeat;
+  transition: --size 0.8s ease-in;
+
+  [data-theme="dark"] & {
+    --size: 0px;
+  }
 }

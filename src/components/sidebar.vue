@@ -1,7 +1,7 @@
 <template>
   <aside
     ref="elementRef"
-    class="text-sm bg-white dark:bg-black dark:border-white/10 border-r border-r-gray-950/5 shadow-xl dark:shadow-gray-800"
+    class="text-sm dark:border-white/10 border-r border-r-gray-950/5 shadow-xl dark:shadow-gray-800"
   >
     <div class="absolute top-2 -right-8 cursor-pointer hidden @max-3xl:block" title="菜单" @click="toggleSidebar()">
       <svg

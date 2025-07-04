@@ -1,6 +1,6 @@
 <template>
   <div class="w-screen h-screen">
-    <codepen  style="--codepen-color: var(--data-theme-color)" />
+    <codepen style="--codepen-color: var(--data-theme-color)" />
   </div>
 </template>
 

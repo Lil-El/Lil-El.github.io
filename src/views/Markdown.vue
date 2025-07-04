@@ -9,6 +9,7 @@ import { markdown } from "@lil-el/markdown";
 import demoMd from "@/doc/demo.md?raw";
 
 const components = {
-  codepen: () => import("@lil-el/codepen"),
+  codepen: () => import("@/components/codepen/index.js"),
+  helloworld: () => import("@/components/helloworld/index.js"),
 };
 </script>

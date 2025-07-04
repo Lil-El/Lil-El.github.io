@@ -16,11 +16,11 @@ const n=`# 日夜模式切换涟漪效果实现 [!toc hide]\r
 2. [需要在点击按钮时调整圆心的位置；](!notation:underline:red)\r
 3. [使用\`@property\`实现 \`background-image\` 的动画过渡效果；](!notation:underline:red)\r
 \r
-    \`\`\`markdown [!tip:primary]\r
-    由于 \`background-image\` 的样式无法使用 \`transition\` 动画，所以只能使用 \`@property\` 实现动画效果；\r
+   \`\`\`markdown [!tip:primary]\r
+   由于 \`background-image\` 的样式无法使用 \`transition\` 动画，所以只能使用 \`@property\` 实现动画效果；\r
 \r
-    每次只需要调整 \`--size\` 的值，就可以实现动画效果；\r
-    \`\`\`\r
+   每次只需要调整 \`--size\` 的值，就可以实现动画效果；\r
+   \`\`\`\r
 \r
 ## 代码\r
 \r
@@ -71,5 +71,30 @@ const n=`# 日夜模式切换涟漪效果实现 [!toc hide]\r
     <\/script>\r
   </body>\r
 </html>\r
+\`\`\`\r
+\r
+# 效果\r
+\r
+\`\`\`json [!vue:codepen:430]\r
+{\r
+  "title": "CSS",\r
+  "author": "Mino",\r
+  "date": "20025/7/4",\r
+  "project": "html",\r
+  "editors": {\r
+    "html": {\r
+      "id": "20250704-1",\r
+      "code": "<div class='btn'>toggle</div>"\r
+    },\r
+    "css": {\r
+      "id": "20250704-2",\r
+      "code": " * {   margin: 0;   padding: 0; } @property --size {   syntax: '<length>';   initial-value: 0;   inherits: false; } body {   --size: 0px;   width: 100vw;   height: 100vh;   background-repeat: no-repeat;   transition: --size 0.8s ease-in; } .dark {   --size: 2000px;} .btn {   position: absolute;   top: 10vh;   left: 40vw;   color: aqua;   cursor: pointer; }"\r
+    },\r
+    "javascript": {\r
+      "id": "20250704-3",\r
+      "code": "const btn = document.querySelector('.btn'); \\n\\nbtn.addEventListener('click', toggle); \\n\\nfunction toggle(evt) {\\ndocument.body.style.backgroundImage = \`radial-gradient(circle at \${evt.clientX}px \${evt.clientY}px, white var(--size), black var(--size))\`;\\n\\ndocument.body.classList.toggle('dark');\\n}"\r
+    }\r
+  }\r
+}\r
 \`\`\`\r
 `;export{n as default};

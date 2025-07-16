@@ -1,4 +1,4 @@
-import{r,A as l,c as n,g as i,u as d}from"../assets/index-C_NcTVgD.js";const a=["srcdoc"],h={__name:"index",props:["title","author","date","project","editors"],setup(c){const e=c,s=r(p(e?JSON.stringify(e):""));console.log(e),l(()=>e.title,t=>{console.log(t)},{deep:!0});function p(t){const o=document.querySelector("#md-content-article");return`
+import{r,A as l,c as n,g as i,u as d}from"../assets/index-Dx5HCA9Y.js";const a=["srcdoc"],h={__name:"index",props:["title","author","date","project","editors"],setup(c){const e=c,s=r(p(e?JSON.stringify(e):""));console.log(e),l(()=>e.title,t=>{console.log(t)},{deep:!0});function p(t){const o=document.querySelector("#md-content-article");return`
     <!DOCTYPE html>
     <html lang="en">
     <head>

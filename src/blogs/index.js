@@ -20,8 +20,8 @@ export const directory = [
       },
       {
         id: 2,
-        title: "涟漪效果",
-        description: "页面日夜切换的涟漪效果实现。",
+        title: "日夜模式背景切换效果",
+        description: "页面中日夜模式切换时的背景黑白聚散效果实现。",
         author: "Mino",
         date: "2025-07-03",
         component: () => import("./202507/1-日夜模式切换效果.md?raw"),
@@ -52,7 +52,23 @@ export const directory = [
       },
     ],
   },
+  {
+    id: "Lib",
+    title: "组件库系列",
+    children: [
+      {
+        id: 3,
+        title: "组件库系列-基础搭建",
+        description: "组件库系列：组件库基础组件以及内容的构建。",
+        author: "Mino",
+        date: "2025-07-16",
+        component: () => import("./202507/2-组件库-1.基础搭建.md?raw"),
+      },
+    ],
+  },
 ];
+
+const lateId = 3;
 
 export const articles = flattenTree(directory)
   .filter((item) => item.component)

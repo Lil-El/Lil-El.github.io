@@ -64,11 +64,27 @@ export const directory = [
         date: "2025-07-16",
         component: () => import("./202507/2-组件库-1.基础搭建.md?raw"),
       },
+      {
+        id: 4,
+        title: "组件库系列-打包配置",
+        description: "组件库系列：组件库基于 vite 打包配置。",
+        author: "Mino",
+        date: "2025-07-16",
+        component: () => import("./202507/3-组件库-2.打包配置.md?raw"),
+      },
+      {
+        id: 5,
+        title: "组件库系列-ts配置",
+        description: "组件库系列：组件库基础 ts 内容惊醒配置。",
+        author: "Mino",
+        date: "2025-07-16",
+        component: () => import("./202507/4-组件库-2.ts配置.md?raw"),
+      },
     ],
   },
 ];
 
-const lateId = 3;
+const lateId = 5;
 
 export const articles = flattenTree(directory)
   .filter((item) => item.component)

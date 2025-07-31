@@ -497,7 +497,7 @@ import { articles } from "@/blogs";
 
 const flag = ref(true);
 
-const latest = articles.slice(-5);
+const latest = articles.slice(0, 6);
 
 // 顶部： 600 -800 -800 800 0
 // 底部： -600 800 -800 800 -800

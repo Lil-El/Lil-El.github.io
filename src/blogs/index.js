@@ -75,16 +75,24 @@ export const directory = [
       {
         id: 5,
         title: "组件库系列-ts配置",
-        description: "组件库系列：组件库基础 ts 内容惊醒配置。",
+        description: "组件库系列：组件库基础 ts 内容进行配置。",
         author: "Mino",
         date: "2025-07-16",
-        component: () => import("./202507/4-组件库-2.ts配置.md?raw"),
+        component: () => import("./202507/4-组件库-3.ts配置.md?raw"),
+      },
+      {
+        id: 6,
+        title: "组件库系列-安装使用",
+        description: "组件库系列：将组件库发布到 npm 仓库，并安装使用。",
+        author: "Mino",
+        date: "2025-07-31",
+        component: () => import("./202507/5-组件库-4.发布安装.md?raw"),
       },
     ],
   },
 ];
 
-const lateId = 5;
+const lateId = 6;
 
 export const articles = flattenTree(directory)
   .filter((item) => item.component)

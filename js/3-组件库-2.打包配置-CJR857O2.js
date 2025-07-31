@@ -116,7 +116,7 @@ const esConfig: UserConfig = {\r
     cssCodeSplit: true,\r
     lib: {\r
       entry: "./src/index.ts",\r
-      // name: "Vue3NumberScroller",\r
+      // name: "MyUI",\r
       // fileName: (format) => (format === "es" ? \`index.mjs\` : \`index.\${format}.js\`),\r
       // formats: ["es", "umd", "cjs"],\r
     },\r
@@ -156,14 +156,14 @@ const umdConfig: UserConfig = {\r
   build: {\r
     lib: {\r
       entry: "./src/index.ts",\r
-      name: "Vue3NumberScroller",\r
+      name: "MyUI",\r
       fileName: (format) => (format === "es" ? \`index.mjs\` : \`index.\${format}.js\`),\r
       formats: ["umd"],\r
     },\r
     rollupOptions: {\r
       external: ["vue"],\r
       output: {\r
-        // name: "Vue3NumberScroller", // 必须为UMD格式指定name\r
+        // name: "MyUI", // 必须为UMD格式指定name\r
         globals: {\r
           vue: "Vue",\r
         },\r

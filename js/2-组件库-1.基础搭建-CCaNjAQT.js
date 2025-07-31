@@ -11,9 +11,9 @@ const n=`# 基础搭建 [!toc hide]\r
 通过 \`vite\` 或者 \`vue\` 创建一个应用，并勾选 \`typescript\`。\r
 \r
 \`\`\`bash\r
-$ pnpm create vite mino-ui\r
+$ pnpm create vite my-ui\r
 # 或者\r
-$ pnpm create vue mino-ui\r
+$ pnpm create vue my-ui\r
 \`\`\`\r
 \r
 - [tailwindcss](!notation:underline)\r
@@ -196,7 +196,7 @@ export { NumberScroller } from "./components";\r
 # 目录结构\r
 \r
 \`\`\`markdown\r
-mino-ui/\r
+my-ui/\r
 ├── src/\r
 │   ├── components/\r
 │   │   ├── number-scroller/\r

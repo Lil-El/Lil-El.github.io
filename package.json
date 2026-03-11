@@ -12,7 +12,7 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "@lil-el/codepen": "2.0.0",
-    "@lil-el/markdown": "2.0.1-beta.0",
+    "@lil-el/markdown": "2.0.1",
     "element-plus": "^2.9.11",
     "typeit": "^8.8.7",
     "vue": "^3.5.16",

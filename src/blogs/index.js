@@ -90,9 +90,17 @@ export const directory = [
       },
     ],
   },
+  {
+    id: "Monorepo",
+    title: "Monorepo",
+    description: "Monorepo 架构与 pnpm Workspace 完全指南。",
+    author: "Mino",
+    date: "2026-03-11",
+    component: () => import("./202603/1-monorepo.md?raw"),
+  },
 ];
 
-const lateId = 6;
+const lateId = "Monorepo";
 
 export const articles = flattenTree(directory)
   .filter((item) => item.component)

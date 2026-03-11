@@ -1,2 +1,0 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["js/index-DnBJBeEZ.js","assets/index-Cv6LOo6w.js","assets/css/index.css"])))=>i.map(i=>d[i]);
-import{y as e,u as o,g as r,_ as a}from"../assets/index-Cv6LOo6w.js";import{m as _}from"./index-D-4qLMh6.js";import{d as m}from"./demo-BI9MsvPX.js";const u={__name:"started",setup(n){const t={codepen:()=>a(()=>import("./index-DnBJBeEZ.js"),__vite__mapDeps([0,1,2]))};return(s,c)=>(r(),e(o(_),{style:{"--markdown-color":"var(--data-theme-color)"},text:o(m),components:t},null,8,["text"]))}};export{u as default};

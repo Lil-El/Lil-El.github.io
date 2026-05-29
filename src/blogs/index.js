@@ -98,6 +98,20 @@ export const directory = [
     date: "2026-03-11",
     component: () => import("./202603/1-monorepo.md?raw"),
   },
+  {
+    id: "AI",
+    title: "AI Agent",
+    children: [
+      {
+        id: "Ollama 安装与使用",
+        title: "Ollama 安装与使用",
+        description: "Ollama 是一个本地 AI 模型管理工具，支持多种 AI 模型的安装和使用。",
+        author: "Yann.",
+        date: "2026-05-29",
+        component: () => import("./202605/1-ollama.md?raw"),
+      }
+    ]
+  }
 ];
 
 const lateId = "Monorepo";

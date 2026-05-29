@@ -20,7 +20,7 @@
         ></path>
       </svg>
     </div>
-    <div class="transition-all overflow-hidden">
+    <div class="transition-all overflow-hidden bg-white dark:bg-black">
       <div class="px-4 h-9 flex items-center gap-1">
         <span
           class="cursor-pointer text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white"

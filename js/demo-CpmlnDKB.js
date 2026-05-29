@@ -110,7 +110,7 @@ function hello() {\r
 \`\`\`\`markdown\r
 \`\`\`json [!vue:helloworld]\r
 {\r
-  "msg": "点我试试...",\r
+  "msg": "Hello...",\r
   "style": "color: red; cursor: pointer;"\r
 }\r
 \`\`\`\r
@@ -120,7 +120,7 @@ function hello() {\r
 \r
 \`\`\`json [!vue:helloworld]\r
 {\r
-  "msg": "点我试试...",\r
+  "msg": "Hello...",\r
   "style": "color: red; cursor: pointer;"\r
 }\r
 \`\`\`\r

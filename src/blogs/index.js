@@ -109,9 +109,23 @@ export const directory = [
         author: "Yann.",
         date: "2026-05-29",
         component: () => import("./202605/1-ollama.md?raw"),
-      }
-    ]
-  }
+      },
+    ],
+  },
+  {
+    id: "Cesium",
+    title: "Cesium",
+    children: [
+      {
+        id: 1,
+        title: "ArcGIS 影像服务 layerDefs 过滤参数编码问题",
+        description: "Cesium 加载 ArcGIS MapServer 时 layerDefs 参数 URI 编码异常导致 400 错误的排查与修复。",
+        author: "Mino",
+        date: "2026-09-03",
+        component: () => import("./202609/1-cesium.md?raw"),
+      },
+    ],
+  },
 ];
 
 const lateId = "Monorepo";

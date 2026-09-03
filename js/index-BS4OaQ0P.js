@@ -1,1 +1,0 @@
-import{r as t,c as r,g as o,t as a}from"../assets/index-BTF6UIwT.js";const m={__name:"index",props:["msg"],setup(s){const e=t(s.msg);return(c,p)=>(o(),r("div",null,a(e.value),1))}};export{m as default};

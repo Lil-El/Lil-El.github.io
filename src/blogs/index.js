@@ -117,8 +117,8 @@ export const directory = [
     title: "Cesium",
     children: [
       {
-        id: 1,
-        title: "ArcGIS 影像服务 layerDefs 过滤参数编码问题",
+        id: 7,
+        title: "ArcGIS 影像服务参数编码问题",
         description: "Cesium 加载 ArcGIS MapServer 时 layerDefs 参数 URI 编码异常导致 400 错误的排查与修复。",
         author: "Mino",
         date: "2026-09-03",

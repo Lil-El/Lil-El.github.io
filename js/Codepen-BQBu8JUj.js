@@ -1,0 +1,1 @@
+import{codepen as e}from"./index-DV3HeOG3.js";import{c as o,m as c,u as r,g as t}from"../assets/index-BTF6UIwT.js";const s={class:"w-screen h-screen"},d={__name:"Codepen",setup(a){return(n,p)=>(t(),o("div",s,[c(r(e),{style:{"--codepen-color":"var(--data-theme-color)"}})]))}};export{d as default};

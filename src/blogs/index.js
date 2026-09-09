@@ -124,6 +124,14 @@ export const directory = [
         date: "2026-09-03",
         component: () => import("./202609/1-cesium.md?raw"),
       },
+      {
+        id: 8,
+        title: "Cesium 双击绘制时避免相机聚焦",
+        description: "Cesium 自定义绘制时双击结束触发相机聚焦的解决方案。",
+        author: "Mino",
+        date: "2026-09-09",
+        component: () => import("./202609/2-cesium.md?raw"),
+      },
     ],
   },
 ];

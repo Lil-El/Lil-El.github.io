@@ -132,6 +132,14 @@ export const directory = [
         date: "2026-09-09",
         component: () => import("./202609/2-cesium.md?raw"),
       },
+      {
+        id: 9,
+        title: "Cesium 拾取（Pick）方法汇总",
+        description: "Cesium 中场景拾取、相机拾取、Globe 拾取等方法的用法与对比总结。",
+        author: "Mino",
+        date: "2026-09-15",
+        component: () => import("./202609/3-cesium.md?raw"),
+      },
     ],
   },
 ];
